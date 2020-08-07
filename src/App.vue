@@ -1,9 +1,13 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-07-23 09:48:43
+ * @LastEditTime: 2020-07-23 10:28:57
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \sucai-modal\src\App.vue
+--> 
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
