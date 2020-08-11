@@ -1,14 +1,14 @@
 {
   "name": "ym-sucai-modal",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name 'ym-sucai-modal' --dest lib packages/index.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "iview": "^3.5.4",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
     "view-design": "^4.3.2",
@@ -19,7 +19,6 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-service": "^4.4.0",
-    "axios": "^0.19.2",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "vue-template-compiler": "^2.6.11"
