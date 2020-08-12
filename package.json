@@ -37,5 +37,8 @@
     "url": "yimu0001"
   },
   "author": "yimu",
-  "license": "ISC"
+  "license": "ISC",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  }
 }

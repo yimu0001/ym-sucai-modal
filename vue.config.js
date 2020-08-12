@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-08-12 11:11:15
+ * @LastEditTime: 2020-08-12 14:11:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
@@ -49,4 +49,11 @@ module.exports = {
   devServer: {
     proxy: 'http://sucai.shandian.design/'
   },
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      template: 'public/index.html',
+      filename: 'index.html'
+    }
+  }
 }
