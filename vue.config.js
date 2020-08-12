@@ -1,11 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-07-24 09:17:33
+ * @LastEditTime: 2020-08-12 09:46:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
- */ 
+ */
 var webpack = require('webpack')
 const path = require('path')
 
@@ -21,9 +21,9 @@ const resolve = dir => {
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
 // iview-admin线上演示打包路径： https://file.iviewui.com/admin-dist/
-const BASE_URL = process.env.NODE_ENV === 'production'
-  ? '/dist'
-  : ''
+const BASE_URL = process.env.NODE_ENV === 'production' ?
+  '/dist' :
+  ''
 const Timestamp = new Date().getTime()
 module.exports = {
   // Project deployment base
@@ -49,11 +49,19 @@ module.exports = {
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
   devServer: {
     proxy: 'http://sucai.shandian.design/'
+  },
+  configureWebpack: {
+    output: {
+      libraryExport: 'default'
+    },
+    resolve: {
+      extensions: ['.js', '.vue', '.json'],
+      alias: {
+        '@': resolve('packages'),
+        'assets': resolve('src/assets'),
+        'views': resolve('src/views'),
+      }
+    },
   }
-  // configureWebpack: (config)=>{
-  //   if(process.env.NODE_ENV === 'production'){
-  //     config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
-  //   }
-  // }
 
 }
