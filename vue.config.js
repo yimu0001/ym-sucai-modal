@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-08-12 15:07:26
- * @LastEditors: your name
+ * @LastEditTime: 2020-08-12 15:27:22
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
  */
@@ -27,9 +27,8 @@ module.exports = {
         resolve: {
             extensions: ['.js', '.vue', '.json'],
             alias: {
-                '@': resolve('packages'),
-                'assets': resolve('src/assets'),
-                'views': resolve('src/views'),
+              '@': resolve('src'),
+              '_c': resolve('src/components'),
             }
         }, 
     },
