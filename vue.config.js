@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-08-12 09:46:24
+ * @LastEditTime: 2020-08-12 10:18:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
@@ -50,18 +50,4 @@ module.exports = {
   devServer: {
     proxy: 'http://sucai.shandian.design/'
   },
-  configureWebpack: {
-    output: {
-      libraryExport: 'default'
-    },
-    resolve: {
-      extensions: ['.js', '.vue', '.json'],
-      alias: {
-        '@': resolve('packages'),
-        'assets': resolve('src/assets'),
-        'views': resolve('src/views'),
-      }
-    },
-  }
-
 }

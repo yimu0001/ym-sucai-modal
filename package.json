@@ -8,7 +8,9 @@
     "lib": "vue-cli-service build --target lib --name 'ym-sucai-modal' --dest lib packages/index.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "iview": "^3.5.4",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
     "view-design": "^4.3.2",
@@ -34,9 +36,6 @@
     "type": "git",
     "url": "yimu0001"
   },
-  "keywords": [
-    "zx25575850"
-  ],
   "author": "yimu",
   "license": "ISC"
 }
