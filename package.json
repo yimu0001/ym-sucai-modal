@@ -31,7 +31,7 @@
     "not dead"
   ],
   "description": "## Project setup ``` npm install ```",
-  "main": "babel.config.js",
+  "main": "lib/'ym-sucai-modal'.common.js",
   "repository": {
     "type": "git",
     "url": "yimu0001"

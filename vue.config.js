@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-08-12 10:18:00
+ * @LastEditTime: 2020-08-12 11:11:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
@@ -24,7 +24,6 @@ const resolve = dir => {
 const BASE_URL = process.env.NODE_ENV === 'production' ?
   '/dist' :
   ''
-const Timestamp = new Date().getTime()
 module.exports = {
   // Project deployment base
   // By default we assume your app will be deployed at the root of a domain,
