@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-07-23 10:30:15
- * @LastEditors: your name
+ * @LastEditTime: 2020-08-13 11:19:07
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\main.js
  */ 
@@ -11,10 +11,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import ViewUI from 'view-design';
-import 'view-design/dist/styles/iview.css';
+// import ViewUI from 'view-design';
+// import 'view-design/dist/styles/iview.css';
 import config from '@/config'
-Vue.use(ViewUI);
+// Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.prototype.$config = config
 

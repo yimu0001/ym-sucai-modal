@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-07 14:38:54
+ * @LastEditTime: 2020-08-13 11:33:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -56,6 +56,8 @@
 import { getFileList } from '@/api/data'
 import SucaiList from './sucaiList'
 import VueUploader from "_c/vueuploader/index.js";
+import { Tabs, TabPane, Row, Col, Input, Page } from 'view-design';
+import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
     name: 'imageTabs',
@@ -92,7 +94,8 @@ import Bus from '../libs/bus'
     },
     components: {
       SucaiList,
-      VueUploader
+      VueUploader,
+      Tabs, TabPane, [Row.name]: Row,  [Col.name]: Col, Input, Page
     },
     data() {
       return {

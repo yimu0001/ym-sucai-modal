@@ -1,14 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-04 09:43:22
+ * @LastEditTime: 2020-08-13 11:47:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
 --> 
 <template>
   <div>
-    
     <Row :gutter='20'>
       <i-col span='5'>
         <Tree :data="foldersMenu" :load-data="getFolders" @on-select-change='chooseFolder'></Tree>
@@ -41,9 +40,14 @@
 <script>
 import { getFolders } from '@/api/data'
 import {renderSize} from '@/libs/util.js';
+import { Row, Col, Tree } from 'view-design';
+import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
     name: 'sucaiList',
+    components: {
+      [Row.name]: Row,  [Col.name]: Col, [Tree.name]: Tree, 
+    },
     props: {
       list: {
         type: Array,

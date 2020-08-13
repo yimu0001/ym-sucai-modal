@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-04 15:06:38
+ * @LastEditTime: 2020-08-13 11:18:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -29,6 +29,8 @@
 
 <script>
 import MaterialTabs from './material-tabs'
+import { Button, Modal } from 'view-design';
+import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
     name: 'sucaiModal',
@@ -55,7 +57,9 @@ import Bus from '../libs/bus'
       }
     },
     components: {
-      MaterialTabs
+      MaterialTabs,
+      Button,
+      Modal
     },
     data() {
       return {
