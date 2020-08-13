@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:57:35
- * @LastEditTime: 2020-08-13 14:16:08
+ * @LastEditTime: 2020-08-13 19:23:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\src\config\index.js
@@ -21,7 +21,7 @@ export default {
    *              用来在菜单中显示文字
    */
   PAGE_SIZE: 10,
-  useI18n: true,
+  useI18n: false,
   /**
    * @description api请求基础路径
    */
