@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-13 14:18:36
+ * @LastEditTime: 2020-08-13 17:15:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -19,7 +19,7 @@
       </TabPane>
       <TabPane label="本地库" name="materialVal2">
         <vue-uploader
-          url="/upload/chunked"
+          :url="uploadUrl"
           :fileNumLimit="fileLimitNum"
           @error="uploadOnImgError"
           @success="uploadOnImgSuccess"
@@ -58,6 +58,7 @@ import SucaiList from './sucaiList'
 import VueUploader from "_c/vueuploader/index.js";
 import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu } from 'view-design';
 import 'view-design/dist/styles/iview.css';
+const baseUrl = process.env.NODE_ENV === 'development'? this.$config.baseUrl.dev : this.$config.baseUrl.pro
 import Bus from '../libs/bus'
   export default {
     name: 'imageTabs',
@@ -109,7 +110,8 @@ import Bus from '../libs/bus'
         modal: false,
         uploadVideoUrl: '',
         showPreview: false,
-        materialType: this.type
+        materialType: this.type,
+        uploadUrl: baseUrl+'/upload/chunked'
       }
     },
     mounted () {
