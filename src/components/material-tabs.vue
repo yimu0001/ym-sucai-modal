@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-13 17:15:59
+ * @LastEditTime: 2020-08-13 17:25:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -56,9 +56,10 @@
 import { getFileList } from '@/api/data'
 import SucaiList from './sucaiList'
 import VueUploader from "_c/vueuploader/index.js";
-import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu } from 'view-design';
+import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu, Icon } from 'view-design';
 import 'view-design/dist/styles/iview.css';
-const baseUrl = process.env.NODE_ENV === 'development'? this.$config.baseUrl.dev : this.$config.baseUrl.pro
+import config from '@/config'
+const baseUrl = process.env.NODE_ENV === 'development'? config.baseUrl.dev : config.baseUrl.pro
 import Bus from '../libs/bus'
   export default {
     name: 'imageTabs',
@@ -96,7 +97,7 @@ import Bus from '../libs/bus'
     components: {
       SucaiList,
       VueUploader,
-      Tabs, TabPane, [Row.name]: Row,  [Col.name]: Col, Input, Page, [Dropdown.name]: Dropdown, DropdownItem, [DropdownMenu.name]: DropdownMenu
+      Tabs, TabPane, [Row.name]: Row,  [Col.name]: Col, Input, Page, [Dropdown.name]: Dropdown, DropdownItem, [DropdownMenu.name]: DropdownMenu, Icon
     },
     data() {
       return {

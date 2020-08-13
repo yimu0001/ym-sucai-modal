@@ -53,6 +53,9 @@
 import WebUpload from '_c/webuploader'
 import '_c/webuploader/style.less'
 import WebUploader from '@/assets/js/webupload.js'
+import { Icon } from 'view-design'
+import Vue from 'vue'
+Vue.component('Icon', Icon)
 export default {
   name: 'VueUploader',
   props: {
