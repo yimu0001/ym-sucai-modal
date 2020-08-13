@@ -41,8 +41,8 @@
     // 设置module, 兼容CommonJs写法。
     setModule = function (id, factory, args) {
       var module = {
-          exports: factory
-        },
+        exports: factory
+      },
         returned
 
       if (typeof factory === 'function') {
@@ -129,13 +129,12 @@
      * @require "zepto"
      */
   define('dollar-third', [], function () {
-    var req = window.require
-    console.log(window)
-    var $ = window.__dollar ||
-            window.jQuery ||
-            window.Zepto ||
-            req('jquery') ||
-            req('zepto')
+    // var req = window.require
+    // var $ = window.__dollar ||
+    //   window.jQuery ||
+    //   window.Zepto ||
+    //   req('jquery') ||
+    //   req('zepto')
 
     if (!$) {
       throw new Error('jQuery or Zepto not found!')
@@ -204,19 +203,19 @@
 
     // http://jsperf.com/uncurrythis
     // 反科里化
-    function uncurryThis (fn) {
+    function uncurryThis(fn) {
       return function () {
         return call.apply(fn, arguments)
       }
     }
 
-    function bindFn (fn, context) {
+    function bindFn(fn, context) {
       return function () {
         return fn.apply(context, arguments)
       }
     }
 
-    function createObject (proto) {
+    function createObject(proto) {
       var f
 
       if (Object.create) {
@@ -266,10 +265,10 @@
         var ret = {},
           webkit = ua.match(/WebKit\/([\d.]+)/),
           chrome = ua.match(/Chrome\/([\d.]+)/) ||
-                        ua.match(/CriOS\/([\d.]+)/),
+            ua.match(/CriOS\/([\d.]+)/),
 
           ie = ua.match(/MSIE\s([\d\.]+)/) ||
-                        ua.match(/(?:trident)(?:.*rv:([\w.]+))?/i),
+            ua.match(/(?:trident)(?:.*rv:([\w.]+))?/i),
           firefox = ua.match(/Firefox\/([\d.]+)/),
           safari = ua.match(/Safari\/([\d.]+)/),
           opera = ua.match(/OPR\/([\d.]+)/)
@@ -486,7 +485,7 @@
         }
 
         return (unit === 'B' ? size : size.toFixed(pointLength || 2)) +
-                    unit
+          unit
       }
     }
   })
@@ -503,24 +502,24 @@
       protos
 
     // 根据条件过滤出事件handlers.
-    function findHandlers (arr, name, callback, context) {
+    function findHandlers(arr, name, callback, context) {
       return $.grep(arr, function (handler) {
         return handler &&
-                    (!name || handler.e === name) &&
-                    (!callback || handler.cb === callback ||
-                        handler.cb._cb === callback) &&
-                    (!context || handler.ctx === context)
+          (!name || handler.e === name) &&
+          (!callback || handler.cb === callback ||
+            handler.cb._cb === callback) &&
+          (!context || handler.ctx === context)
       })
     }
 
-    function eachEvent (events, callback, iterator) {
+    function eachEvent(events, callback, iterator) {
       // 不支持对象，只支持多个event用空格隔开
       $.each((events || '').split(separator), function (_, key) {
         iterator(key, callback)
       })
     }
 
-    function triggerHanders (events, args) {
+    function triggerHanders(events, args) {
       var stoped = false,
         i = -1,
         len = events.length,
@@ -682,7 +681,7 @@
         allEvents = findHandlers(this._events, 'all')
 
         return triggerHanders(events, args) &&
-                    triggerHanders(allEvents, arguments)
+          triggerHanders(allEvents, arguments)
       }
     }
 
@@ -728,7 +727,7 @@
          *     chunked: true
          * });
          */
-    function Uploader (opts) {
+    function Uploader(opts) {
       this.options = $.extend(true, {}, Uploader.options, opts)
       this._init(this.options)
     }
@@ -779,31 +778,31 @@
         })
       },
 
-      // /**
-      //        * 获取或者设置Uploader配置项。
-      //        * @method option
-      //        * @grammar option( key ) => *
-      //        * @grammar option( key, val ) => self
-      //        * @example
-      //        *
-      //        * // 初始状态图片上传前不会压缩
-      //        * var uploader = new WebUploader.Uploader({
-      //        *     compress: null;
-      //        * });
-      //        *
-      //        * // 修改后图片上传前，尝试将图片压缩到1600 * 1600
-      //        * uploader.option( 'compress', {
-      //        *     width: 1600,
-      //        *     height: 1600
-      //        * });
-      //        */
+      /**
+             * 获取或者设置Uploader配置项。
+             * @method option
+             * @grammar option( key ) => *
+             * @grammar option( key, val ) => self
+             * @example
+             *
+             * // 初始状态图片上传前不会压缩
+             * var uploader = new WebUploader.Uploader({
+             *     compress: null;
+             * });
+             *
+             * // 修改后图片上传前，尝试将图片压缩到1600 * 1600
+             * uploader.option( 'compress', {
+             *     width: 1600,
+             *     height: 1600
+             * });
+             */
       option: function (key, val) {
         var opts = this.options
 
         // setter
         if (arguments.length > 1) {
           if ($.isPlainObject(val) &&
-                        $.isPlainObject(opts[key])) {
+            $.isPlainObject(opts[key])) {
             $.extend(opts[key], val)
           } else {
             opts[key] = val
@@ -848,23 +847,23 @@
         var args = [].slice.call(arguments, 1),
           opts = this.options,
           name = 'on' + type.substring(0, 1).toUpperCase() +
-                        type.substring(1)
+            type.substring(1)
 
         if (
-        // 调用通过on方法注册的handler.
+          // 调用通过on方法注册的handler.
           Mediator.trigger.apply(this, arguments) === false ||
 
-                    // 调用opts.onEvent
-                    $.isFunction(opts[name]) &&
-                    opts[name].apply(this, args) === false ||
+          // 调用opts.onEvent
+          $.isFunction(opts[name]) &&
+          opts[name].apply(this, args) === false ||
 
-                    // 调用this.onEvent
-                    $.isFunction(this[name]) &&
-                    this[name].apply(this, args) === false ||
+          // 调用this.onEvent
+          $.isFunction(this[name]) &&
+          this[name].apply(this, args) === false ||
 
-                    // 广播所有uploader的事件。
-                    Mediator.trigger.apply(Mediator,
-                      [this, type].concat(args)) === false) {
+          // 广播所有uploader的事件。
+          Mediator.trigger.apply(Mediator,
+            [this, type].concat(args)) === false) {
           return false
         }
 
@@ -923,7 +922,7 @@
       }
 
     // 接口类。
-    function Runtime (options) {
+    function Runtime(options) {
       this.options = $.extend({
         container: document.body
       }, options)
@@ -1053,7 +1052,7 @@
       }
     })()
 
-    function RuntimeClient (component, standalone) {
+    function RuntimeClient(component, standalone) {
       var deferred = Base.Deferred(),
         runtime
 
@@ -1157,7 +1156,7 @@
   ], function (Base, Mediator, RuntimeClent) {
     var $ = Base.$
 
-    function DragAndDrop (opts) {
+    function DragAndDrop(opts) {
       opts = this.options = $.extend({}, DragAndDrop.options, opts)
 
       opts.container = $(opts.container)
@@ -1204,7 +1203,7 @@
       IGNORE = {},
       widgetClass = []
 
-    function isArrayLike (obj) {
+    function isArrayLike(obj) {
       if (!obj) {
         return false
       }
@@ -1217,11 +1216,11 @@
       }
 
       return type === 'array' || type !== 'function' && type !== 'string' &&
-                (length === 0 || typeof length === 'number' && length > 0 &&
-                    (length - 1) in obj)
+        (length === 0 || typeof length === 'number' && length > 0 &&
+          (length - 1) in obj)
     }
 
-    function Widget (uploader) {
+    function Widget(uploader) {
       this.owner = uploader
       this.options = uploader.options
     }
@@ -1242,7 +1241,7 @@
 
         // 如果无API响应声明则忽略
         if (!map || !(apiName in map) || !(map[apiName] in this) ||
-                    !$.isFunction(this[map[apiName]])) {
+          !$.isFunction(this[map[apiName]])) {
           return IGNORE
         }
 
@@ -1279,7 +1278,7 @@
 
         $.each(widgetClass, function (_, klass) {
           (!deactives || !~deactives.indexOf(klass._name)) &&
-                        widgets.push(new klass(me))
+            widgets.push(new klass(me))
         })
 
         return _init.apply(me, arguments)
@@ -1460,7 +1459,7 @@
 
       init: function (opts) {
         if (!opts.dnd ||
-                    this.request('predict-runtime-type') !== 'html5') {
+          this.request('predict-runtime-type') !== 'html5') {
           return
         }
 
@@ -1506,7 +1505,7 @@
   ], function (Base, Mediator, RuntimeClent) {
     var $ = Base.$
 
-    function FilePaste (opts) {
+    function FilePaste(opts) {
       opts = this.options = $.extend({}, opts)
       opts.container = $(opts.container || document.body)
       RuntimeClent.call(this, 'FilePaste')
@@ -1550,7 +1549,7 @@
 
       init: function (opts) {
         if (!opts.paste ||
-                    this.request('predict-runtime-type') !== 'html5') {
+          this.request('predict-runtime-type') !== 'html5') {
           return
         }
 
@@ -1585,7 +1584,7 @@
     'base',
     'runtime/client'
   ], function (Base, RuntimeClient) {
-    function Blob (ruid, source) {
+    function Blob(ruid, source) {
       var me = this
 
       me.source = source
@@ -1594,7 +1593,7 @@
 
       // 如果没有指定 mimetype, 但是知道文件后缀。
       if (!source.type && this.ext &&
-                ~'jpg,jpeg,png,gif,bmp'.indexOf(this.ext)) {
+        ~'jpg,jpeg,png,gif,bmp'.indexOf(this.ext)) {
         this.type = 'image/' + (this.ext === 'jpg' ? 'jpeg' : this.ext)
       } else {
         this.type = source.type || 'application/octet-stream'
@@ -1634,7 +1633,7 @@
     var uid = 1,
       rExt = /\.([^.]+)$/
 
-    function File (ruid, file) {
+    function File(ruid, file) {
       var ext
 
       this.name = file.name || ('untitled' + uid++)
@@ -1650,8 +1649,8 @@
 
       this.ext = ext
       this.lastModifiedDate = file.lastModifiedDate ||
-                file.lastModified && new Date(file.lastModified).toLocaleString() ||
-                (new Date()).toLocaleString()
+        file.lastModified && new Date(file.lastModified).toLocaleString() ||
+        (new Date()).toLocaleString()
 
       Blob.apply(this, arguments)
     }
@@ -1669,7 +1668,7 @@
   ], function (Base, RuntimeClient, File) {
     var $ = Base.$
 
-    function FilePicker (opts) {
+    function FilePicker(opts) {
       opts = this.options = $.extend({}, FilePicker.options, opts)
 
       opts.container = $(opts.id)
@@ -1679,7 +1678,7 @@
       }
 
       opts.innerHTML = opts.innerHTML || opts.label ||
-                opts.container.html() || ''
+        opts.container.html() || ''
 
       opts.button = $(opts.button || document.createElement('div'))
       opts.button.html(opts.innerHTML)
@@ -1788,7 +1787,7 @@
         var btn = this.options.button
         $(window).off('resize', this._resizeHandler)
         btn.removeClass('webuploader-pick-disable webuploader-pick-hover ' +
-                    'webuploader-pick')
+          'webuploader-pick')
       }
     })
 
@@ -1950,7 +1949,7 @@
     var $ = Base.$
 
     // 构造器。
-    function Image (opts) {
+    function Image(opts) {
       this.options = $.extend({}, Image.options, opts)
       RuntimeClient.call(this, 'Image')
 
@@ -2116,40 +2115,40 @@
         type: 'image/jpeg'
       },
 
-      // /**
-      //        * @property {Object} [compress]
-      //        * @namespace options
-      //        * @for Uploader
-      //        * @description 配置压缩的图片的选项。如果此选项为`false`, 则图片在上传前不进行压缩。
-      //        *
-      //        * 默认为：
-      //        *
-      //        * ```javascript
-      //        * {
-      //        *     width: 1600,
-      //        *     height: 1600,
-      //        *
-      //        *     // 图片质量，只有type为`image/jpeg`的时候才有效。
-      //        *     quality: 90,
-      //        *
-      //        *     // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
-      //        *     allowMagnify: false,
-      //        *
-      //        *     // 是否允许裁剪。
-      //        *     crop: false,
-      //        *
-      //        *     // 是否保留头部meta信息。
-      //        *     preserveHeaders: true,
-      //        *
-      //        *     // 如果发现压缩后文件大小比原来还大，则使用原来图片
-      //        *     // 此属性可能会影响图片自动纠正功能
-      //        *     noCompressIfLarger: false,
-      //        *
-      //        *     // 单位字节，如果图片大小小于此值，不会采用压缩。
-      //        *     compressSize: 0
-      //        * }
-      //        * ```
-      //        */
+      /**
+             * @property {Object} [compress]
+             * @namespace options
+             * @for Uploader
+             * @description 配置压缩的图片的选项。如果此选项为`false`, 则图片在上传前不进行压缩。
+             *
+             * 默认为：
+             *
+             * ```javascript
+             * {
+             *     width: 1600,
+             *     height: 1600,
+             *
+             *     // 图片质量，只有type为`image/jpeg`的时候才有效。
+             *     quality: 90,
+             *
+             *     // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+             *     allowMagnify: false,
+             *
+             *     // 是否允许裁剪。
+             *     crop: false,
+             *
+             *     // 是否保留头部meta信息。
+             *     preserveHeaders: true,
+             *
+             *     // 如果发现压缩后文件大小比原来还大，则使用原来图片
+             *     // 此属性可能会影响图片自动纠正功能
+             *     noCompressIfLarger: false,
+             *
+             *     // 单位字节，如果图片大小小于此值，不会采用压缩。
+             *     compressSize: 0
+             * }
+             * ```
+             */
       // compress: {
       //   width: 1600,
       //   height: 1600,
@@ -2270,8 +2269,8 @@
         // gif 可能会丢失针
         // bmp png 基本上尺寸都不大，且压缩比比较小。
         if (!opts || !~'image/jpeg,image/jpg'.indexOf(file.type) ||
-                    file.size < compressSize ||
-                    file._compressed) {
+          file.size < compressSize ||
+          file._compressed) {
           return
         }
 
@@ -2356,7 +2355,7 @@
       rExt = /\.([^.]+)$/,
       statusMap = {}
 
-    function gid () {
+    function gid() {
       return idPrefix + idSuffix++
     }
 
@@ -2367,7 +2366,7 @@
          * @grammar new File( source ) => File
          * @param {Lib.File} source [lib.File](#Lib.File)实例, 此source对象是带有Runtime信息的。
          */
-    function WUFile (source) {
+    function WUFile(source) {
       /**
              * 文件名，包括扩展名（后缀）
              * @property name
@@ -2540,7 +2539,7 @@
          * @class Queue
          * @extends Mediator
          */
-    function Queue () {
+    function Queue() {
       /**
              * 统计文件数。
              * * `numOfQueue` 队列中的文件数。
@@ -2863,8 +2862,8 @@
       acceptFile: function (file) {
         var invalid = !file || !file.size || this.accept &&
 
-                    // 如果名字中有后缀，才做后缀白名单处理。
-                    rExt.exec(file.name) && !this.accept.test(file.name)
+          // 如果名字中有后缀，才做后缀白名单处理。
+          rExt.exec(file.name) && !this.accept.test(file.name)
 
         return !invalid
       },
@@ -3145,7 +3144,7 @@
   ], function (Base, RuntimeClient, Mediator) {
     var $ = Base.$
 
-    function Transport (opts) {
+    function Transport(opts) {
       var me = this
 
       opts = me.options = $.extend(true, {}, Transport.options, opts || {})
@@ -3368,7 +3367,7 @@
     })
 
     // 负责将文件切片。
-    function CuteFile (file, chunkSize) {
+    function CuteFile(file, chunkSize) {
       var pending = [],
         blob = file.source,
         total = blob.size,
@@ -3548,8 +3547,8 @@
 
         file || $.each(me.request('get-files',
           Status.INTERRUPT), function () {
-          this.setStatus(Status.PROGRESS)
-        })
+            this.setStatus(Status.PROGRESS)
+          })
 
         me._trigged = false
         Base.nextTick(me.__tick)
@@ -3589,7 +3588,7 @@
           file = file.id ? file : me.request('get-file', file)
 
           if (file.getStatus() !== Status.PROGRESS &&
-                        file.getStatus() !== Status.QUEUED) {
+            file.getStatus() !== Status.QUEUED) {
             return
           }
 
@@ -3729,7 +3728,7 @@
 
           // 没有要上传的了，且没有正在传输的了。
         } else if (!me.remaning && !me._getStats().numOfQueue &&
-                    !me._getStats().numOfInterrupt) {
+          !me._getStats().numOfInterrupt) {
           me.runing = false
 
           me._trigged || Base.nextTick(function () {
@@ -3761,8 +3760,8 @@
           if (act.has() && act.file.getStatus() === Status.PROGRESS) {
             return act
           } else if (!act.has() ||
-                        act.file.getStatus() !== Status.PROGRESS &&
-                        act.file.getStatus() !== Status.INTERRUPT) {
+            act.file.getStatus() !== Status.PROGRESS &&
+            act.file.getStatus() !== Status.INTERRUPT) {
             // 把已经处理完了的，或者，状态为非 progress（上传中）、
             // interupt（暂停中） 的移除。
             this.stack.splice(--i, 1)
@@ -3832,7 +3831,7 @@
           promise = me.request('before-send-file', file, function () {
             // 有可能文件被skip掉了。文件被skip掉后，状态坑定不是Queued.
             if (file.getStatus() === Status.PROGRESS ||
-                            file.getStatus() === Status.INTERRUPT) {
+              file.getStatus() === Status.INTERRUPT) {
               return file
             }
 
@@ -4031,13 +4030,13 @@
           var typeArr = type.split('|'), status, statusText
           type = typeArr[0]
           status = parseFloat(typeArr[1]),
-          statusText = typeArr[2]
+            statusText = typeArr[2]
 
           block.retried = block.retried || 0
 
           // 自动重试
           if (block.chunks > 1 && ~'http,abort,server'.indexOf(type.replace(/-.*/, '')) &&
-                        block.retried < opts.chunkRetry) {
+            block.retried < opts.chunkRetry) {
             block.retried++
 
             me.retryTimer = setTimeout(function () {
@@ -4343,7 +4342,7 @@
         return
       }
 
-      function hashString (str) {
+      function hashString(str) {
         var hash = 0,
           i = 0,
           len = str.length,
@@ -4359,7 +4358,7 @@
 
       uploader.on('beforeFileQueued', function (file) {
         var hash = file.__hash || (file.__hash = hashString(file.name +
-                    file.size + file.lastModifiedDate))
+          file.size + file.lastModifiedDate))
 
         // 已经重复了
         if (mapping[hash]) {
@@ -4395,7 +4394,7 @@
     'runtime/client',
     'mediator'
   ], function (RuntimeClient, Mediator) {
-    function Md5 () {
+    function Md5() {
       RuntimeClient.call(this, 'Md5')
     }
 
@@ -4499,7 +4498,7 @@
      * @fileOverview Runtime管理器，负责Runtime的选择, 连接
      */
   define('runtime/compbase', [], function () {
-    function CompBase (owner, runtime) {
+    function CompBase(owner, runtime) {
       this.owner = owner
       this.options = owner.options
 
@@ -4529,7 +4528,7 @@
     var type = 'html5',
       components = {}
 
-    function Html5Runtime () {
+    function Html5Runtime() {
       var pool = {},
         me = this,
         destroy = this.destroy
@@ -4546,7 +4545,7 @@
 
         if (components[comp]) {
           instance = pool[uid] = pool[uid] ||
-                        new components[comp](client, me)
+            new components[comp](client, me)
 
           if (instance[fn]) {
             return instance[fn].apply(instance, args)
@@ -4986,8 +4985,8 @@
     'base'
   ], function (Base) {
     var urlAPI = window.createObjectURL && window ||
-            window.URL && URL.revokeObjectURL && URL ||
-            window.webkitURL,
+      window.URL && URL.revokeObjectURL && URL ||
+      window.webkitURL,
       createObjectURL = Base.noop,
       revokeObjectURL = createObjectURL
 
@@ -5133,7 +5132,7 @@
             markerBytes = dataview.getUint16(offset)
 
             if (markerBytes >= 0xffe0 && markerBytes <= 0xffef ||
-                            markerBytes === 0xfffe) {
+              markerBytes === 0xfffe) {
               markerLength = dataview.getUint16(offset + 2) + 2
 
               if (offset + markerLength > dataview.byteLength) {
@@ -5307,7 +5306,7 @@
       5: {
         getValue: function (dataView, dataOffset, littleEndian) {
           return dataView.getUint32(dataOffset, littleEndian) /
-                        dataView.getUint32(dataOffset + 4, littleEndian)
+            dataView.getUint32(dataOffset + 4, littleEndian)
         },
         size: 8
       },
@@ -5324,7 +5323,7 @@
       10: {
         getValue: function (dataView, dataOffset, littleEndian) {
           return dataView.getInt32(dataOffset, littleEndian) /
-                        dataView.getInt32(dataOffset + 4, littleEndian)
+            dataView.getInt32(dataOffset + 4, littleEndian)
         },
         size: 8
       }
@@ -5557,7 +5556,7 @@
         Basic GUI blocking jpeg encoder
         */
 
-    function JPEGEncoder (quality) {
+    function JPEGEncoder(quality) {
       var self = this
       var fround = Math.round
       var ffloor = Math.floor
@@ -5650,7 +5649,7 @@
         0xf9, 0xfa
       ]
 
-      function initQuantTables (sf) {
+      function initQuantTables(sf) {
         var YQT = [
           16, 11, 10, 16, 24, 40, 51, 61,
           12, 12, 14, 19, 26, 58, 60, 55,
@@ -5704,7 +5703,7 @@
         }
       }
 
-      function computeHuffmanTbl (nrcodes, std_table) {
+      function computeHuffmanTbl(nrcodes, std_table) {
         var codevalue = 0
         var pos_in_table = 0
         var HT = new Array()
@@ -5721,14 +5720,14 @@
         return HT
       }
 
-      function initHuffmanTbl () {
+      function initHuffmanTbl() {
         YDC_HT = computeHuffmanTbl(std_dc_luminance_nrcodes, std_dc_luminance_values)
         UVDC_HT = computeHuffmanTbl(std_dc_chrominance_nrcodes, std_dc_chrominance_values)
         YAC_HT = computeHuffmanTbl(std_ac_luminance_nrcodes, std_ac_luminance_values)
         UVAC_HT = computeHuffmanTbl(std_ac_chrominance_nrcodes, std_ac_chrominance_values)
       }
 
-      function initCategoryNumber () {
+      function initCategoryNumber() {
         var nrlower = 1
         var nrupper = 2
         for (var cat = 1; cat <= 15; cat++) {
@@ -5751,7 +5750,7 @@
         }
       }
 
-      function initRGBYUVTable () {
+      function initRGBYUVTable() {
         for (var i = 0; i < 256; i++) {
           RGB_YUV_TABLE[i] = 19595 * i
           RGB_YUV_TABLE[(i + 256) >> 0] = 38470 * i
@@ -5765,7 +5764,7 @@
       }
 
       // IO functions
-      function writeBits (bs) {
+      function writeBits(bs) {
         var value = bs[0]
         var posval = bs[1] - 1
         while (posval >= 0) {
@@ -5787,17 +5786,17 @@
         }
       }
 
-      function writeByte (value) {
+      function writeByte(value) {
         byteout.push(clt[value]) // write char directly instead of converting later
       }
 
-      function writeWord (value) {
+      function writeWord(value) {
         writeByte((value >> 8) & 0xFF)
         writeByte((value) & 0xFF)
       }
 
       // DCT & quantization core
-      function fDCTQuant (data, fdtbl) {
+      function fDCTQuant(data, fdtbl) {
         var d0, d1, d2, d3, d4, d5, d6, d7
         /* Pass 1: process rows. */
         var dataOff = 0
@@ -5925,7 +5924,7 @@
         return outputfDCTQuant
       }
 
-      function writeAPP0 () {
+      function writeAPP0() {
         writeWord(0xFFE0) // marker
         writeWord(16) // length
         writeByte(0x4A) // J
@@ -5942,7 +5941,7 @@
         writeByte(0) // thumbnheight
       }
 
-      function writeSOF0 (width, height) {
+      function writeSOF0(width, height) {
         writeWord(0xFFC0) // marker
         writeWord(17) // length, truecolor YUV JPG
         writeByte(8) // precision
@@ -5960,7 +5959,7 @@
         writeByte(1) // QTV
       }
 
-      function writeDQT () {
+      function writeDQT() {
         writeWord(0xFFDB) // marker
         writeWord(132) // length
         writeByte(0)
@@ -5973,7 +5972,7 @@
         }
       }
 
-      function writeDHT () {
+      function writeDHT() {
         writeWord(0xFFC4) // marker
         writeWord(0x01A2) // length
 
@@ -6010,7 +6009,7 @@
         }
       }
 
-      function writeSOS () {
+      function writeSOS() {
         writeWord(0xFFDA) // marker
         writeWord(12) // length
         writeByte(3) // nrofcomponents
@@ -6025,7 +6024,7 @@
         writeByte(0) // Bf
       }
 
-      function processDU (CDU, fdtbl, DC, HTDC, HTAC) {
+      function processDU(CDU, fdtbl, DC, HTDC, HTAC) {
         var EOB = HTAC[0x00]
         var M16zeroes = HTAC[0xF0]
         var pos
@@ -6076,7 +6075,7 @@
         return DC
       }
 
-      function initCharLookupTable () {
+      function initCharLookupTable() {
         var sfcc = String.fromCharCode
         for (var i = 0; i < 256; i++) { /// // ACHTUNG // 255
           clt[i] = sfcc(i)
@@ -6191,7 +6190,7 @@
         return jpegDataUri
       }
 
-      function setQuality (quality) {
+      function setQuality(quality) {
         if (quality <= 0) {
           quality = 1
         }
@@ -6213,7 +6212,7 @@
         // console.log('Quality set to: '+quality +'%');
       }
 
-      function init () {
+      function init() {
         // var time_start = new Date().getTime();
         if (!quality) quality = 50
         // Create tables
@@ -6273,7 +6272,7 @@
         fragement = fragement.substring(0, 2)
 
         supportJpeg = fragement.charCodeAt(0) === 255 &&
-                    fragement.charCodeAt(1) === 216
+          fragement.charCodeAt(1) === 216
       }
 
       // 只有在android环境下才修复
@@ -6348,7 +6347,7 @@
 
       resize: function (width, height) {
         var canvas = this._canvas ||
-                    (this._canvas = document.createElement('canvas'))
+          (this._canvas = document.createElement('canvas'))
 
         this._resize(this._img, canvas, width, height)
         this._blob = null // 没用了，可以删掉了。
@@ -6358,7 +6357,7 @@
 
       crop: function (x, y, w, h, s) {
         var cvs = this._canvas ||
-                    (this._canvas = document.createElement('canvas')),
+          (this._canvas = document.createElement('canvas')),
           opts = this.options,
           img = this._img,
           iw = img.naturalWidth,
@@ -6409,7 +6408,7 @@
             blob = Util.canvasToDataUrl(canvas, type, opts.quality)
 
             if (opts.preserveHeaders && this._metas &&
-                            this._metas.imageHead) {
+              this._metas.imageHead) {
               blob = Util.dataURL2ArrayBuffer(blob)
               blob = Util.updateImageHead(blob,
                 this._metas.imageHead)
@@ -6440,7 +6439,7 @@
 
       getOrientation: function () {
         return this._metas && this._metas.exif &&
-                    this._metas.exif.get('Orientation') || 1
+          this._metas.exif.get('Orientation') || 1
       },
 
       info: function (val) {
@@ -6593,7 +6592,7 @@
                  * Fixes a bug which squash image vertically while drawing into
                  * canvas for some images.
                  */
-        function detectVerticalSquash (img, iw, ih) {
+        function detectVerticalSquash(img, iw, ih) {
           var canvas = document.createElement('canvas'),
             ctx = canvas.getContext('2d'),
             sy = 0,
@@ -6644,7 +6643,7 @@
                  * In iOS, larger images than 2M pixels may be
                  * subsampled in rendering.
                  */
-        function detectSubsampling (img) {
+        function detectSubsampling(img) {
           var iw = img.naturalWidth,
             ih = img.naturalHeight,
             canvas, ctx
@@ -6743,7 +6742,7 @@
 
         if (opts.sendAsBinary) {
           server += opts.attachInfoToQuery !== false ? ((/\?/.test(server) ? '&' : '?') +
-                        $.param(owner._formData)) : ''
+            $.param(owner._formData)) : ''
 
           binary = blob.getSource()
         } else {
@@ -6768,7 +6767,7 @@
         if (binary) {
           // 强制设置成 content-type 为文件流。
           xhr.overrideMimeType &&
-                        xhr.overrideMimeType('application/octet-stream')
+            xhr.overrideMimeType('application/octet-stream')
 
           // android直接发送blob会导致服务端接收到的是空文件。
           // bug详情。
@@ -6839,7 +6838,7 @@
           opts = this.options
 
         if (opts.withCredentials && !('withCredentials' in xhr) &&
-                    typeof XDomainRequest !== 'undefined') {
+          typeof XDomainRequest !== 'undefined') {
           xhr = new XDomainRequest()
         }
 
@@ -6866,7 +6865,7 @@
           var separator = '|', // 分隔符
             // 拼接的状态，在 widgets/upload.js 会有代码用到这个分隔符
             status = separator + xhr.status +
-                            separator + xhr.statusText
+              separator + xhr.statusText
 
           if (xhr.status >= 200 && xhr.status < 300) {
             me._response = xhr.responseText
@@ -6925,8 +6924,8 @@
           need the idiotic second function,
           generated by an if clause.  */
     var add32 = function (a, b) {
-        return (a + b) & 0xFFFFFFFF
-      },
+      return (a + b) & 0xFFFFFFFF
+    },
 
       cmn = function (q, a, b, x, s, t) {
         a = add32(add32(a, q), add32(x, t))
@@ -7546,7 +7545,7 @@
       type = 'flash',
       components = {}
 
-    function getFlashVersion () {
+    function getFlashVersion() {
       var version
 
       try {
@@ -7564,7 +7563,7 @@
       return parseFloat(version[0] + '.' + version[1], 10)
     }
 
-    function FlashRuntime () {
+    function FlashRuntime() {
       var pool = {},
         clients = {},
         destroy = this.destroy,
@@ -7598,7 +7597,7 @@
         return me.flashExec.apply(client, arguments)
       }
 
-      function handler (evt, obj) {
+      function handler(evt, obj) {
         var type = evt.type || evt,
           parts, uid
 
@@ -7665,19 +7664,19 @@
 
         // insert flash object
         html = '<object id="' + this.uid + '" type="application/' +
-                    'x-shockwave-flash" data="' + opts.swf + '" '
+          'x-shockwave-flash" data="' + opts.swf + '" '
 
         if (Base.browser.ie) {
           html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
         }
 
         html += 'width="100%" height="100%" style="outline:0">' +
-                    '<param name="movie" value="' + opts.swf + '" />' +
-                    '<param name="flashvars" value="uid=' + this.uid +
-                    '&jsreciver=' + this.jsreciver + '" />' +
-                    '<param name="wmode" value="transparent" />' +
-                    '<param name="allowscriptaccess" value="always" />' +
-                    '</object>'
+          '<param name="movie" value="' + opts.swf + '" />' +
+          '<param name="flashvars" value="uid=' + this.uid +
+          '&jsreciver=' + this.jsreciver + '" />' +
+          '<param name="wmode" value="transparent" />' +
+          '<param name="allowscriptaccess" value="always" />' +
+          '</object>'
 
         container.html(html)
       },
@@ -7803,7 +7802,7 @@
 
         if (opts.sendAsBinary) {
           server += (/\?/.test(server) ? '&' : '?') +
-                        $.param(owner._formData)
+            $.param(owner._formData)
 
           binary = blob.uid
         } else {
@@ -8044,7 +8043,7 @@
       type: 0
     }
 
-    function send (data) {
+    function send(data) {
       var obj = $.extend({}, base, data),
         url = logUrl.replace(/^(.*)\?/, '$1' + $.param(obj)),
         image = new Image()

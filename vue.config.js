@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-24 09:12:36
- * @LastEditTime: 2020-08-12 18:32:24
+ * @LastEditTime: 2020-08-13 10:46:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\vue.config.js
@@ -10,7 +10,7 @@ const path = require('path');
 function resolve(dir) {
     return path.resolve(__dirname, dir)
 }
-
+var webpack = require('webpack')
 module.exports = {
     pages: {
         index: {
@@ -31,6 +31,13 @@ module.exports = {
               '_c': resolve('src/components'),
             }
         }, 
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery",
+                plupload: "plupload"
+            })
+        ]
     },
     devServer:{
         port: 8091,
