@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-13 11:47:56
+ * @LastEditTime: 2020-08-13 14:29:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -38,16 +38,20 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { getFolders } from '@/api/data'
 import {renderSize} from '@/libs/util.js';
-import { Row, Col, Tree } from 'view-design';
+import { Row, Col, Tree,  Dropdown, DropdownItem, DropdownMenu} from 'view-design';
+Vue.component('Dropdown', Dropdown);
+Vue.component('DropdownMenu', DropdownMenu);
 import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
     name: 'sucaiList',
     components: {
-      [Row.name]: Row,  [Col.name]: Col, [Tree.name]: Tree, 
+      [Row.name]: Row,  [Col.name]: Col, Tree, 
     },
+    
     props: {
       list: {
         type: Array,
