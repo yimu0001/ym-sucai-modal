@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-13 17:25:45
+ * @LastEditTime: 2020-08-14 11:25:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -10,7 +10,7 @@
   <div>
     <Tabs :value="materialVal" @on-click='handleClickTabs'>
       <TabPane label="素材库" name="materialVal1">
-        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder'></sucai-list>
+        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl'></sucai-list>
         <Row>
           <i-col offset='5' class="cutPageDom" span='18'>
             <Page :total="total" show-elevator @on-change='getFileList'/>
@@ -58,8 +58,6 @@ import SucaiList from './sucaiList'
 import VueUploader from "_c/vueuploader/index.js";
 import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu, Icon } from 'view-design';
 import 'view-design/dist/styles/iview.css';
-import config from '@/config'
-const baseUrl = process.env.NODE_ENV === 'development'? config.baseUrl.dev : config.baseUrl.pro
 import Bus from '../libs/bus'
   export default {
     name: 'imageTabs',
@@ -76,6 +74,9 @@ import Bus from '../libs/bus'
       modalKey: {
         type: Boolean,
         default: false
+      },
+      baseUrl: {
+        type: String
       }
     },
     watch: {
@@ -112,7 +113,7 @@ import Bus from '../libs/bus'
         uploadVideoUrl: '',
         showPreview: false,
         materialType: this.type,
-        uploadUrl: baseUrl+'/upload/chunked'
+        uploadUrl: this.baseUrl+'/upload/chunked'
       }
     },
     mounted () {
@@ -120,7 +121,7 @@ import Bus from '../libs/bus'
     },
     methods: {
       getFileList() {
-        getFileList(this.materialType, this.path_id, this.num, this.page).then(res => {
+        getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page).then(res => {
           res.data.data.rows.forEach(sucai => {
             sucai.choosed = false
           })

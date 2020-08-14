@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-13 14:29:03
+ * @LastEditTime: 2020-08-14 11:25:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -44,6 +44,7 @@ import {renderSize} from '@/libs/util.js';
 import { Row, Col, Tree,  Dropdown, DropdownItem, DropdownMenu} from 'view-design';
 Vue.component('Dropdown', Dropdown);
 Vue.component('DropdownMenu', DropdownMenu);
+import config from '@/config'
 import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
@@ -62,6 +63,9 @@ import Bus from '../libs/bus'
       maxNum: {
         type: Number,
         default: 1
+      },
+      baseUrl: {
+        type: String
       }
     },
     watch: {
@@ -116,7 +120,7 @@ import Bus from '../libs/bus'
         }
       },
       getFolders(item, callback) {
-        getFolders('image', item.id) .then(res => {
+        getFolders(this.baseUrl, 'image', item.id) .then(res => {
           let foldersMenu = res.data.data.map(folder => {
             let folderItem = {
                 title: folder.file_name,

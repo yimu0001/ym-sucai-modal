@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:57:35
- * @LastEditTime: 2020-08-13 19:23:11
+ * @LastEditTime: 2020-08-14 11:07:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\src\config\index.js
@@ -27,7 +27,7 @@ export default {
    */
   baseUrl: {
     dev: '',
-    pro: 'http://sucai.shandian.design/',
+    pro: '',
   }, 
   /**
    * @description 默认打开的首页的路由name值，默认为home

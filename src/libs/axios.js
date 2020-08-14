@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 11:17:25
- * @LastEditTime: 2020-08-04 11:52:38
+ * @LastEditTime: 2020-08-14 11:15:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\src\libs\axios.js
@@ -12,6 +12,7 @@ import store from '@/store'
 import Cookies from 'js-cookie';
 import { getHeaders } from './util'
 import { Message } from 'iview'
+import config from '@/config'
 const addErrorLog = errorInfo => {
   const { statusText, status, request: { responseURL } } = errorInfo
   let info = {
@@ -24,13 +25,11 @@ const addErrorLog = errorInfo => {
 }
 
 class HttpRequest {
-  constructor (baseUrl = baseURL) {
-    this.baseUrl = baseUrl
+  constructor () {
     this.queue = {}
   }
   getInsideConfig () {
     const config = {
-      baseURL: this.baseUrl,
       headers: getHeaders()
     }
     return config
@@ -59,13 +58,6 @@ class HttpRequest {
       const { data, status } = res
       if(status != 200) {
         Message.error(data.msg)
-        if(status == 296 || status == 299){
-          let goBackUrl = this.$config.goBackUrl ? this.$config.goBackUrl : "/";
-          goBackUrl = this.$store.state.user.userInfo.home
-            ? this.$store.state.user.userInfo.home
-            : goBackUrl;
-          window.location.href = goBackUrl;
-        }
       } else {
       }
       return { data, status }
@@ -87,6 +79,7 @@ class HttpRequest {
   request (options) {
     const instance = axios.create()
     options = Object.assign(this.getInsideConfig(), options)
+    options.baseURL = ''
     this.interceptors(instance, options.url)
     return instance(options)
   }

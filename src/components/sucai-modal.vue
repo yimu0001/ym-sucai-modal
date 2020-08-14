@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-13 11:18:42
+ * @LastEditTime: 2020-08-14 11:23:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -17,7 +17,7 @@
         @on-visible-change='changeShow'
         >
         <div>
-           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal'></material-tabs>
+           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl'></material-tabs>
         </div>
         <div slot="footer">
           <Button @click="cancel">取消</Button>
@@ -31,6 +31,7 @@
 import MaterialTabs from './material-tabs'
 import { Button, Modal } from 'view-design';
 import 'view-design/dist/styles/iview.css';
+import config from '@/config'
 import Bus from '../libs/bus'
   export default {
     name: 'sucaiModal',
@@ -46,6 +47,10 @@ import Bus from '../libs/bus'
       fileLimitNum: {
         type: Number,
         default: 1
+      },
+      baseUrl: {
+        type: String,
+        default: ''
       }
     },
     watch: {
@@ -54,6 +59,9 @@ import Bus from '../libs/bus'
       },
       type() {
         this.materialType = this.type
+      },
+      baseUrl() {
+        config.baseUrl.pro = this.baseUrl
       }
     },
     components: {
@@ -108,6 +116,7 @@ import Bus from '../libs/bus'
       Bus.$on('doMaterials', (list) => {
         this.choosedMaterials = list
       })
+      config.baseUrl.pro = vm.baseUrl
     },
     methods: {
       ok() {
