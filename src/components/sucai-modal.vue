@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-14 11:23:16
+ * @LastEditTime: 2020-08-14 14:38:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -138,7 +138,10 @@ import Bus from '../libs/bus'
       },
       changeShow(status) {
         if(status) {
-          this.materialType  = this.type
+          this.materialType  = this.type;
+          Bus.$emit('openModal')
+        } else {
+          Bus.$emit('closeModal')
         }
       }
     },

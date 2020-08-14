@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-14 11:25:53
+ * @LastEditTime: 2020-08-14 14:31:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -93,6 +93,11 @@ import Bus from '../libs/bus'
       chooseNum(){
         return this.choosedMaterials.length
       }
+    },
+    mounted () {
+      Bus.$on('closeModal', () => {
+        this.choosedMaterials = []
+      });
     },
     methods: {
       chooseItemCheck(index ) {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:44:46
- * @LastEditTime: 2020-08-14 11:16:00
+ * @LastEditTime: 2020-08-14 11:55:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\api\data.js
@@ -22,7 +22,7 @@ export const getFileList = (baseUrl, type, path_id, num, page) => {
 }
 
 //根据父类文件夹id获取文件夹
-export const getFolders = (type, path_id) => {
+export const getFolders = (baseUrl, type, path_id) => {
   return axios.request({
     url: baseUrl+'folder/'+path_id+'/'+type+'-folders',
     method: 'get',

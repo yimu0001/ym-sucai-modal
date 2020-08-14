@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-14 11:25:12
+ * @LastEditTime: 2020-08-14 14:41:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -13,7 +13,7 @@
         <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl'></sucai-list>
         <Row>
           <i-col offset='5' class="cutPageDom" span='18'>
-            <Page :total="total" show-elevator @on-change='getFileList'/>
+            <Page :total="total" show-elevator @on-change='changePage'/>
           </i-col>
         </Row>
       </TabPane>
@@ -117,7 +117,14 @@ import Bus from '../libs/bus'
       }
     },
     mounted () {
-      this.getFileList();
+      // console.log(12222)
+      // this.getFileList();
+      Bus.$on('openModal', ()=> {
+        this.sucaiList = []
+        this.path_id = 0
+        this.getFileList()
+        this.choosedMaterials = []
+      })
     },
     methods: {
       getFileList() {
@@ -130,6 +137,10 @@ import Bus from '../libs/bus'
         }).catch(err => {
           console.log(err)
         })
+      },
+      changePage(currentPage) {
+        this.page = currentPage;
+        this.getFileList()
       },
       handleClickTabs(name) {
         this.materialVal = name
