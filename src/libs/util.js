@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 11:22:57
- * @LastEditTime: 2020-08-04 15:11:37
+ * @LastEditTime: 2020-08-14 19:57:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\src\libs\util.js
@@ -161,10 +161,10 @@ export const showTitle = (item, vm) => {
     __titleIsFunction__
   } = item
   if (!title) return
-  if (useI18n) {
-    if (title.includes('{{') && title.includes('}}') && useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
-    else title = vm.$t(item.name)
-  }
+  // if (useI18n) {
+  //   if (title.includes('{{') && title.includes('}}') && useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
+  //   else title = vm.$t(item.name)
+  // }
   return title
 }
 
