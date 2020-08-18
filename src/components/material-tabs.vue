@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-14 19:19:06
+ * @LastEditTime: 2020-08-18 16:59:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -22,7 +22,7 @@
           :url="uploadUrl"
           :fileNumLimit="fileLimitNum"
           @error="uploadOnImgError"
-          @success="uploadOnImgSuccess"
+          @success="uploadOnSuccess"
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
           :accept="type"
@@ -45,18 +45,19 @@
           </div>
         </div>
       </TabPane>
-      <!-- <TabPane label="抽帧图片" name="materialVal4" v-if="type == 'coverImg'">
-        <sucai-list :list='sucaiList' :maxNum='1'></sucai-list>
-      </TabPane> -->
+      <TabPane label="抽帧图片" name="materialVal4" v-if="type == 'coverImg'">
+        <CoverList :list='cutTUrls'></CoverList>
+      </TabPane>
     </Tabs>
   </div>
 </template>
 
 <script>
-import { getFileList } from '@/api/data'
+import { getFileList, saveFileToStore } from '@/api/data'
 import SucaiList from './sucaiList'
+import CoverList from './coverList'
 import VueUploader from "_c/vueuploader/index.js";
-import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu, Icon } from 'view-design';
+import { Tabs, TabPane, Row, Col, Input, Page, Dropdown, DropdownItem, DropdownMenu, Icon, Message } from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import Bus from '../libs/bus'
   export default {
@@ -77,6 +78,10 @@ import Bus from '../libs/bus'
       },
       baseUrl: {
         type: String
+      },
+      from: {
+        type: String,
+        required: true
       }
     },
     watch: {
@@ -97,8 +102,9 @@ import Bus from '../libs/bus'
     },
     components: {
       SucaiList,
+      CoverList,
       VueUploader,
-      Tabs, TabPane, [Row.name]: Row,  [Col.name]: Col, Input, Page, [Dropdown.name]: Dropdown, DropdownItem, [DropdownMenu.name]: DropdownMenu, Icon
+      Tabs, TabPane, [Row.name]: Row,  [Col.name]: Col, Input, Page, [Dropdown.name]: Dropdown, DropdownItem, [DropdownMenu.name]: DropdownMenu, Icon, Message
     },
     data() {
       return {
@@ -113,7 +119,10 @@ import Bus from '../libs/bus'
         uploadVideoUrl: '',
         showPreview: false,
         materialType: this.type,
-        uploadUrl: this.baseUrl+'upload/chunked'
+        uploadUrl: this.baseUrl+'upload/chunked',
+        ws: null, //webSocket所用
+        wsInterval: undefined,
+        cutTUrls: []
       }
     },
     mounted () {
@@ -128,6 +137,10 @@ import Bus from '../libs/bus'
       })
       Bus.$on('closeModal', () => {
         this.choosedMaterials = []
+        clearInterval(this.wsInterval);
+        if(this.ws) {
+          this.ws.close()
+        }
       })
     },
     methods: {
@@ -156,14 +169,83 @@ import Bus from '../libs/bus'
       },
       // 图片文件上传
       uploadOnImgError(errorMessage) {
-        this.$Message.error(errorMessage)
+        Message.error(errorMessage)
       },
-      uploadOnImgSuccess(res, data) {
+      uploadOnSuccess(res, data) {
         let info = data.data
         this.choosedMaterials.push(info)
         if(info){
           Bus.$emit('doMaterials', this.choosedMaterials)
+          if(info.url) {
+            this.saveFileToStore(info.url)
+          } else {
+            Message.error('上传失败！')
+          }
         }
+      },
+      saveFileToStore(url) {
+        saveFileToStore(this.baseUrl, this.materialType, url, this.from).then(res => {
+          if(res.status === 200){
+            if(this.materialType === 'video'){
+              this.initWebSocket(res.data.data.id)
+            }
+          } else {
+            Message.error(res.data.msg)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      //采用socket通信来判断锁定状态
+      initWebSocket(id){
+        let _this = this
+        let websocketPath = 'wss://sucai.shandian.design/socket.io'
+        _this.ws = new WebSocket(websocketPath);
+        let ws = _this.ws
+    　　if("WebSocket" in window){
+    　　　　 ws.onopen = function(){
+            　　//当WebSocket创建成功时，触发onopen事件
+                let item = {
+                  type: 'receive',
+                  file_id: id 
+                }
+                ws.send(JSON.stringify(item)); //将消息发送到服务端
+                _this.wsInterval = setInterval(() => {
+                  _this.intervalSend()
+                }, 45000) 
+            }
+            ws.onmessage = function(e){
+            　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+                let data = JSON.parse(e.data)
+                switch(data.type) {
+                  case 'init': 
+                  break;
+                  case 'reply':
+                    console.log(data.data)
+                    break;
+                  case 'push': 
+                    _this.cutTUrls = data.data.urls
+                    break;
+                }
+            }
+            ws.onclose = function(e){
+            　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+            console.log(e)
+            　　console.log("close");
+            }
+            ws.onerror = function(e){
+            　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+            　　console.log(e);
+            }
+    　　}else{
+    　　　　console.log("您的浏览器不支持WebSocket");
+    　　}
+      },
+      intervalSend() {
+        let item = {
+          type: 'ping'
+        }
+        this.ws.send(JSON.stringify(item));
       },
       uploadOnImgRemove(file, index) {
         this.choosedMaterials.splice(index, 1)

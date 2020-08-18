@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-14 14:31:47
+ * @LastEditTime: 2020-08-18 16:42:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -41,7 +41,7 @@
 import Vue from 'vue'
 import { getFolders } from '@/api/data'
 import {renderSize} from '@/libs/util.js';
-import { Row, Col, Tree,  Dropdown, DropdownItem, DropdownMenu} from 'view-design';
+import { Row, Col, Tree,  Dropdown, DropdownItem, DropdownMenu, Message} from 'view-design';
 Vue.component('Dropdown', Dropdown);
 Vue.component('DropdownMenu', DropdownMenu);
 import config from '@/config'
@@ -50,7 +50,7 @@ import Bus from '../libs/bus'
   export default {
     name: 'sucaiList',
     components: {
-      [Row.name]: Row,  [Col.name]: Col, Tree, 
+      [Row.name]: Row,  [Col.name]: Col, Tree, Message
     },
     
     props: {
@@ -107,7 +107,7 @@ import Bus from '../libs/bus'
         let choosed = _this.materialList[index].choosed? true: false
         if(!choosed) {
           if(_this.chooseNum >  _this.maxNum-1){
-            _this.$Message.error(`已选素材已超过${this.maxNum}张！`)
+            Message.error(`已选素材已超过${this.maxNum}张！`)
           } else {
             _this.$set(this.materialList[index], 'choosed', true)
             _this.choosedMaterials.push(item)

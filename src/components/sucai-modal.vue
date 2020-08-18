@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-14 19:20:47
+ * @LastEditTime: 2020-08-18 17:04:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -17,7 +17,7 @@
         @on-visible-change='changeShow'
         >
         <div>
-           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl'></material-tabs>
+           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl' :from='from'></material-tabs>
         </div>
         <div slot="footer">
           <Button @click="cancel">取消</Button>
@@ -29,7 +29,7 @@
 
 <script>
 import MaterialTabs from './material-tabs'
-import { Button, Modal } from 'view-design';
+import { Button, Modal, Message } from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import config from '@/config'
 import Bus from '../libs/bus'
@@ -51,6 +51,10 @@ import Bus from '../libs/bus'
       baseUrl: {
         type: String,
         default: ''
+      },
+      from: {
+        type: String,
+        default: 'article'
       }
     },
     watch: {
@@ -67,7 +71,8 @@ import Bus from '../libs/bus'
     components: {
       MaterialTabs,
       Button,
-      Modal
+      Modal,
+      Message
     },
     data() {
       return {
@@ -122,7 +127,7 @@ import Bus from '../libs/bus'
       ok() {
         if(this.materialType == 'video') {
           if(this.choosedMaterials.length == 0){
-            this.$Message.error('请选择视频!')
+            Message.error('请选择视频!')
           } else {
             this.$emit('chooseVideoOk', this.choosedMaterials)
             this.materialType = 'coverImg'

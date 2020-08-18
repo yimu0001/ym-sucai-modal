@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 11:17:25
- * @LastEditTime: 2020-08-14 11:15:23
+ * @LastEditTime: 2020-08-17 18:47:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\src\libs\axios.js
@@ -78,6 +78,7 @@ class HttpRequest {
   }
   request (options) {
     const instance = axios.create()
+    instance.defaults.withCredentials = true;
     options = Object.assign(this.getInsideConfig(), options)
     options.baseURL = ''
     this.interceptors(instance, options.url)
