@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-19 14:50:47
+ * @LastEditTime: 2020-08-19 16:52:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -17,7 +17,7 @@
         @on-visible-change='changeShow'
         >
         <div>
-           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl' :from='from' :websocketUrl='websocketUrl' @transcodeSuccess='transcodeSuccess'> </material-tabs>
+           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl' :from='from' :websocketUrl='websocketUrl' @start_transcode='start_transcode'> </material-tabs>
         </div>
         <div slot="footer">
           <Button @click="cancel">取消</Button>
@@ -154,8 +154,8 @@ import Bus from '../libs/bus'
           Bus.$emit('closeModal')
         }
       },
-      transcodeSuccess(list){
-        this.$emit('transcodeSuccess', list)
+      start_transcode(id){
+        this.$emit('start_transcode', id)
       }
     },
   }
