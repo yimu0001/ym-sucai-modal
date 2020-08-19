@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-19 16:51:51
+ * @LastEditTime: 2020-08-19 20:58:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -132,7 +132,6 @@ import Bus from '../libs/bus'
       }
     },
     mounted () {
-      // console.log(12222)
       // this.getFileList();
       Bus.$on('openModal', (type)=> {
         this.sucaiList = []
@@ -174,29 +173,29 @@ import Bus from '../libs/bus'
         this.page = 1;
         this.getFileList()
       },
-      // 图片文件上传
+      // 文件上传
       uploadOnImgError(errorMessage) {
         Message.error(errorMessage)
       },
       uploadOnSuccess(res, data) {
         let info = data.data
-        this.choosedMaterials.push(info)
         if(info){
-          Bus.$emit('doMaterials', this.choosedMaterials)
           if(info.url) {
-            this.saveFileToStore(info.url)
+            this.saveFileToStore(info)
           } else {
             Message.error('上传失败！')
           }
         }
       },
-      saveFileToStore(url) {
-        saveFileToStore(this.baseUrl, this.materialType, url, this.from).then(res => {
+      saveFileToStore(info) {
+        saveFileToStore(this.baseUrl, this.materialType, info.url, this.from).then(res => {
           if(res.status === 200){
             if(this.materialType === 'video'){
+              info.id = res.data.data.id
+              this.choosedMaterials.push(info)
+              Bus.$emit('doMaterials', this.choosedMaterials)
               this.initWebSocket(res.data.data.id)
               this.checkIsTranscode(res.data.data.id)
-
             }
           } else {
             Message.error(res.data.msg)
