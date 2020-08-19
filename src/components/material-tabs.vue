@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-18 16:59:31
+ * @LastEditTime: 2020-08-19 15:14:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { getFileList, saveFileToStore } from '@/api/data'
+import { getFileList, saveFileToStore, checkIsTranscode } from '@/api/data'
 import SucaiList from './sucaiList'
 import CoverList from './coverList'
 import VueUploader from "_c/vueuploader/index.js";
@@ -82,6 +82,10 @@ import Bus from '../libs/bus'
       from: {
         type: String,
         required: true
+      },
+      websocketUrl: {
+        type: String,
+        default: 'wss://sucai.shandian.design/'
       }
     },
     watch: {
@@ -122,7 +126,9 @@ import Bus from '../libs/bus'
         uploadUrl: this.baseUrl+'upload/chunked',
         ws: null, //webSocket所用
         wsInterval: undefined,
-        cutTUrls: []
+        cutTUrls: [],
+        ws_transcode: null, //webSocket所用
+        wsInterval_transcode: undefined,
       }
     },
     mounted () {
@@ -138,6 +144,7 @@ import Bus from '../libs/bus'
       Bus.$on('closeModal', () => {
         this.choosedMaterials = []
         clearInterval(this.wsInterval);
+        clearInterval(this.wsInterval_transcode)
         if(this.ws) {
           this.ws.close()
         }
@@ -188,6 +195,8 @@ import Bus from '../libs/bus'
           if(res.status === 200){
             if(this.materialType === 'video'){
               this.initWebSocket(res.data.data.id)
+              this.checkIsTranscode(res.data.data.id)
+
             }
           } else {
             Message.error(res.data.msg)
@@ -199,7 +208,7 @@ import Bus from '../libs/bus'
       //采用socket通信来判断锁定状态
       initWebSocket(id){
         let _this = this
-        let websocketPath = 'wss://sucai.shandian.design/socket.io'
+        let websocketPath = _this.websocketUrl+'socket.io '
         _this.ws = new WebSocket(websocketPath);
         let ws = _this.ws
     　　if("WebSocket" in window){
@@ -247,6 +256,69 @@ import Bus from '../libs/bus'
         }
         this.ws.send(JSON.stringify(item));
       },
+      checkIsTranscode(id){
+        checkIsTranscode(this.baseUrl).then(res => {
+          let mSwitch = res.data.data.switch
+          if(mSwitch || true){
+            this.initTranscodeWs(id)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      initTranscodeWs(id) {
+        let _this = this
+        let websocketPath = _this.websocketUrl+'socket/video/transcode';
+         _this.ws_transcode = new WebSocket(websocketPath);
+        let ws_transcode = _this.ws_transcode
+    　　if("WebSocket" in window){
+    　　　　 ws_transcode.onopen = function(){
+            　　//当WebSocket创建成功时，触发onopen事件
+                let item = {
+                  type: 'receive',
+                  file_id: id 
+                }
+                ws_transcode.send(JSON.stringify(item)); //将消息发送到服务端
+                _this.wsInterval_transcode = setInterval(() => {
+                  _this.intervalSend_transcode()
+                }, 45000) 
+            }
+            ws_transcode.onmessage = function(e){
+            　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+                let data = JSON.parse(e.data)
+                switch(data.type) {
+                  case 'init': 
+                  break;
+                  case 'reply':
+                    console.log(data.data)
+                    break;
+                  case 'push': 
+                    console.log('push',data.data)
+                    _this.$emit('transcodeSuccess', data.data)
+                    break;
+                  case 'un_identify':
+                    break;
+                }
+            }
+            ws_transcode.onclose = function(e){
+            　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+            console.log(e)
+            　　console.log("trans_code close");
+            }
+            ws_transcode.onerror = function(e){
+            　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+            　　console.log(e);
+            }
+    　　}else{
+    　　　　console.log("您的浏览器不支持WebSocket");
+    　　}
+      },
+      intervalSend_transcode() {
+        let item = {
+          type: 'ping'
+        }
+        this.ws_transcode.send(JSON.stringify(item));
+      },
       uploadOnImgRemove(file, index) {
         this.choosedMaterials.splice(index, 1)
         Bus.$emit('doMaterials', this.choosedMaterials)
@@ -256,12 +328,17 @@ import Bus from '../libs/bus'
       },
       // 视频插入预览
       previewVideo() {
-        let item = {
-          url: this.uploadVideoUrl
+        let isHttps = /^https:\/\/.*/i.test(this.uploadVideoUrl)
+        if(isHttps){
+          let item = {
+            url: this.uploadVideoUrl
+          }
+          this.choosedMaterials[0] = item;
+          this.showPreview = true
+          Bus.$emit('doMaterials', this.choosedMaterials)
+        } else {
+          Message.error('请填写https协议视频')
         }
-        this.choosedMaterials[0] = item;
-        this.showPreview = true
-        Bus.$emit('doMaterials', this.choosedMaterials)
       },
     },
   }

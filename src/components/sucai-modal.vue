@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-18 17:04:38
+ * @LastEditTime: 2020-08-19 14:50:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -17,7 +17,7 @@
         @on-visible-change='changeShow'
         >
         <div>
-           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl' :from='from'></material-tabs>
+           <material-tabs :type='materialType' :fileLimitNum='fileLimitNum' :modalKey='modal' :baseUrl='baseUrl' :from='from' :websocketUrl='websocketUrl' @transcodeSuccess='transcodeSuccess'> </material-tabs>
         </div>
         <div slot="footer">
           <Button @click="cancel">取消</Button>
@@ -55,6 +55,10 @@ import Bus from '../libs/bus'
       from: {
         type: String,
         default: 'article'
+      },
+      websocketUrl: {
+        type: String,
+        default: 'wss://sucai.shandian.design/'
       }
     },
     watch: {
@@ -93,7 +97,7 @@ import Bus from '../libs/bus'
           ]
         },
         choosedMaterials: [],
-        materialType: this.type
+        materialType: this.type,
       }
     },
     computed: {
@@ -149,6 +153,9 @@ import Bus from '../libs/bus'
         } else {
           Bus.$emit('closeModal')
         }
+      },
+      transcodeSuccess(list){
+        this.$emit('transcodeSuccess', list)
       }
     },
   }

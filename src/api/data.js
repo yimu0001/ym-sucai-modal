@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:44:46
- * @LastEditTime: 2020-08-18 10:44:22
+ * @LastEditTime: 2020-08-19 10:32:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\api\data.js
@@ -42,3 +42,10 @@ export const saveFileToStore = (baseUrl, type, url, from) => {
   })
 }
 
+//检查当前机构是否开启转码
+export const checkIsTranscode = (baseUrl) => {
+  return axios.request({
+    url: baseUrl+'transcode/switch-check',
+    method: 'get',
+  })
+}
