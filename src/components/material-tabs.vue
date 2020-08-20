@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-19 20:58:14
+ * @LastEditTime: 2020-08-20 15:18:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -25,9 +25,9 @@
           @success="uploadOnSuccess"
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
-          :accept="type"
+          :accept="materialType"
           compress="false"
-          v-if="materialVal == 'materialVal2' && modal"
+          v-if="materialVal === 'materialVal2'"
         ></vue-uploader>
       </TabPane>
       <TabPane label="插入视频" name="materialVal3" v-if="type == 'video'">
@@ -96,9 +96,6 @@ import Bus from '../libs/bus'
         this.choosedMaterials = []
         // this.getFileList()
       },
-      modalKey() {
-        this.modal = this.modalKey
-      },
       materialVal() {
         this.page =1;
         this.choosedMaterials = []
@@ -137,6 +134,7 @@ import Bus from '../libs/bus'
         this.sucaiList = []
         this.path_id = 0
         this.materialType = type
+        this.materialVal = 'materialVal1'
         this.getFileList()
         this.choosedMaterials = []
       })
