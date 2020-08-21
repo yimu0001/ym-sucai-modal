@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-20 15:18:45
+ * @LastEditTime: 2020-08-21 14:37:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -230,7 +230,7 @@ import Bus from '../libs/bus'
                     console.log(data.data)
                     break;
                   case 'push': 
-                    _this.cutTUrls = data.data.urls
+                    _this.cutTUrls = _this.cutTUrls.concat(data.data.urls)
                     break;
                 }
             }
