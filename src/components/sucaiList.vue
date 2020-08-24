@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-24 11:06:18
+ * @LastEditTime: 2020-08-24 11:38:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -77,7 +77,9 @@ import Bus from '../libs/bus'
         this.materialList = this.list
       },
       type() {
+        console.log(this.type)
         this.materialType = this.type
+        this.getFolders()
       }
     },
     data() {
@@ -86,10 +88,11 @@ import Bus from '../libs/bus'
         foldersMenu: [
           {
             id: 0,
-            title: '根',
+            title: '素材',
             loading: false,
             children: [],
-            selected: true
+            selected: true,
+            expand: false,
           }
         ],
         choosedMaterials: [],
@@ -105,6 +108,11 @@ import Bus from '../libs/bus'
       Bus.$on('closeModal', () => {
         this.choosedMaterials = []
       });
+      // Bus.$on('openModal', () => {
+      //   this.getFolders()
+      // })
+        this.getFolders()
+
     },
     methods: {
       chooseItemCheck(index ) {
@@ -132,20 +140,42 @@ import Bus from '../libs/bus'
         }
       },
       getFolders(item, callback) {
-        getFolders(this.baseUrl, this.materialType, item.id) .then(res => {
-          let foldersMenu = res.data.data.map(folder => {
-            let folderItem = {
-                title: folder.file_name,
-                loading: false,
-                children: [],
-                id: folder.id
-            }
-            return folderItem
+        console.log(this.foldersMenu)
+
+        if(item){
+          getFolders(this.baseUrl, this.materialType, item.id) .then(res => {
+            let foldersMenu = res.data.data.map(folder => {
+              let folderItem = {
+                  title: folder.file_name,
+                  loading: false,
+                  children: [],
+                  id: folder.id
+              }
+              return folderItem
+            })
+            callback(foldersMenu);
+          }).catch(err => {
+            console.log(err)
           })
-          callback(foldersMenu);
-        }).catch(err => {
-          console.log(err)
-        })
+        } else {
+          getFolders(this.baseUrl, this.materialType, 0) .then(res => {
+            let foldersMenu = res.data.data.map(folder => {
+              let folderItem = {
+                  title: folder.file_name,
+                  loading: false,
+                  children: [],
+                  id: folder.id
+              }
+              return folderItem
+            })
+            this.foldersMenu[0].children = foldersMenu
+            this.foldersMenu[0].expand = true
+            console.log(this.foldersMenu)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+        
       },
       getThumb(item) {
         return 'backgroundImage:url(' + item.thumb + ')'
