@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-24 15:41:51
+ * @LastEditTime: 2020-08-24 16:43:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -218,6 +218,7 @@ import Bus from '../libs/bus'
   .materialItemInfo{
     width: 100%;
     margin-bottom: 15px;
+    margin-top: 10px;
     .materialItemTitle{
       width: 100%;
       overflow: hidden;

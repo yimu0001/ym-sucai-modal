@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2020-08-24 15:41:25
+ * @LastEditTime: 2020-08-24 16:43:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
@@ -10,7 +10,7 @@
   <div>
       <div class="coverDom">
         <div span='6' v-for="(item, index) of coverList" :key="index" class="coverItem">
-          <div class="materialItemBox" @click="chooseItemCheck(index)">
+          <div class="materialItemBox" @click="chooseItemCheck(index)" @dblclick="previewImg(item)">
             <i class="materialItemThumb" :style="getThumb(item)"></i>
             <img src="../assets/choosed.png" class="choosed_logo" v-if="item.choosed">
             <img src="../assets/noChoosed.png" class="choosed_logo" v-else>
@@ -24,6 +24,13 @@
           </div>
         </div>
       </div>
+      <Modal
+        v-model="preview_value"
+        width='60'
+        class="preview-modal"
+        title="抽帧封面预览">
+         <img :src="preview_cover" >
+      </Modal>
   </div>
 </template>
 
@@ -31,7 +38,7 @@
 import {renderSize} from '@/libs/util.js';
 import config from '@/config'
 import Bus from '../libs/bus'
-import { Message } from 'view-design'
+import { Message, Modal } from 'view-design'
 import 'view-design/dist/styles/iview.css';
   export default {
     name: 'CoverList',
@@ -42,7 +49,7 @@ import 'view-design/dist/styles/iview.css';
       },
     },
     components: {
-      Message,
+      Message, Modal
     },
     watch: {
       list() {
@@ -53,13 +60,14 @@ import 'view-design/dist/styles/iview.css';
     mounted () {
       Bus.$on('closeModal', () => {
         this.choosedCover = []
-        this.list = []
       });
     },
     data() {
       return {
         coverList: this.list,
-        choosedCover: []
+        choosedCover: [],
+        preview_value: false,
+        preview_cover: ''
       }
     },
     computed: {
@@ -90,6 +98,11 @@ import 'view-design/dist/styles/iview.css';
           Bus.$emit('doMaterials', _this.choosedCover)
         }
       },
+      previewImg(item) {
+        console.log(item)
+        this.preview_cover = item.url;
+        this.preview_value = true
+      }
     },
   }
 </script>
@@ -126,6 +139,7 @@ import 'view-design/dist/styles/iview.css';
   }
   .materialItemInfo{
     width: 100%;
+    margin-top: 10px;
     margin-bottom: 15px;
     .materialItemTitle{
       width: 100%;
@@ -145,5 +159,10 @@ import 'view-design/dist/styles/iview.css';
   }
   }
 }
-
+.preview-modal{
+  text-align: center;
+  img{
+    width: 90%;
+  }
+}
 </style>
