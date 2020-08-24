@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2020-08-18 16:38:51
+ * @LastEditTime: 2020-08-24 11:02:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
@@ -53,6 +53,7 @@ import 'view-design/dist/styles/iview.css';
     mounted () {
       Bus.$on('closeModal', () => {
         this.choosedCover = []
+        this.list = []
       });
     },
     data() {

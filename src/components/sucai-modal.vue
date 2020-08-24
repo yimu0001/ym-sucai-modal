@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-19 16:52:09
+ * @LastEditTime: 2020-08-24 11:12:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -155,6 +155,7 @@ import Bus from '../libs/bus'
         }
       },
       start_transcode(id){
+        console.log('转码')
         this.$emit('start_transcode', id)
       }
     },

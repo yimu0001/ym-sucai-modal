@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-24 09:46:30
+ * @LastEditTime: 2020-08-24 11:11:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -10,7 +10,7 @@
   <div>
     <Tabs :value="materialVal" @on-click='handleClickTabs'>
       <TabPane label="素材库" name="materialVal1">
-        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl'></sucai-list>
+        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl' :type='materialType'></sucai-list>
         <Row>
           <i-col offset='5' class="cutPageDom" span='18'>
             <Page :total="total" show-elevator @on-change='changePage'/>
@@ -140,6 +140,7 @@ import Bus from '../libs/bus'
       })
       Bus.$on('closeModal', () => {
         this.choosedMaterials = []
+        this.cutTUrls = [];
         clearInterval(this.wsInterval);
         clearInterval(this.wsInterval_transcode)
         if(this.ws) {
@@ -149,6 +150,7 @@ import Bus from '../libs/bus'
     },
     methods: {
       getFileList() {
+        console.log(this.materialType)
         getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page).then(res => {
           res.data.data.rows.forEach(sucai => {
             sucai.choosed = false

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-18 16:42:53
+ * @LastEditTime: 2020-08-24 11:06:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -66,13 +66,19 @@ import Bus from '../libs/bus'
       },
       baseUrl: {
         type: String
+      },
+      type: {
+        type: String,
+        default: 'image'
       }
     },
     watch: {
       list() {
         this.materialList = this.list
       },
-      
+      type() {
+        this.materialType = this.type
+      }
     },
     data() {
       return {
@@ -86,7 +92,8 @@ import Bus from '../libs/bus'
             selected: true
           }
         ],
-        choosedMaterials: []
+        choosedMaterials: [],
+        materialType: 'image'
       }
     },
     computed: {
@@ -125,7 +132,7 @@ import Bus from '../libs/bus'
         }
       },
       getFolders(item, callback) {
-        getFolders(this.baseUrl, 'image', item.id) .then(res => {
+        getFolders(this.baseUrl, this.materialType, item.id) .then(res => {
           let foldersMenu = res.data.data.map(folder => {
             let folderItem = {
                 title: folder.file_name,
