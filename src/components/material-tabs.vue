@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-24 15:41:31
+ * @LastEditTime: 2020-08-24 18:32:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -189,10 +189,10 @@ import Bus from '../libs/bus'
       saveFileToStore(info) {
         saveFileToStore(this.baseUrl, this.materialType, info.url, this.from).then(res => {
           if(res.status === 200){
+            info.id = res.data.data.id
+            this.choosedMaterials.push(info)
+            Bus.$emit('doMaterials', this.choosedMaterials)
             if(this.materialType === 'video'){
-              info.id = res.data.data.id
-              this.choosedMaterials.push(info)
-              Bus.$emit('doMaterials', this.choosedMaterials)
               this.initWebSocket(res.data.data.id)
               this.checkIsTranscode(res.data.data.id)
             }
