@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-21 14:37:50
+ * @LastEditTime: 2020-08-24 09:46:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -256,7 +256,7 @@ import Bus from '../libs/bus'
       checkIsTranscode(id){
         checkIsTranscode(this.baseUrl).then(res => {
           let mSwitch = res.data.data.switch
-          if(mSwitch || true){
+          if(mSwitch){
             // this.initTranscodeWs(id)
             this.$emit('start_transcode', id)
           }
