@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-24 11:11:53
+ * @LastEditTime: 2020-08-24 15:41:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -150,7 +150,6 @@ import Bus from '../libs/bus'
     },
     methods: {
       getFileList() {
-        console.log(this.materialType)
         getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page).then(res => {
           res.data.data.rows.forEach(sucai => {
             sucai.choosed = false

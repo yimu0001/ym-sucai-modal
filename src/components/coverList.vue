@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2020-08-24 11:02:01
+ * @LastEditTime: 2020-08-24 15:41:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
@@ -74,11 +74,9 @@ import 'view-design/dist/styles/iview.css';
       },
       chooseItemCheck(index) {
         let item = this.coverList[index]
-        console.log(item)
         let _this = this;
         let choosed = _this.coverList[index].choosed? true: false
         if(!choosed) {
-          console.log(_this.chooseNum)
           if(_this.chooseNum >= 1){
             Message.error("已选封面已超过1张！")
           } else {

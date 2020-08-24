@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-24 11:38:44
+ * @LastEditTime: 2020-08-24 15:41:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -77,7 +77,6 @@ import Bus from '../libs/bus'
         this.materialList = this.list
       },
       type() {
-        console.log(this.type)
         this.materialType = this.type
         this.getFolders()
       }
@@ -105,7 +104,7 @@ import Bus from '../libs/bus'
       }
     },
     mounted () {
-      Bus.$on('closeModal', () => {
+      Bus.$on('openModal', () => {
         this.choosedMaterials = []
       });
       // Bus.$on('openModal', () => {
@@ -140,8 +139,6 @@ import Bus from '../libs/bus'
         }
       },
       getFolders(item, callback) {
-        console.log(this.foldersMenu)
-
         if(item){
           getFolders(this.baseUrl, this.materialType, item.id) .then(res => {
             let foldersMenu = res.data.data.map(folder => {
@@ -170,7 +167,6 @@ import Bus from '../libs/bus'
             })
             this.foldersMenu[0].children = foldersMenu
             this.foldersMenu[0].expand = true
-            console.log(this.foldersMenu)
           }).catch(err => {
             console.log(err)
           })
@@ -178,7 +174,11 @@ import Bus from '../libs/bus'
         
       },
       getThumb(item) {
-        return 'backgroundImage:url(' + item.thumb + ')'
+        if(this.materialType === 'image'){
+          return 'backgroundImage:url(' + item.thumb + ')'
+        } else if( this.materialType === 'video'){
+          return 'backgroundImage:url(' + item.cover + ')'
+        }
       },
       getSize: item => renderSize(item),
       chooseFolder(array, attr) {
