@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2020-08-24 16:43:44
+ * @LastEditTime: 2020-08-25 09:55:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
@@ -129,7 +129,7 @@ import 'view-design/dist/styles/iview.css';
     .materialItemThumb{
       display: block;
       height: 0;
-      padding-bottom: 80%;
+      padding-bottom: 130px;
       background-size: contain;
       background-position: center center;
       background-repeat: no-repeat;

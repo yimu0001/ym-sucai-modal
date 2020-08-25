@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-08-24 16:43:36
+ * @LastEditTime: 2020-08-25 09:55:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -70,6 +70,10 @@ import Bus from '../libs/bus'
       type: {
         type: String,
         default: 'image'
+      },
+      websocketUrl: {
+        type: String,
+        default: 'wss://sucai.shandian.design/'
       }
     },
     watch: {
@@ -95,7 +99,10 @@ import Bus from '../libs/bus'
           }
         ],
         choosedMaterials: [],
-        materialType: 'image'
+        materialType: 'image',
+        ws: null, //webSocket所用
+        wsInterval: undefined,
+        cutTUrls: [],
       }
     },
     computed: {
@@ -125,7 +132,11 @@ import Bus from '../libs/bus'
           } else {
             _this.$set(this.materialList[index], 'choosed', true)
             _this.choosedMaterials.push(item)
+            if(_this.materialType === 'video'){
+              _this.initWebSocket(item.id)
+            }
             Bus.$emit('doMaterials', _this.choosedMaterials)
+            
           }
         } else {
           _this.$set(this.materialList[index], 'choosed', false)
@@ -183,7 +194,58 @@ import Bus from '../libs/bus'
       getSize: item => renderSize(item),
       chooseFolder(array, attr) {
         this.$emit('chooseFolder', attr.id)
-      }
+      },
+      initWebSocket(id){
+        let _this = this
+        let websocketPath = _this.websocketUrl+'socket.io '
+        _this.ws = new WebSocket(websocketPath);
+        let ws = _this.ws
+    　　if("WebSocket" in window){
+    　　　　 ws.onopen = function(){
+            　　//当WebSocket创建成功时，触发onopen事件
+                let item = {
+                  type: 'receive',
+                  file_id: id 
+                }
+                ws.send(JSON.stringify(item)); //将消息发送到服务端
+                _this.wsInterval = setInterval(() => {
+                  _this.intervalSend()
+                }, 45000) 
+            }
+            ws.onmessage = function(e){
+            　　//当客户端收到服务端发来的消息时，触发onmessage事件，参数e.data包含server传递过来的数据
+                let data = JSON.parse(e.data)
+                switch(data.type) {
+                  case 'init': 
+                  break;
+                  case 'reply':
+                    console.log(data.data)
+                    break;
+                  case 'push': 
+                    // _this.cutTUrls = _this.cutTUrls.concat(data.data.urls)
+                    _this.$emit('cutTimePic', data.data.urls)
+                    break;
+                }
+            }
+            ws.onclose = function(e){
+            　　//当客户端收到服务端发送的关闭连接请求时，触发onclose事件
+            console.log(e)
+            　　console.log("close");
+            }
+            ws.onerror = function(e){
+            　　//如果出现连接、处理、接收、发送数据失败的时候触发onerror事件
+            　　console.log(e);
+            }
+    　　}else{
+    　　　　console.log("您的浏览器不支持WebSocket");
+    　　}
+      },
+      intervalSend() {
+        let item = {
+          type: 'ping'
+        }
+        this.ws.send(JSON.stringify(item));
+      },
     },
   }
 </script>
@@ -207,7 +269,7 @@ import Bus from '../libs/bus'
     .materialItemThumb{
       display: block;
       height: 0;
-      padding-bottom: 80%;
+      padding-bottom: 130px;
       background-size: contain;
       background-position: center center;
       background-repeat: no-repeat;

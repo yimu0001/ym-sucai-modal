@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-24 18:32:54
+ * @LastEditTime: 2020-08-25 09:30:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -10,7 +10,7 @@
   <div>
     <Tabs :value="materialVal" @on-click='handleClickTabs'>
       <TabPane label="素材库" name="materialVal1">
-        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl' :type='materialType'></sucai-list>
+        <sucai-list :list='sucaiList' :maxNum='fileLimitNum' @chooseFolder= 'chooseFolder' :baseUrl='baseUrl' :type='materialType' :websocketUrl='websocketUrl' @cutTimePic='cutTimePic'></sucai-list>
         <Row>
           <i-col offset='5' class="cutPageDom" span='18'>
             <Page :total="total" show-elevator @on-change='changePage'/>
@@ -203,7 +203,7 @@ import Bus from '../libs/bus'
           console.log(err)
         })
       },
-      //采用socket通信来判断锁定状态
+      //采用socket通信来获取封面抽帧
       initWebSocket(id){
         let _this = this
         let websocketPath = _this.websocketUrl+'socket.io '
@@ -339,6 +339,10 @@ import Bus from '../libs/bus'
           Message.error('请填写https协议视频')
         }
       },
+      //素材库选中 获取抽帧
+      cutTimePic(list) {
+        this.cutTUrls = this.cutTUrls.concat(list)
+      }
     },
   }
 </script>
