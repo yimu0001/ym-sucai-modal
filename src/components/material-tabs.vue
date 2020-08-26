@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-25 09:30:36
+ * @LastEditTime: 2020-08-26 16:15:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -41,7 +41,7 @@
             style="width: 600px; margin: 0 auto;"
           />
           <div v-if="showPreview" style="text-align: center; padding-top: 20px;">
-            <video :src="choosedMaterials[0]" controls class="setVideoShow"></video>
+            <video :src="choosedMaterials[0].url" controls class="setVideoShow"></video>
           </div>
         </div>
       </TabPane>
