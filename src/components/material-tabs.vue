@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-28 10:01:31
+ * @LastEditTime: 2020-08-28 10:44:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -93,12 +93,16 @@ import Bus from '../libs/bus'
         this.materialType = this.type
         if(this.type == 'coverImg'){ this.materialType = 'image'}
         this.materialVal = 'materialVal1'
-        this.choosedMaterials = []
+        this.choosedMaterials = [];
+        this.uploadVideoUrl = '';
+        this.showPreview = false
         // this.getFileList()
       },
       materialVal() {
         this.page =1;
-        this.choosedMaterials = []
+        this.choosedMaterials = [];
+        this.uploadVideoUrl = '';
+        this.showPreview = false
       }
     },
     components: {
@@ -178,6 +182,7 @@ import Bus from '../libs/bus'
       },
       uploadOnSuccess(res, data) {
         let info = data.data
+        console.log(info)
         if(info){
           if(info.url) {
             if(this.materialType !== 'video'){

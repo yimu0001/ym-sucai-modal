@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-28 10:21:40
+ * @LastEditTime: 2020-08-28 10:40:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -140,7 +140,7 @@ import Bus from '../libs/bus'
           Bus.$emit('openModal', 'image')
         } else if(this.materialType == 'coverImg'){
           this.$emit('chooseCoverOk', this.choosedMaterials)
-          this.choosedMaterials = []
+          this.choosedMaterials = [];
         } else {
           this.$emit('handleMaterialModalOk', this.choosedMaterials)
           this.choosedMaterials = []
