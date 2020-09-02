@@ -132,7 +132,14 @@ export default {
       this.$emit('progress', file, percent)
     },
     onSuccess (file, response) {
-      $(`.file-${file.id} .file-status`).html('上传成功')
+      if (response._headers.state_code != 200) {
+        $(`.file-${file.id} .progress`).css('background', '#ffd4d4')
+        $(`.file-${file.id} .file-status`).html('上传失败')
+      } else {
+        $(`.file-${file.id} .progress`).css('background', '#f2f2f2')
+        $(`.file-${file.id} .file-status`).html('上传成功')
+      }
+
       this.$emit('success', file, response)
     },
     onComplete (file, response) {
