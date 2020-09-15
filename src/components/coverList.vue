@@ -8,160 +8,157 @@
 -->
 <template>
   <div>
-      <div class="coverDom">
-        <div span='6' v-for="(item, index) of coverList" :key="index" class="coverItem">
-          <div class="materialItemBox" @click="chooseItemCheck(index)" @dblclick="previewImg(item)">
-            <i class="materialItemThumb" :style="getThumb(item)"></i>
-            <img src="../assets/choosed.png" class="choosed_logo" v-if="item.choosed">
-            <img src="../assets/noChoosed.png" class="choosed_logo" v-else>
-          </div>
-          <div class="materialItemInfo">
-            <div class="materialItemTitle">{{item.name}}</div>
-            <div class="materialItemMore">
-              <span>{{item.width}}*{{item.height}}</span>
-              <span>{{getSize(item.size)}}</span>
-            </div>
+    <div class="coverDom">
+      <div span="6" v-for="(item, index) of coverList" :key="index" class="coverItem">
+        <div class="materialItemBox" @click="chooseItemCheck(index)" @dblclick="previewImg(item)">
+          <i class="materialItemThumb" :style="getThumb(item)"></i>
+          <img src="../assets/choosed.png" class="choosed_logo" v-if="item.choosed" />
+          <img src="../assets/noChoosed.png" class="choosed_logo" v-else />
+        </div>
+        <div class="materialItemInfo">
+          <div class="materialItemTitle">{{ item.name }}</div>
+          <div class="materialItemMore">
+            <span>{{ item.width }}*{{ item.height }}</span>
+            <span>{{ getSize(item.size) }}</span>
           </div>
         </div>
       </div>
-      <Modal
-        v-model="preview_value"
-        width='60'
-        class="preview-modal"
-        title="抽帧封面预览">
-         <img :src="preview_cover" >
-      </Modal>
+    </div>
+    <Modal v-model="preview_value" width="60" class="preview-modal" title="抽帧封面预览">
+      <img :src="preview_cover" />
+    </Modal>
   </div>
 </template>
 
 <script>
-import {renderSize} from '@/libs/util.js';
-import config from '@/config'
-import Bus from '../libs/bus'
-import { Message, Modal } from 'view-design'
-import 'view-design/dist/styles/iview.css';
-  export default {
-    name: 'CoverList',
-    props: {
-      list: {
-        type: Array,
-        default: []
-      },
+import { renderSize } from '@/libs/util.js';
+import config from '@/config';
+import Bus from '../libs/bus';
+import { Message, Modal } from 'view-design';
+// import 'view-design/dist/styles/iview.css';
+import '@/index.less';
+export default {
+  name: 'CoverList',
+  props: {
+    list: {
+      type: Array,
+      default: [],
     },
-    components: {
-      Message, Modal
+  },
+  components: {
+    Message,
+    Modal,
+  },
+  watch: {
+    list() {
+      this.coverList = this.list;
     },
-    watch: {
-      list() {
-        this.coverList = this.list
-      },
-      
+  },
+  mounted() {
+    Bus.$on('closeModal', () => {
+      this.choosedCover = [];
+    });
+  },
+  data() {
+    return {
+      coverList: this.list,
+      choosedCover: [],
+      preview_value: false,
+      preview_cover: '',
+    };
+  },
+  computed: {
+    chooseNum() {
+      return this.choosedCover.length;
     },
-    mounted () {
-      Bus.$on('closeModal', () => {
-        this.choosedCover = []
-      });
+  },
+  methods: {
+    getSize: (item) => renderSize(item),
+    getThumb(item) {
+      return 'backgroundImage:url(' + item.url + ')';
     },
-    data() {
-      return {
-        coverList: this.list,
-        choosedCover: [],
-        preview_value: false,
-        preview_cover: ''
-      }
-    },
-    computed: {
-      chooseNum(){
-        return this.choosedCover.length
-      }
-    },
-    methods: {
-      getSize: item => renderSize(item),
-      getThumb(item) {
-        return 'backgroundImage:url(' + item.url + ')'
-      },
-      chooseItemCheck(index) {
-        let item = this.coverList[index]
-        let _this = this;
-        let choosed = _this.coverList[index].choosed? true: false
-        if(!choosed) {
-          if(_this.chooseNum >= 1){
-            Message.error("已选封面已超过1张！")
-          } else {
-            _this.$set(_this.coverList[index], 'choosed', true)
-            _this.choosedCover.push(item)
-            Bus.$emit('doMaterials', _this.choosedCover)
-          }
+    chooseItemCheck(index) {
+      let item = this.coverList[index];
+      let _this = this;
+      let choosed = _this.coverList[index].choosed ? true : false;
+      if (!choosed) {
+        if (_this.chooseNum >= 1) {
+          Message.error('已选封面已超过1张！');
         } else {
-          _this.$set(_this.coverList[index], 'choosed', false)
-          _this.choosedCover = []
-          Bus.$emit('doMaterials', _this.choosedCover)
+          _this.$set(_this.coverList[index], 'choosed', true);
+          _this.choosedCover.push(item);
+          Bus.$emit('doMaterials', _this.choosedCover);
         }
-      },
-      previewImg(item) {
-        console.log(item)
-        this.preview_cover = item.url;
-        this.preview_value = true
+      } else {
+        _this.$set(_this.coverList[index], 'choosed', false);
+        _this.choosedCover = [];
+        Bus.$emit('doMaterials', _this.choosedCover);
       }
     },
-  }
+    previewImg(item) {
+      console.log(item);
+      this.preview_cover = item.url;
+      this.preview_value = true;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-.coverDom{
+.coverDom {
   height: 400px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  .coverItem{
+  .coverItem {
     width: 19%;
-    .materialItemBox{
-    background-color: #f1f3f5;
-    height: 130px;
-    position: relative;
-    .choosed_logo{
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      right: 10px;
-      top: 10px;
+    .materialItemBox {
+      background-color: #f1f3f5;
+      height: 130px;
+      position: relative;
+      .choosed_logo {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+      .materialItemThumb {
+        display: block;
+        height: 0;
+        padding-bottom: 130px;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        border-radius: 3px;
+        overflow: hidden;
+      }
     }
-    .materialItemThumb{
-      display: block;
-      height: 0;
-      padding-bottom: 130px;
-      background-size: contain;
-      background-position: center center;
-      background-repeat: no-repeat;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-  }
-  .materialItemInfo{
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    .materialItemTitle{
+    .materialItemInfo {
       width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: none;
-      font-size: 16px;
-      margin-top: 5px;
-    }
-    .materialItemMore{
-      color: #999;
-      font-size: 14px;
-      span{
-        margin-right: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      .materialItemTitle {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: none;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+      .materialItemMore {
+        color: #999;
+        font-size: 14px;
+        span {
+          margin-right: 10px;
+        }
       }
     }
   }
-  }
 }
-.preview-modal{
+.preview-modal {
   text-align: center;
-  img{
+  img {
     width: 90%;
   }
 }
