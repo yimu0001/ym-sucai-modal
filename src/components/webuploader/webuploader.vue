@@ -58,7 +58,8 @@ export default {
   data () {
     return {
       uploader: null,
-      md5: ''
+      md5: '',
+      uuid: ''
     }
   },
   mounted () {
@@ -98,11 +99,12 @@ export default {
       this.uploader.on('uploadStart', file => {
         // 在这里可以准备好formData的数据
         // this.uploader.options.formData.key = 1;
+        let uuid = new Date().getTime()+ Math.floor(Math.random()*1000)
+        this.uploader.options.formData = {uuid}
       })
 
       this.uploader.on('uploadBeforeSend', (object, data, headers) => {
         // console.log(object.blob);
-
         headers.token = getToken();
         // headers.apptoken = store.state.token;
         // headers.token = store.state.token
@@ -125,7 +127,6 @@ export default {
       })
 
       this.uploader.on('uploadSuccess', (file, response) => {
-        // console.log(response);
         this.$emit('success', file, response)
       })
 
