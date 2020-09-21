@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-08-28 10:44:04
+ * @LastEditTime: 2020-09-21 10:55:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -369,6 +369,9 @@ export default {
     uploadOnImgRemove(file, index) {
       this.choosedMaterials.splice(index, 1);
       Bus.$emit('doMaterials', this.choosedMaterials);
+      this.ws.close()
+      clearInterval(this.wsInterval)
+      this.cutTUrls = [];
     },
     uploadImgError(errorMessage) {
       console.log(errorMessage);

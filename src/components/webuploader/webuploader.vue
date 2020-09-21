@@ -113,7 +113,9 @@ export default {
         let JWT = 'jwt-token'
         headers[JWT] = Cookies.get('jwt_token')?Cookies.get('jwt_token'): '';
       })
-
+      this.uploader.on('uploadAccept', (obj, res) => {
+        console.log(res)
+      })
       this.uploader.on('uploadgetMd5Before', file => {
         this.$emit('getMd5Before', file)
       })
