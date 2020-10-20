@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-08-14 11:29:21
+ * @LastEditTime: 2020-10-20 14:55:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -16,7 +16,7 @@
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item}}</div>
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
-    @chooseVideoOk="chooseVideoOk" :baseUrl='baseUrl'
+    @chooseVideoOk="chooseVideoOk" baseUrl='https://shandianyun-sck.iqilu.com/'
     @chooseCoverOk = "chooseCoverOk" 
     ></sucai-modal>
   </div>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-09-21 10:55:56
+ * @LastEditTime: 2020-10-20 14:51:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -21,7 +21,7 @@
         ></sucai-list>
         <Row>
           <i-col offset="5" class="cutPageDom" span="18">
-            <Page :total="total" show-elevator @on-change="changePage" />
+            <Page :total="total" show-elevator @on-change="changePage" :page-size= '8' />
           </i-col>
         </Row>
       </TabPane>
