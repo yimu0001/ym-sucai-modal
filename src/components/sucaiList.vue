@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-09-10 11:34:03
- * @LastEditors: 赵婷婷
+ * @LastEditTime: 2020-10-20 15:30:05
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
 -->
@@ -288,7 +288,7 @@ export default {
       width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-      word-break: none;
+      white-space: nowrap;
       font-size: 16px;
       margin-top: 5px;
     }
