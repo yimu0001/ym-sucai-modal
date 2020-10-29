@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-10-29 11:07:18
+ * @LastEditTime: 2020-10-29 11:31:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -46,7 +46,6 @@ import config from '@/config';
 // import 'view-design/dist/styles/iview.css';
 import '@/index.less';
 import Bus from '../libs/bus';
-import voiceThumb from '@/assets/voiceThumb.png'
 export default {
   name: 'sucaiList',
   components: {
@@ -194,7 +193,7 @@ export default {
       } else if (this.materialType === 'video') {
         return 'backgroundImage:url(' + item.cover + ')';
       } else if (this.materialType === 'voice') {
-        return 'backgroundImage:url(' + voiceThumb + '); background-size: 40% 50%';
+        return 'backgroundImage:url("https://shandianyun-sck.iqilu.com/icon-huatong.png"); background-size: 40% 50%';
       }
     },
     getSize: (item) => renderSize(item),
