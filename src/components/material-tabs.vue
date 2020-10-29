@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-10-20 14:51:25
+ * @LastEditTime: 2020-10-23 18:21:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -157,7 +157,7 @@ export default {
       uploadVideoUrl: '',
       showPreview: false,
       materialType: this.type,
-      uploadUrl: this.baseUrl + 'upload/chunked',
+      uploadUrl: this.baseUrl + '/upload/chunk-resume/process',
       ws: null, //webSocket所用
       wsInterval: undefined,
       cutTUrls: [],
@@ -216,15 +216,14 @@ export default {
       Message.error(errorMessage);
     },
     uploadOnSuccess(res, data) {
-      let info = data.data;
-      console.log(info);
-      if (info) {
-        if (info.url) {
+      let extra = data.data.data.extra;
+      if (extra) {
+        if (extra.url) {
           if (this.materialType !== 'video') {
-            this.choosedMaterials.push(info);
+            this.choosedMaterials.push(extra);
             Bus.$emit('doMaterials', this.choosedMaterials);
           }
-          this.saveFileToStore(info);
+          this.saveFileToStore(extra);
         } else {
           Message.error('上传失败！');
         }

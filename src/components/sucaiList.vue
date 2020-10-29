@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-10-20 15:30:05
+ * @LastEditTime: 2020-10-29 10:43:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -46,6 +46,7 @@ import config from '@/config';
 // import 'view-design/dist/styles/iview.css';
 import '@/index.less';
 import Bus from '../libs/bus';
+import voiceLogo from '../assets/voice.png'
 export default {
   name: 'sucaiList',
   components: {
@@ -192,6 +193,8 @@ export default {
         return 'backgroundImage:url(' + item.thumb + ')';
       } else if (this.materialType === 'video') {
         return 'backgroundImage:url(' + item.cover + ')';
+      } else if (this.materialType === 'voice') {
+        return 'backgroundImage:url(' + voiceLogo + ')';
       }
     },
     getSize: (item) => renderSize(item),

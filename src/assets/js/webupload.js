@@ -3373,7 +3373,7 @@
         total = blob.size,
         chunks = chunkSize ? Math.ceil(total / chunkSize) : 1,
         start = 0,
-        index = 0,
+        index = 1,
         len, api
 
       api = {
@@ -3392,7 +3392,7 @@
         }
       }
 
-      while (index < chunks) {
+      while (index <= chunks) {
         len = Math.min(chunkSize, total - start)
 
         pending.push({
@@ -4089,31 +4089,47 @@
         // 在发送之间可以添加字段什么的。。。
         // 如果默认的字段不够使用，可以通过监听此事件来扩展
         owner.trigger('uploadBeforeSend', block, data, headers)
+        // 计算分片MD5
+        var chunkSize = owner.option.chunkSize
 
-        // console.log(block,file);
+        var chunkMD5Fun = owner.md5File(block.file, block.start, block.end)
+        chunkMD5Fun.then(function (chunk_md5) {
+          // data == body
+          data.chunkMD5 = chunk_md5
+          // 开始发送。
 
-        // 开始发送。
-        if (opts.sendMd5 && block.end === block.total) {
-          owner.getFileMd5 = function (file) {
-            return owner.md5File(file).then(function (val) {
-              data.md5 = val
-            })
-          }
-          owner.trigger('uploadgetMd5Before', block.file)
-          owner.getFileMd5(block.file).then(function () {
-            owner.trigger('uploadgetMd5Done', data.md5)
-            tr.appendBlob(opts.fileVal, block.blob, file.name)
-            tr.append(data)
-            tr.setRequestHeader(headers)
-            tr.send()
-          })
-        } else {
+          /**
+           * @description: 最后一片计算md5（舍弃）
+           * @param {type}
+           * @return {type}
+           */
           tr.appendBlob(opts.fileVal, block.blob, file.name)
           tr.append(data)
           tr.setRequestHeader(headers)
           tr.send()
-        }
-      },
+          //  if (opts.sendMd5 && block.end === block.total) {
+          //    //总文件md5
+          //    owner.getFileMd5 = function (file) {
+          //      return owner.md5File(file).then(function (val) {
+          //        data.md5 = val
+          //      })
+          //    }
+          //    owner.trigger('uploadgetMd5Before', block.file)
+          //    owner.getFileMd5(block.file).then(function () {
+          //      owner.trigger('uploadgetMd5Done', data.md5)
+          //      tr.appendBlob(opts.fileVal, block.blob, file.name)
+          //      tr.append(data)
+          //      tr.setRequestHeader(headers)
+          //      tr.send()
+          //    })
+          //  } else {
+          //    tr.appendBlob(opts.fileVal, block.blob, file.name)
+          //    tr.append(data)
+          //    tr.setRequestHeader(headers)
+          //    tr.send()
+          //  }
+          })
+        },
 
       // 完成上传。
       _finishFile: function (file, ret, hds) {

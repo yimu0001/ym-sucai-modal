@@ -132,7 +132,7 @@ export default {
       this.$emit('progress', file, percent)
     },
     onSuccess (file, response) {
-      if (!response.data.url) {
+      if (response.status != 200) {
         $(`.file-${file.id} .progress`).css('background', '#ffd4d4')
         $(`.file-${file.id} .file-status`).html('上传失败')
       } else {
