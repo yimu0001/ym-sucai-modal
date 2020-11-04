@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-10-29 11:31:38
+ * @LastEditTime: 2020-11-04 17:43:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -46,6 +46,7 @@ import config from '@/config';
 // import 'view-design/dist/styles/iview.css';
 import '@/index.less';
 import Bus from '../libs/bus';
+import voiceLogo from '../assets/voice.png'
 export default {
   name: 'sucaiList',
   components: {
