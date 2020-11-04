@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-10-20 14:55:02
+ * @LastEditTime: 2020-11-04 17:03:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -16,7 +16,7 @@
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item}}</div>
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
-    @chooseVideoOk="chooseVideoOk" baseUrl='https://shandianyun-sck.iqilu.com/'
+    @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'
     @chooseCoverOk = "chooseCoverOk" 
     ></sucai-modal>
   </div>
@@ -36,8 +36,16 @@ export default {
       type: 'image',
       choosedMaterials: [],
       fileLimitNum: 1,
-      baseUrl: 'https://sucai.shandian.design/'
+      baseUrl: 'https://sucai.shandian.design/',
+      material_baseUrl: '',
     }
+  },
+  mounted () {
+    if(process.env.NODE_ENV === 'development'){
+      this.material_baseUrl = 'https://sucai.shandian.design/'
+    } else {
+      this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/'
+    };
   },
   methods: {
     openModal(type) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-10-20 14:51:25
+ * @LastEditTime: 2020-11-04 17:08:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -35,8 +35,9 @@
           @uploadError="uploadImgError"
           :accept="materialType"
           compress="false"
-          v-if="materialVal === 'materialVal2'"
+          v-if="materialVal === 'materialVal2' && baseUrl != ''"
         ></vue-uploader>
+        {{baseUrl}}
       </TabPane>
       <TabPane label="插入视频" name="materialVal3" v-if="type == 'video'">
         <div class="setVideoByPath">
@@ -127,6 +128,10 @@ export default {
       this.uploadVideoUrl = '';
       this.showPreview = false;
     },
+    baseUrl() {
+      console.log(this.baseUrl)
+      
+    }
   },
   components: {
     SucaiList,
@@ -217,7 +222,6 @@ export default {
     },
     uploadOnSuccess(res, data) {
       let info = data.data;
-      console.log(info);
       if (info) {
         if (info.url) {
           if (this.materialType !== 'video') {
