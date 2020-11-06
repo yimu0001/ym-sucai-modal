@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-04 17:45:15
+ * @LastEditTime: 2020-11-06 18:01:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -161,7 +161,7 @@ export default {
       uploadVideoUrl: '',
       showPreview: false,
       materialType: this.type,
-      uploadUrl: this.baseUrl + '/upload/chunk-resume/process',
+      uploadUrl: this.baseUrl + 'upload/chunk-resume/process',
       ws: null, //webSocket所用
       wsInterval: undefined,
       cutTUrls: [],
