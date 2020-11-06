@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 16:21:50
- * @LastEditTime: 2020-10-23 15:48:37
+ * @LastEditTime: 2020-11-06 18:17:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucaiku_front_pc\src\api\webupload.js
@@ -13,9 +13,9 @@ import axios from '@/libs/api.request'
  * @param {MIME_type： MIME-TYPE ext : 文件扩展名 file_md5 : 整个文件MD5}
  * @return {type}
  */
-export const uploadInit = (args) => {
+export const uploadInit = (baseUrl, args) => {
   return axios.request({
-    url: '/upload/chunk-resume/init',
+    url: baseUrl+'upload/chunk-resume/init',
     method: 'post',
     data: args
   })
@@ -26,9 +26,9 @@ export const uploadInit = (args) => {
  * @param {chunk : 分片编号 递增, uuid : 创建分片上传过程返回 upload_id, chunkMD5： 分片MD5}
  * @return {type}
  */
-export const uploadProcess = (args) => {
+export const uploadProcess = (baseUrl, args) => {
   return axios.request({
-    url: '/upload/chunk-resume/process',
+    url: baseUrl+'upload/chunk-resume/process',
     method: 'post',
     data: new URLSearchParams(args)
   })
@@ -39,9 +39,9 @@ export const uploadProcess = (args) => {
  * @param {uuid ： 创建分片上传过程返回 upload_id}
  * @return {type}
  */
-export const uploadStop = (args) => {
+export const uploadStop = (baseUrl, args) => {
   return axios.request({
-    url: '/upload/chunk-resume/abort',
+    url: baseUrl+'upload/chunk-resume/abort',
     method: 'post',
     data: args
   })
@@ -52,9 +52,9 @@ export const uploadStop = (args) => {
  * @param {uuid ： 创建分片上传过程返回 upload_id, fileMD5 : 文件整体MD5}
  * @return {type}
  */
-export const uploadFinish = (args) => {
+export const uploadFinish = (baseUrl, args) => {
   return axios.request({
-    url: '/upload/chunk-resume/finish',
+    url: baseUrl+ '/upload/chunk-resume/finish',
     method: 'post',
     data: args
   })

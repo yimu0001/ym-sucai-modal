@@ -37,6 +37,7 @@
 			:formData="formData"
 			:keyGenerator="keyGenerator"
 			:url="url"
+      :baseUrl='baseUrl'
 			@fileChange="fileChange"
 			@progress="onProgress"
 			@success="onSuccess"
@@ -64,6 +65,10 @@ export default {
       default: null
     },
     // 上传地址
+    baseUrl: {
+      type: String,
+      // default: 'https://shandianyun-sck.iqilu.com'
+    },
     url: {
       type: String,
       // default: 'http://article.shandian.design/common/upload'

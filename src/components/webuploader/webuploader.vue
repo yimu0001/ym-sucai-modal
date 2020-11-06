@@ -22,6 +22,10 @@ export default {
       type: String,
       default: ''
     },
+    baseUrl: {
+      type: String,
+      // default: 'https://shandianyun-sck.iqilu.com/'
+    },
     // 上传最大数量 默认为100
     fileNumLimit: {
       type: Number,
@@ -77,7 +81,7 @@ export default {
         },
         {
           beforeSendFile: async function (file) {
-            console.log(file)
+            console.log('开始发送文件',file)
             let file_md5 = ''
             that.$emit('getMd5', file)
             await that.uploader.md5File(file).then(val => {
@@ -89,7 +93,9 @@ export default {
               MIME_type: type,
               file_md5
             }
-            await uploadInit(args).then(res => {
+              console.log(that.baseUrl)
+
+            await uploadInit(that.baseUrl, args).then(res => {
               if (res.status == 200) {
                 let { current_chunk, extra, status } = res.data.data
                 if (status === '1') {
@@ -139,7 +145,7 @@ export default {
                 uuid: that.uploadId,
                 file_MD5: val
               }
-              uploadFinish(params).then(res => {
+              uploadFinish(that.baseUrl, params).then(res => {
                 let { data, status } = res
                 if (status === 200) {
                   console.log(res)

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-06 18:01:42
+ * @LastEditTime: 2020-11-06 18:30:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -28,6 +28,7 @@
       <TabPane label="本地库" name="materialVal2">
         <vue-uploader
           :url="uploadUrl"
+          :baseUrl='baseUrl'
           :fileNumLimit="fileLimitNum"
           @error="uploadOnImgError"
           @success="uploadOnSuccess"
