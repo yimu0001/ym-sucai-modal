@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-04 17:41:59
+ * @LastEditTime: 2020-11-09 17:53:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -13,7 +13,7 @@
     <button @click="openModal('voice')">打开音频modal</button>
     <h2>已选选项</h2>
     <div class="formItem">
-      <div v-for="(item, index) of choosedMaterials" :key="index">{{item}}</div>
+      <div v-for="(item, index) of choosedMaterials" :key="index">{{item.url}}</div>
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
     @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'

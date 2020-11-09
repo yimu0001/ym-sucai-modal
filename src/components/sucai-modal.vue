@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-09 11:48:42
+ * @LastEditTime: 2020-11-09 18:03:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
 -->
 <template>
   <div>
-    <Modal
+      <Modal
       v-model="modal"
       :title="`${typeName}`"
       width="970px"
@@ -141,7 +141,6 @@ export default {
   },
   methods: {
     ok() {
-      console.log(this.choosedMaterials)
       if (this.choosedMaterials.length === 0) {
         Message.error('请选择素材！');
         return false;

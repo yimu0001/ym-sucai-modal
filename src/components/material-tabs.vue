@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-09 11:29:50
+ * @LastEditTime: 2020-11-09 18:06:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -36,7 +36,8 @@
           @uploadError="uploadImgError"
           :accept="materialType"
           compress="false"
-          v-if="materialVal === 'materialVal2' && baseUrl != ''"
+          ref="vueUploader"
+          v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
         ></vue-uploader>
       </TabPane>
       <TabPane label="插入视频" name="materialVal3" v-if="type == 'video'">
@@ -131,6 +132,9 @@ export default {
     baseUrl() {
       console.log(this.baseUrl)
       
+    },
+    modalKey() {
+      this.modal = this.modalKey
     }
   },
   components: {
@@ -158,7 +162,7 @@ export default {
       sucaiList: [],
       path_id: 0,
       choosedMaterials: [],
-      modal: false,
+      modal: this.modalKey,
       uploadVideoUrl: '',
       showPreview: false,
       materialType: this.type,
@@ -171,7 +175,6 @@ export default {
     };
   },
   mounted() {
-    // this.getFileList();
     Bus.$on('openModal', (type) => {
       this.sucaiList = [];
       this.path_id = 0;
@@ -185,6 +188,7 @@ export default {
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
+      this.$refs.vueUploader && this.$refs.vueUploader.destroy()
       if (this.ws) {
         this.ws.close();
       }
@@ -192,12 +196,14 @@ export default {
   },
   methods: {
     getFileList() {
+      console.log(111)
       getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
             sucai.choosed = false;
           });
           this.sucaiList = res.data.data.rows;
+          console.log(this.sucaiList)
           this.total = Number(res.data.data.total);
         })
         .catch((err) => {
@@ -221,7 +227,7 @@ export default {
       Message.error(errorMessage);
     },
     uploadOnSuccess(res, data) {
-      let extra = data.data.data.extra;
+      let extra = data.data.data;
       if (extra) {
         if (extra.url) {
           if (this.materialType !== 'video') {

@@ -657,7 +657,6 @@
             delete events[this.id]
           })
         })
-
         return this
       },
 
@@ -1275,12 +1274,10 @@
         var me = this,
           widgets = me._widgets = [],
           deactives = me.options.disableWidgets || ''
-
         $.each(widgetClass, function (_, klass) {
           (!deactives || !~deactives.indexOf(klass._name)) &&
             widgets.push(new klass(me))
         })
-
         return _init.apply(me, arguments)
       },
 
@@ -1293,7 +1290,6 @@
           widget, rlt, promise, key
 
         args = isArrayLike(args) ? args : [args]
-
         for (; i < len; i++) {
           widget = widgets[i]
           rlt = widget.invoke(apiName, args)
@@ -3828,6 +3824,7 @@
           promise
 
         if (file) {
+          console.log(me)
           promise = me.request('before-send-file', file, function () {
             // 有可能文件被skip掉了。文件被skip掉后，状态坑定不是Queued.
             if (file.getStatus() === Status.PROGRESS ||
@@ -3837,7 +3834,6 @@
 
             return me._finishFile(file)
           })
-
           me.owner.trigger('uploadStart', file)
           file.setStatus(Status.PROGRESS)
 
@@ -3850,13 +3846,12 @@
             ~idx && pending.splice(idx, 1, file)
           })
 
-          // befeore-send-file的钩子就有错误发生。
+          // before-send-file的钩子就有错误发生。
           promise.fail(function (reason) {
             file.setStatus(Status.ERROR, reason)
             me.owner.trigger('uploadError', file, reason)
             me.owner.trigger('uploadComplete', file)
           })
-
           pending.push(promise)
         }
       },

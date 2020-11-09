@@ -81,7 +81,6 @@ export default {
         },
         {
           beforeSendFile: async function (file) {
-            console.log('开始发送文件',file)
             let file_md5 = ''
             that.$emit('getMd5', file)
             await that.uploader.md5File(file).then(val => {
@@ -93,7 +92,6 @@ export default {
               MIME_type: type,
               file_md5
             }
-              console.log(that.baseUrl)
 
             await uploadInit(that.baseUrl, args).then(res => {
               if (res.status == 200) {
@@ -103,19 +101,16 @@ export default {
                   that.uploadId = res.data.data.uuid
                 } else if (status === '2') {
                   that.stop(file)
-                  console.log(res)
-                  // let file_responent = {
-                  //   headers: {
-                  //     state_code: 200
-                  //   },
-                  //   data: {
-                  //     data: {
-                  //       ...extra
-                  //     },
-                  //     msg: ''
-                  //   }
-                  // }
-                  that.$emit('success', file, res)
+                  let file_responent = {
+                    status: 200,
+                    data: {
+                      data: {
+                        ...extra
+                      },
+                      msg: ''
+                    }
+                  }
+                  that.$emit('success', file, file_responent)
                 }
               } else {
                 this.$emit('uploadError', file, res)
@@ -148,7 +143,6 @@ export default {
               uploadFinish(that.baseUrl, params).then(res => {
                 let { data, status } = res
                 if (status === 200) {
-                  console.log(res)
                   that.$emit('success', file, res)
                 } else {
                   that.$Message.error(data.msg)
@@ -156,13 +150,12 @@ export default {
                 task.resolve()
               }).catch(err => {
                 console.log(err)
-                that.$Message.error(err)
+                // that.$Message.error(err)
               })
             })
             return $.when(task)
           }
         })
-
       that.uploader = WebUploader.create({
         sendMd5: true,
         auto: true, // 选完文件后，是否自动上传
@@ -180,7 +173,7 @@ export default {
         formData: that.formData, // 上传所需参数
         chunked: true, // 分片上传
         chunkSize: 5 * 1024 * 1024, // 分片大小5 * 1024 * 1024
-        duplicate: true, // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
+        duplicate: false, // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
         chunkRetry: 2 // 重试次数
       })
 
@@ -245,6 +238,8 @@ export default {
           errorMessage = '文件上传已达到最大上限数'
         } else if (type === 'Q_TYPE_DENIED') {
           errorMessage = `上传出错！请检查上传类型`
+        } else if (type === 'F_DUPLICATE' ){
+          errorMessage = `文件重复`
         } else {
           errorMessage = `上传出错！请检查后重新上传！错误代码${type}`
         }
@@ -270,6 +265,9 @@ export default {
     // 在队列中移除文件
     removeFile (file, bool) {
       this.uploader.removeFile(file, bool)
+    },
+    destroy() {
+      this.uploader.destroy()
     },
     concat (array, str) {
       let arr = str.split(',')

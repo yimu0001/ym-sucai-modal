@@ -181,6 +181,10 @@ export default {
 
       this.$emit('remove', file, index)
     },
+    destroy() {
+      console.log('组件销毁')
+      this.uploader.destroy()
+    },
     fileSize (size) {
       return WebUploader.Base.formatSize(size)
     },
