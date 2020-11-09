@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-08-28 10:40:52
+ * @LastEditTime: 2020-11-09 11:48:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -141,6 +141,7 @@ export default {
   },
   methods: {
     ok() {
+      console.log(this.choosedMaterials)
       if (this.choosedMaterials.length === 0) {
         Message.error('请选择素材！');
         return false;

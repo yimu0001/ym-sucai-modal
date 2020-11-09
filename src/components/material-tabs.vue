@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-06 18:30:57
+ * @LastEditTime: 2020-11-09 11:29:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -240,10 +240,10 @@ export default {
           if (res.status === 200) {
             info.id = res.data.data.id;
             if (this.materialType === 'video') {
-              this.initWebSocket(res.data.data.id);
-              this.checkIsTranscode(res.data.data.id);
               this.choosedMaterials.push(info);
               Bus.$emit('doMaterials', this.choosedMaterials);
+              this.initWebSocket(res.data.data.id);
+              this.checkIsTranscode(res.data.data.id);
             }
           } else {
             Message.error(res.data.msg);
