@@ -144,7 +144,6 @@ export default {
         $(`.file-${file.id} .progress`).css('background', '#f2f2f2')
         $(`.file-${file.id} .file-status`).html('上传成功')
       }
-
       this.$emit('success', file, response)
     },
     onComplete (file, response) {

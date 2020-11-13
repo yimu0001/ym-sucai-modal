@@ -64,10 +64,15 @@ export default {
     return {
       uploader: null,
       md5: '',
-      uuid: ''
+      uuid: '',
+       uploadId: '',
+      current_chunk: 0,
+      current_finish: false,
+      uploader_index: 1
     }
   },
   mounted () {
+    this.uploader_index = sessionStorage.getItem('sc_uploader_index') ? sessionStorage.getItem('sc_uploader_index') : 1
     this.initWebUpload()
   },
   methods: {
@@ -81,8 +86,13 @@ export default {
         },
         {
           beforeSendFile: async function (file) {
+            let deferred = WebUploader.Base.Deferred()
             let file_md5 = ''
             that.$emit('getMd5', file)
+            let current_uploader_index = sessionStorage.getItem('sc_uploader_index') ? sessionStorage.getItem('sc_uploader_index') : 1
+             if (that.uploader.options.index != current_uploader_index - 1) {
+              return false
+            }
             await that.uploader.md5File(file).then(val => {
               file_md5 = val
             })
@@ -100,7 +110,10 @@ export default {
                   file.current_chunk = res.data.data.current_chunk
                   that.uploadId = res.data.data.uuid
                 } else if (status === '2') {
-                  that.stop(file)
+                  // that.stop(file)
+                  that.uploader.skipFile(file)
+                  deferred.resolve()
+                  that.current_finish = true
                   let file_responent = {
                     status: 200,
                     data: {
@@ -135,24 +148,34 @@ export default {
           // 上传文件完成触发
           afterSendFile: function (file) {
             let task = new $.Deferred()
-            that.uploader.md5File(file).then(val => {
-              let params = {
-                uuid: that.uploadId,
-                file_MD5: val
+            if(that.current_finish) {
+              that.current_finish = false
+              task.resolve()
+            } else{
+              let current_uploader_index = sessionStorage.getItem('sc_uploader_index') ? sessionStorage.getItem('sc_uploader_index') : 1
+              if (that.uploader.options.index != current_uploader_index - 1) {
+                return false
               }
-              uploadFinish(that.baseUrl, params).then(res => {
-                let { data, status } = res
-                if (status === 200) {
-                  that.$emit('success', file, res)
-                } else {
-                  that.$Message.error(data.msg)
+              that.uploader.md5File(file).then(val => {
+                let params = {
+                  uuid: that.uploadId,
+                  file_MD5: val
                 }
-                task.resolve()
-              }).catch(err => {
-                console.log(err)
-                // that.$Message.error(err)
+                uploadFinish(that.baseUrl, params).then(res => {
+                  let { data, status } = res
+                  if (status === 200) {
+                    console.log(res)
+                    that.$emit('success', file, res)
+                  } else {
+                    that.$Message.error(data.msg)
+                  }
+                  task.resolve()
+                }).catch(err => {
+                  task.resolve()
+                  that.$Message.error(err)
+                })
               })
-            })
+            }
             return $.when(task)
           }
         })
@@ -173,9 +196,12 @@ export default {
         formData: that.formData, // 上传所需参数
         chunked: true, // 分片上传
         chunkSize: 5 * 1024 * 1024, // 分片大小5 * 1024 * 1024
-        duplicate: false, // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
-        chunkRetry: 2 // 重试次数
+        duplicate: true, // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
+        chunkRetry: 2, // 重试次数
+        index: that.uploader_index
       })
+
+      sessionStorage.setItem('sc_uploader_index', Number(that.uploader_index) + 1)
 
       // 当有文件被添加进队列的时候，添加到页面预览
       that.uploader.on('fileQueued', file => {

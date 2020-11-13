@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-09 18:06:05
+ * @LastEditTime: 2020-11-13 19:38:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -228,6 +228,7 @@ export default {
     },
     uploadOnSuccess(res, data) {
       let extra = data.data.data;
+      console.log(extra)
       if (extra) {
         if (extra.url) {
           if (this.materialType !== 'video') {
