@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:44:46
- * @LastEditTime: 2020-08-24 10:35:36
+ * @LastEditTime: 2020-11-25 15:08:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\api\data.js
@@ -9,10 +9,11 @@
 import axios from '@/libs/api.request'
 
 //获取文件下项目
-export const getFileList = (baseUrl, type, path_id, num, page) => {
+export const getFileList = (baseUrl, type, path_id, num, page, high_code_rate_limit) => {
   let args = {
     num,
-    page
+    page,
+    high_code_rate_limit
   }
   return axios.request({
     url: baseUrl+'folder/'+path_id+'/'+type+'-files',
@@ -31,13 +32,14 @@ export const getFolders = (baseUrl, type, path_id) => {
 
 
 //其他模块文件入库
-export const saveFileToStore = (baseUrl, type, url, from) => {
+export const saveFileToStore = (baseUrl, type, url, from, high_code_rate_limit) => {
   return axios.request({
     url: baseUrl+'file/'+type,
     method: 'post',
     data:{
       url: url,
-      from: from
+      from: from,
+      high_code_rate_limit
     }
   })
 }

@@ -58,6 +58,10 @@ export default {
     uploadButton: {
       type: String,
       default: ''
+    },
+    highLimit: {
+      type: String | Number,
+      default: '0'
     }
   },
   data () {
@@ -97,10 +101,12 @@ export default {
               file_md5 = val
             })
             let { ext, type } = file
+            console.log(that.highLimit)
             let args = {
               ext,
               MIME_type: type,
-              file_md5
+              file_md5,
+              high_code_rate_limit: that.highLimit
             }
 
             await uploadInit(that.baseUrl, args).then(res => {

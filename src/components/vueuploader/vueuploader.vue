@@ -38,12 +38,14 @@
 			:keyGenerator="keyGenerator"
 			:url="url"
       :baseUrl='baseUrl'
+      :highLimit='highLimit'
 			@fileChange="fileChange"
 			@progress="onProgress"
 			@success="onSuccess"
 			@complete="onComplete"
 			@error="onError"
 			@uploadError="uploadError"
+      @getMd5='getMd5'
 			@getMd5Before="getMd5Before"
 			@getMd5Done="getMd5Done"
 		></web-upload>
@@ -105,6 +107,11 @@ export default {
     uploadButton: {
       type: String,
       default: ''
+    },
+    //是否需要高码率
+    highLimit: {
+      type: String | Number,
+      default: '0'
     }
   },
   components: {
@@ -159,6 +166,9 @@ export default {
       this.$emit('uploadError', file, reason)
     },
     getMd5Before (file) {
+      $(`.file-${file.id} .file-status`).html('文件校验中')
+    },
+    getMd5 (file) {
       $(`.file-${file.id} .file-status`).html('文件校验中')
     },
     getMd5Done (md5) {},

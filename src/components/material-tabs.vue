@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-13 19:38:08
+ * @LastEditTime: 2020-11-25 15:06:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -35,6 +35,7 @@
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
           :accept="materialType"
+          :highLimit='m_high_limit'
           compress="false"
           ref="vueUploader"
           v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
@@ -110,6 +111,10 @@ export default {
       type: String,
       default: 'wss://sucai.shandian.design/',
     },
+    highLimit:{
+      type: String | Number,
+      default: '0'
+    }
   },
   watch: {
     type() {
@@ -135,6 +140,9 @@ export default {
     },
     modalKey() {
       this.modal = this.modalKey
+    },
+    highLimit() {
+      this.m_high_limit = this.highLimit
     }
   },
   components: {
@@ -172,6 +180,7 @@ export default {
       cutTUrls: [],
       ws_transcode: null, //webSocket所用
       wsInterval_transcode: undefined,
+      m_high_limit: this.highLimit
     };
   },
   mounted() {
@@ -196,14 +205,13 @@ export default {
   },
   methods: {
     getFileList() {
-      console.log(111)
-      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page)
+      console.log(this.m_high_limit)
+      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, this.m_high_limit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
             sucai.choosed = false;
           });
           this.sucaiList = res.data.data.rows;
-          console.log(this.sucaiList)
           this.total = Number(res.data.data.total);
         })
         .catch((err) => {
@@ -242,7 +250,7 @@ export default {
       }
     },
     saveFileToStore(info) {
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from)
+      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.m_high_limit)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;

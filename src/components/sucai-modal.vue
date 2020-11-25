@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-09 18:03:34
+ * @LastEditTime: 2020-11-25 14:26:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -24,6 +24,7 @@
           :baseUrl="baseUrl"
           :from="from"
           :websocketUrl="websocketUrl"
+          :highLimit="m_high_code_rate_limit"
           @start_transcode="start_transcode"
         >
         </material-tabs>
@@ -72,6 +73,10 @@ export default {
       type: String,
       default: 'wss://sucai.shandian.design/',
     },
+    high_code_rate_limit: {
+      type: String | Number,
+      default: '0'
+    }
   },
   watch: {
     modalKey() {
@@ -83,6 +88,9 @@ export default {
     baseUrl() {
       config.baseUrl.pro = this.baseUrl;
     },
+    high_code_rate_limit() {
+      this.m_high_code_rate_limit = this.high_code_rate_limit
+    }
   },
   components: {
     MaterialTabs,
@@ -110,6 +118,7 @@ export default {
       },
       choosedMaterials: [],
       materialType: this.type,
+      m_high_code_rate_limit: this.high_code_rate_limit
     };
   },
   computed: {

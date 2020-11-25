@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-09 17:53:15
+ * @LastEditTime: 2020-11-25 14:45:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -17,7 +17,7 @@
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
     @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'
-    @chooseCoverOk = "chooseCoverOk" 
+    @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit'
     ></sucai-modal>
   </div>
 </template>
@@ -38,6 +38,7 @@ export default {
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
       material_baseUrl: '',
+      highLimit: '1'
     }
   },
   mounted () {
