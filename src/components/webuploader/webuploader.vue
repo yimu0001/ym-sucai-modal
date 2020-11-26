@@ -101,12 +101,11 @@ export default {
               file_md5 = val
             })
             let { ext, type } = file
-            console.log(that.highLimit)
             let args = {
               ext,
               MIME_type: type,
               file_md5,
-              high_code_rate_limit: that.highLimit
+              video_high_code_rate_limit : that.highLimit
             }
 
             await uploadInit(that.baseUrl, args).then(res => {
@@ -165,7 +164,8 @@ export default {
               that.uploader.md5File(file).then(val => {
                 let params = {
                   uuid: that.uploadId,
-                  file_MD5: val
+                  file_MD5: val,
+                  video_high_code_rate_limit: this.highLimit
                 }
                 uploadFinish(that.baseUrl, params).then(res => {
                   let { data, status } = res

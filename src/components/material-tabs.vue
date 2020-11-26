@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-25 15:06:55
+ * @LastEditTime: 2020-11-26 20:39:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -205,7 +205,6 @@ export default {
   },
   methods: {
     getFileList() {
-      console.log(this.m_high_limit)
       getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, this.m_high_limit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {

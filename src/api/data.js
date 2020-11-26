@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:44:46
- * @LastEditTime: 2020-11-25 15:08:02
+ * @LastEditTime: 2020-11-26 20:40:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\api\data.js
@@ -9,11 +9,11 @@
 import axios from '@/libs/api.request'
 
 //获取文件下项目
-export const getFileList = (baseUrl, type, path_id, num, page, high_code_rate_limit) => {
+export const getFileList = (baseUrl, type, path_id, num, page, highCodeRateStandardLimit) => {
   let args = {
     num,
     page,
-    high_code_rate_limit
+    highCodeRateStandardLimit
   }
   return axios.request({
     url: baseUrl+'folder/'+path_id+'/'+type+'-files',
