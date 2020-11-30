@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 17:21:18
+ * @LastEditTime: 2020-11-30 17:36:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -140,6 +140,7 @@ export default {
       this.modal = this.modalKey
     },
     highLimit() {
+      console.log('prop', this.highLimit)
       this.m_high_limit = this.highLimit
     }
   },
@@ -201,6 +202,10 @@ export default {
         this.ws.close();
       }
     });
+  },
+  destroyed () {
+    Bus.$off('openModal');
+    Bus.$off('closeModal')
   },
   methods: {
     getFileList() {
