@@ -174,6 +174,7 @@ export default {
                     that.$emit('success', file, res)
                   } else {
                     that.$Message.error(data.msg)
+                    this.$emit('uploadError', file, res)
                   }
                   task.resolve()
                 }).catch(err => {
