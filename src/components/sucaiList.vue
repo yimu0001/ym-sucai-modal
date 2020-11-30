@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-11-09 17:58:47
+ * @LastEditTime: 2020-11-30 16:24:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -81,7 +81,6 @@ export default {
   },
   watch: {
     list() {
-      console.log(this.list)
       this.materialList = this.list;
     },
     type() {

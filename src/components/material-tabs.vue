@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-26 20:39:30
+ * @LastEditTime: 2020-11-30 16:21:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -126,7 +126,6 @@ export default {
       this.choosedMaterials = [];
       this.uploadVideoUrl = '';
       this.showPreview = false;
-      // this.getFileList()
     },
     materialVal() {
       this.page = 1;
@@ -189,6 +188,7 @@ export default {
       this.path_id = 0;
       this.materialType = type;
       this.materialVal = 'materialVal1';
+      console.log('dakaimodal')
       this.getFileList();
       this.choosedMaterials = [];
     });
