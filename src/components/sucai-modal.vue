@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-30 18:04:27
+ * @LastEditTime: 2020-11-30 18:16:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -158,6 +158,7 @@ export default {
         this.$emit('chooseVideoOk', this.choosedMaterials);
         this.materialType = 'coverImg';
         this.choosedMaterials = [];
+        console.log('ok0----')
         Bus.$emit('openModal', 'image');
       } else if (this.materialType == 'coverImg') {
         this.$emit('chooseCoverOk', this.choosedMaterials);
@@ -171,8 +172,10 @@ export default {
       this.$emit('handleMaterialModalCancle');
     },
     changeShow(status) {
+      console.log('changeShow-status', status)
       if (status) {
         this.materialType = this.type;
+        console.log('changeShow', this.type)
         Bus.$emit('openModal', this.type);
       } else {
         Bus.$emit('closeModal');

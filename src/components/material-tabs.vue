@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 18:04:38
+ * @LastEditTime: 2020-11-30 18:17:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -188,11 +188,12 @@ export default {
       this.path_id = 0;
       this.materialType = type;
       this.materialVal = 'materialVal1';
-      console.log('dakaimodal', this.m_high_limit)
+      console.log('dakaimodal',this.highLimit, this.m_high_limit)
       this.getFileList();
       this.choosedMaterials = [];
     });
     Bus.$on('closeModal', () => {
+      console.log('closeModal')
       this.choosedMaterials = [];
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
@@ -205,6 +206,7 @@ export default {
   },
   methods: {
     getFileList() {
+      console.log('getFileList---', this.highLimit, this.m_high_limit)
       getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, this.m_high_limit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
