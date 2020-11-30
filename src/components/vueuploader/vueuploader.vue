@@ -160,6 +160,7 @@ export default {
       this.$emit('error', errorMessage)
     },
     uploadError (file, reason) {
+      console.log(file, reason)
       $(`.file-${file.id} .progress`).css('background', '#ff9900')
 
       $(`.file-${file.id} .file-status`).html('上传失败')
