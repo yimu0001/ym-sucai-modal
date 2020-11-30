@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-25 14:45:32
+ * @LastEditTime: 2020-11-30 18:34:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
 --> 
 <template>
   <div class="home">
-    <button @click="openModal('image')">打开图片modal</button>
-    <button @click="openModal('video')">打开视频modal</button>
-    <button @click="openModal('voice')">打开音频modal</button>
+    <button @click="openModal1('image')">打开图片modal</button>
+    <button @click="openModal1('video')">打开视频modal</button>
+    <button @click="openModal1('voice')">打开音频modal</button>
     <h2>已选选项</h2>
     <div class="formItem">
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item.url}}</div>
@@ -49,7 +49,7 @@ export default {
     };
   },
   methods: {
-    openModal(type) {
+    openModal1(type) {
       this.baseUrl = 'https://sucai.shandian.design/'
       if(type == 'image'){
         this.fileLimitNum = 3

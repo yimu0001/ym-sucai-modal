@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-11-30 18:05:57
+ * @LastEditTime: 2020-11-30 18:39:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -114,7 +114,7 @@ export default {
     },
   },
   mounted() {
-    Bus.$on('openModal', () => {
+    Bus.$on('openModal', (args) => {
       this.choosedMaterials = [];
     });
     // Bus.$on('openModal', () => {

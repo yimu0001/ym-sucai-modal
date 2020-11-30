@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 18:17:52
+ * @LastEditTime: 2020-11-30 18:39:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -35,7 +35,7 @@
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
           :accept="materialType"
-          :highLimit='m_high_limit'
+          :highLimit='highLimit'
           compress="false"
           ref="vueUploader"
           v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
@@ -139,10 +139,6 @@ export default {
     modalKey() {
       this.modal = this.modalKey
     },
-    highLimit() {
-      console.log('prop', this.highLimit)
-      this.m_high_limit = this.highLimit
-    }
   },
   components: {
     SucaiList,
@@ -179,21 +175,18 @@ export default {
       cutTUrls: [],
       ws_transcode: null, //webSocket所用
       wsInterval_transcode: undefined,
-      m_high_limit: this.highLimit
     };
   },
   mounted() {
-    Bus.$on('openModal', (type) => {
+    Bus.$on('openModal', (args) => {
       this.sucaiList = [];
       this.path_id = 0;
-      this.materialType = type;
+      this.materialType = args.type;
       this.materialVal = 'materialVal1';
-      console.log('dakaimodal',this.highLimit, this.m_high_limit)
-      this.getFileList();
+      this.getFileList(args.highLimit);
       this.choosedMaterials = [];
     });
     Bus.$on('closeModal', () => {
-      console.log('closeModal')
       this.choosedMaterials = [];
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
@@ -205,9 +198,8 @@ export default {
     });
   },
   methods: {
-    getFileList() {
-      console.log('getFileList---', this.highLimit, this.m_high_limit)
-      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, this.m_high_limit)
+    getFileList(highLimit) {
+      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, highLimit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
             sucai.choosed = false;
@@ -251,7 +243,7 @@ export default {
       }
     },
     saveFileToStore(info) {
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.m_high_limit)
+      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
