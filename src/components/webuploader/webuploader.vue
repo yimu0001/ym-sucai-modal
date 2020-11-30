@@ -172,9 +172,9 @@ export default {
                   if (status === 200) {
                     console.log(res)
                     that.$emit('success', file, res)
-                  } else {
+                  }else {
                     that.$Message.error(data.msg)
-                    this.$emit('uploadError', file, res)
+                    this.$emit('uploadError', file, data.msg)
                   }
                   task.resolve()
                 }).catch(err => {
