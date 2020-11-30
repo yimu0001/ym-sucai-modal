@@ -321,7 +321,7 @@ export default {
       }
       if (accept.search('video') != -1) {
         title = title.concat('Videos')
-        extensions = this.concat(extensions, 'mp4')
+        extensions = this.concat(extensions, 'mp4,mxf')
         mimeTypes = this.concat(mimeTypes, 'video/mp4')
       }
       if (accept.search('text') != -1) {

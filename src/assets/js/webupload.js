@@ -1591,6 +1591,8 @@
       if (!source.type && this.ext &&
         ~'jpg,jpeg,png,gif,bmp'.indexOf(this.ext)) {
         this.type = 'image/' + (this.ext === 'jpg' ? 'jpeg' : this.ext)
+      } else if(this.ext == 'mxf') {
+        this.type = 'application/mxf'
       } else {
         this.type = source.type || 'application/octet-stream'
       }
