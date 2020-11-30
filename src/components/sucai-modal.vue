@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-25 14:26:37
+ * @LastEditTime: 2020-11-30 16:37:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -173,6 +173,7 @@ export default {
     changeShow(status) {
       if (status) {
         this.materialType = this.type;
+        console.log('打开changeShow')
         Bus.$emit('openModal', this.type);
       } else {
         Bus.$emit('closeModal');

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 16:21:45
+ * @LastEditTime: 2020-11-30 16:30:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -135,7 +135,6 @@ export default {
     },
     baseUrl() {
       console.log(this.baseUrl)
-      
     },
     modalKey() {
       this.modal = this.modalKey
