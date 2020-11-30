@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-30 17:46:37
+ * @LastEditTime: 2020-11-30 18:04:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -176,8 +176,6 @@ export default {
         Bus.$emit('openModal', this.type);
       } else {
         Bus.$emit('closeModal');
-        Bus.$off('openModal');
-        Bus.$off('closeModal')
       }
     },
     start_transcode(id) {
