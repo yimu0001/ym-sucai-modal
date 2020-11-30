@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-11-09 17:58:47
+ * @LastEditTime: 2020-11-30 11:40:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -136,7 +136,7 @@ export default {
           _this.$set(this.materialList[index], 'choosed', true);
           _this.choosedMaterials.push(item);
           if (_this.materialType === 'video') {
-            _this.initWebSocket(item.id);
+            _this.initWebSocket('file_id', item.id);
           }
           Bus.$emit('doMaterials', _this.choosedMaterials);
         }
@@ -202,7 +202,7 @@ export default {
     chooseFolder(array, attr) {
       this.$emit('chooseFolder', attr.id);
     },
-    initWebSocket(id) {
+    initWebSocket(ident_type, ident) {
       let _this = this;
       let websocketPath = _this.websocketUrl + 'socket.io ';
       _this.ws = new WebSocket(websocketPath);
@@ -212,7 +212,11 @@ export default {
           //当WebSocket创建成功时，触发onopen事件
           let item = {
             type: 'receive',
-            file_id: id,
+            version: 2.00,
+            request: {
+              ident_type: ident_type,
+              ident : ident
+            }
           };
           ws.send(JSON.stringify(item)); //将消息发送到服务端
           _this.wsInterval = setInterval(() => {

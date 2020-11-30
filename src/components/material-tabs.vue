@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-26 20:39:30
+ * @LastEditTime: 2020-11-30 14:25:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -256,7 +256,7 @@ export default {
             if (this.materialType === 'video') {
               this.choosedMaterials.push(info);
               Bus.$emit('doMaterials', this.choosedMaterials);
-              this.initWebSocket(res.data.data.id);
+              this.initWebSocket('file_id', res.data.data.id);
               this.checkIsTranscode(res.data.data.id);
             }
           } else {
@@ -268,7 +268,7 @@ export default {
         });
     },
     //采用socket通信来获取封面抽帧
-    initWebSocket(id) {
+    initWebSocket(ident_type, ident) {
       let _this = this;
       let websocketPath = _this.websocketUrl + 'socket.io ';
       _this.ws = new WebSocket(websocketPath);
@@ -278,7 +278,11 @@ export default {
           //当WebSocket创建成功时，触发onopen事件
           let item = {
             type: 'receive',
-            file_id: id,
+            version: 2.00,
+            request: {
+              ident_type: ident_type,
+              ident : ident
+            }
           };
           ws.send(JSON.stringify(item)); //将消息发送到服务端
           _this.wsInterval = setInterval(() => {
@@ -403,6 +407,7 @@ export default {
         };
         this.choosedMaterials[0] = item;
         this.showPreview = true;
+        this.initWebSocket('url ', this.uploadVideoUrl);
         Bus.$emit('doMaterials', this.choosedMaterials);
       } else {
         Message.error('请填写https协议视频');

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-25 14:45:32
+ * @LastEditTime: 2020-11-30 15:34:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -11,6 +11,9 @@
     <button @click="openModal('image')">打开图片modal</button>
     <button @click="openModal('video')">打开视频modal</button>
     <button @click="openModal('voice')">打开音频modal</button>
+    <div>
+      <Checkbox v-model="videoHighLimit">素材可在电视播出</Checkbox>
+    </div>
     <h2>已选选项</h2>
     <div class="formItem">
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item.url}}</div>
@@ -25,10 +28,12 @@
 <script>
 // @ is an alias to /src
 import SucaiModal from '@/components/sucai-modal.vue'
+import { Checkbox } from 'iview'
 export default {
   name: 'Home',
   components: {
-    SucaiModal
+    SucaiModal,
+    Checkbox
   },
   data() {
     return {
@@ -38,7 +43,12 @@ export default {
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
       material_baseUrl: '',
-      highLimit: '1'
+      videoHighLimit: false
+    }
+  },
+  computed: {
+    highLimit() {
+      return this.videoHighLimit? '1': '0'
     }
   },
   mounted () {
