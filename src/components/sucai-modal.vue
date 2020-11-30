@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-30 16:37:12
+ * @LastEditTime: 2020-11-30 16:58:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -158,6 +158,7 @@ export default {
         this.$emit('chooseVideoOk', this.choosedMaterials);
         this.materialType = 'coverImg';
         this.choosedMaterials = [];
+        console.log('zheshiok')
         Bus.$emit('openModal', 'image');
       } else if (this.materialType == 'coverImg') {
         this.$emit('chooseCoverOk', this.choosedMaterials);
