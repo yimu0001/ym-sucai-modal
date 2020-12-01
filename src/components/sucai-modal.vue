@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-12-01 11:00:43
+ * @LastEditTime: 2020-12-01 14:24:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -47,6 +47,7 @@ import '@/index.less';
 import config from '@/config';
 import Bus from '../libs/bus';
 import { checkIsTranscode } from '@/api/data'
+import Cookies from 'js-cookie'
 export default {
   name: 'sucaiModal',
   props: {
@@ -186,7 +187,12 @@ export default {
     },
     start_transcode(id) {
       console.log('转码');
-      this.$emit('start_transcode', id);
+      let orgId = Cookies.get('orgId')
+      if(orgId && orgId == '10339' && this.high_code_rate_limit == '0'){
+        console.log('这是融媒体,并且没开电视播放，不转码')
+      } else {
+        this.$emit('start_transcode', id);
+      }
     },
     checkIsTranscode(id) {
       checkIsTranscode(this.baseUrl)
@@ -194,7 +200,12 @@ export default {
           let mSwitch = res.data.data.switch;
           if (mSwitch) {
             // this.initTranscodeWs(id)
-            this.$emit('start_transcode', id);
+            let orgId = Cookies.get('orgId')
+            if(orgId && orgId == '10339' && this.high_code_rate_limit == '0'){
+              console.log('这是融媒体,并且没开电视播放，不转码')
+            } else {
+              this.$emit('start_transcode', id);
+            }
           }
         })
         .catch((err) => {
