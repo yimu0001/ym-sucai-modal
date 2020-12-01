@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-30 18:34:17
+ * @LastEditTime: 2020-12-01 10:56:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -38,7 +38,7 @@ export default {
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
       material_baseUrl: '',
-      highLimit: '1'
+      highLimit: '0'
     }
   },
   mounted () {

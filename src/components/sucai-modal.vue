@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-11-30 18:38:24
+ * @LastEditTime: 2020-12-01 11:00:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -46,6 +46,7 @@ import { Button, Modal, Message } from 'view-design';
 import '@/index.less';
 import config from '@/config';
 import Bus from '../libs/bus';
+import { checkIsTranscode } from '@/api/data'
 export default {
   name: 'sucaiModal',
   props: {
@@ -156,6 +157,7 @@ export default {
       }
       if (this.materialType == 'video') {
         this.$emit('chooseVideoOk', this.choosedMaterials);
+        this.checkIsTranscode(this.choosedMaterials[0].id)
         this.materialType = 'coverImg';
         this.choosedMaterials = [];
         let params = {type: 'image', highLimit: this.high_code_rate_limit}
@@ -186,6 +188,19 @@ export default {
       console.log('转码');
       this.$emit('start_transcode', id);
     },
+    checkIsTranscode(id) {
+      checkIsTranscode(this.baseUrl)
+        .then((res) => {
+          let mSwitch = res.data.data.switch;
+          if (mSwitch) {
+            // this.initTranscodeWs(id)
+            this.$emit('start_transcode', id);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>
