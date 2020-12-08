@@ -165,20 +165,28 @@ export default {
                 let params = {
                   uuid: that.uploadId,
                   file_MD5: val,
-                  video_high_code_rate_limit: this.highLimit
+                  video_high_code_rate_limit: that.highLimit
                 }
                 uploadFinish(that.baseUrl, params).then(res => {
                   let { data, status } = res
                   if (status === 200) {
-                    console.log(res)
                     that.$emit('success', file, res)
-                  } else {
-                    that.$Message.error(data.msg)
+                  }else {
+                    console.log(data.msg)
+                    let errorMessage = data.msg
+                    that.$emit('error', errorMessage)
+                    that.$emit('uploadError', file, data.msg)
                   }
                   task.resolve()
                 }).catch(err => {
-                  task.resolve()
-                  that.$Message.error(err)
+                  if(that.highLimit == '1'){
+                    let errorMessage = '上传失败，请检查是否是视频码率过低'
+                    that.$emit('error', errorMessage)
+                  }
+                  that.$emit('uploadError', file, err)
+                  // that.$Message.error(err)
+                  // task.resolve()
+
                 })
               })
             }
@@ -320,8 +328,8 @@ export default {
       }
       if (accept.search('video') != -1) {
         title = title.concat('Videos')
-        extensions = this.concat(extensions, 'mp4')
-        mimeTypes = this.concat(mimeTypes, 'video/mp4')
+        extensions = this.concat(extensions, 'mp4,mxf')
+        mimeTypes = this.concat(mimeTypes, 'video/mp4,application/*,application/mxf')
       }
       if (accept.search('text') != -1) {
         title = title.concat('texts')

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-11-30 11:40:12
+ * @LastEditTime: 2020-12-08 17:25:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -81,7 +81,6 @@ export default {
   },
   watch: {
     list() {
-      console.log(this.list)
       this.materialList = this.list;
     },
     type() {
@@ -115,7 +114,7 @@ export default {
     },
   },
   mounted() {
-    Bus.$on('openModal', () => {
+    Bus.$on('openModal', (args) => {
       this.choosedMaterials = [];
     });
     // Bus.$on('openModal', () => {
@@ -212,7 +211,7 @@ export default {
           //当WebSocket创建成功时，触发onopen事件
           let item = {
             type: 'receive',
-            version: 2.00,
+            version: '2.00',
             request: {
               ident_type: ident_type,
               ident : ident

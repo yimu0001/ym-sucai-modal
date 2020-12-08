@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2020-11-30 15:34:12
+ * @LastEditTime: 2020-12-08 17:12:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -20,7 +20,7 @@
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
     @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'
-    @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit'
+    @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/'
     ></sucai-modal>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
       choosedMaterials: [],
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
-      material_baseUrl: '',
+      material_baseUrl: 'https://shandianyun-sck.iqilu.com/',
       videoHighLimit: false
     }
   },
@@ -52,11 +52,11 @@ export default {
     }
   },
   mounted () {
-    if(process.env.NODE_ENV === 'development'){
-      this.material_baseUrl = 'https://sucai.shandian.design/'
-    } else {
-      this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/'
-    };
+    // if(process.env.NODE_ENV === 'development'){
+    //   this.material_baseUrl = 'https://sucai.shandian.design/'
+    // } else {
+    //   this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/'
+    // };
   },
   methods: {
     openModal(type) {

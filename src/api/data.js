@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:44:46
- * @LastEditTime: 2020-11-26 20:40:09
+ * @LastEditTime: 2020-11-30 15:58:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \files\api\data.js
@@ -32,14 +32,14 @@ export const getFolders = (baseUrl, type, path_id) => {
 
 
 //其他模块文件入库
-export const saveFileToStore = (baseUrl, type, url, from, high_code_rate_limit) => {
+export const saveFileToStore = (baseUrl, type, url, from, red_soft_process) => {
   return axios.request({
     url: baseUrl+'file/'+type,
     method: 'post',
     data:{
       url: url,
       from: from,
-      high_code_rate_limit
+      red_soft_process
     }
   })
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 14:25:21
+ * @LastEditTime: 2020-12-08 17:35:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -35,7 +35,7 @@
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
           :accept="materialType"
-          :highLimit='m_high_limit'
+          :highLimit='highLimit'
           compress="false"
           ref="vueUploader"
           v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
@@ -126,7 +126,6 @@ export default {
       this.choosedMaterials = [];
       this.uploadVideoUrl = '';
       this.showPreview = false;
-      // this.getFileList()
     },
     materialVal() {
       this.page = 1;
@@ -136,14 +135,10 @@ export default {
     },
     baseUrl() {
       console.log(this.baseUrl)
-      
     },
     modalKey() {
       this.modal = this.modalKey
     },
-    highLimit() {
-      this.m_high_limit = this.highLimit
-    }
   },
   components: {
     SucaiList,
@@ -180,16 +175,15 @@ export default {
       cutTUrls: [],
       ws_transcode: null, //webSocket所用
       wsInterval_transcode: undefined,
-      m_high_limit: this.highLimit
     };
   },
   mounted() {
-    Bus.$on('openModal', (type) => {
+    Bus.$on('openModal', (args) => {
       this.sucaiList = [];
       this.path_id = 0;
-      this.materialType = type;
+      this.materialType = args.type;
       this.materialVal = 'materialVal1';
-      this.getFileList();
+      this.getFileList(args.highLimit);
       this.choosedMaterials = [];
     });
     Bus.$on('closeModal', () => {
@@ -204,8 +198,8 @@ export default {
     });
   },
   methods: {
-    getFileList() {
-      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, this.m_high_limit)
+    getFileList(highLimit) {
+      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, highLimit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
             sucai.choosed = false;
@@ -219,7 +213,7 @@ export default {
     },
     changePage(currentPage) {
       this.page = currentPage;
-      this.getFileList();
+      this.getFileList(this.highLimit);
     },
     handleClickTabs(name) {
       this.materialVal = name;
@@ -227,7 +221,7 @@ export default {
     chooseFolder(path_id) {
       this.path_id = path_id;
       this.page = 1;
-      this.getFileList();
+      this.getFileList(this.highLimit);
     },
     // 文件上传
     uploadOnImgError(errorMessage) {
@@ -249,7 +243,7 @@ export default {
       }
     },
     saveFileToStore(info) {
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.m_high_limit)
+      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
@@ -278,7 +272,7 @@ export default {
           //当WebSocket创建成功时，触发onopen事件
           let item = {
             type: 'receive',
-            version: 2.00,
+            version: '2.00',
             request: {
               ident_type: ident_type,
               ident : ident
@@ -407,7 +401,7 @@ export default {
         };
         this.choosedMaterials[0] = item;
         this.showPreview = true;
-        this.initWebSocket('url ', this.uploadVideoUrl);
+        this.initWebSocket('url', this.uploadVideoUrl);
         Bus.$emit('doMaterials', this.choosedMaterials);
       } else {
         Message.error('请填写https协议视频');
