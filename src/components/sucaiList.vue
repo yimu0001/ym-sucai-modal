@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-11-30 18:39:29
+ * @LastEditTime: 2020-12-04 17:43:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -199,7 +199,6 @@ export default {
     },
     getSize: (item) => renderSize(item),
     chooseFolder(array, attr) {
-      console.log('触发没有')
       this.$emit('chooseFolder', attr.id);
     },
     initWebSocket(id) {

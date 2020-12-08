@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-11-30 18:39:20
+ * @LastEditTime: 2020-12-04 17:54:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -213,7 +213,7 @@ export default {
     },
     changePage(currentPage) {
       this.page = currentPage;
-      this.getFileList();
+      this.getFileList(this.highLimit);
     },
     handleClickTabs(name) {
       this.materialVal = name;
@@ -221,7 +221,7 @@ export default {
     chooseFolder(path_id) {
       this.path_id = path_id;
       this.page = 1;
-      this.getFileList();
+      this.getFileList(this.highLimit);
     },
     // 文件上传
     uploadOnImgError(errorMessage) {
