@@ -203,12 +203,12 @@ export default {
           label: ''
         },
         accept: that.getAccept(that.accept), // 允许选择文件格式。
-        threads: 1,
+        threads: 5,
         fileNumLimit: that.fileNumLimit, // 限制上传个数
         // fileSingleSizeLimit: that.fileSingleSizeLimit, // 限制单个上传图片的大小
         formData: that.formData, // 上传所需参数
         chunked: true, // 分片上传
-        chunkSize: 5 * 1024 * 1024, // 分片大小5 * 1024 * 1024
+        chunkSize: 10 * 1024 * 1024, // 分片大小5 * 1024 * 1024
         duplicate: true, // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key.
         chunkRetry: 2, // 重试次数
         index: that.uploader_index
