@@ -161,10 +161,10 @@ export default {
               if (that.uploader.options.index != current_uploader_index - 1) {
                 return false
               }
-              that.uploader.md5File(file).then(val => {
+              // that.uploader.md5File(file).then(val => {
                 let params = {
                   uuid: that.uploadId,
-                  file_MD5: val,
+                  // file_MD5: val,
                   video_high_code_rate_limit: that.highLimit
                 }
                 uploadFinish(that.baseUrl, params).then(res => {
@@ -172,7 +172,6 @@ export default {
                   if (status === 200) {
                     that.$emit('success', file, res)
                   }else {
-                    console.log(data.msg)
                     let errorMessage = data.msg
                     that.$emit('error', errorMessage)
                     that.$emit('uploadError', file, data.msg)
@@ -188,7 +187,7 @@ export default {
                   // task.resolve()
 
                 })
-              })
+              // })
             }
             return $.when(task)
           }
@@ -338,7 +337,7 @@ export default {
       }
       if (accept.search('voice') != -1) {
         title = title.concat('Voicess')
-        extensions = this.concat(extensions, 'mp3')
+        extensions = this.concat(extensions, 'mp3,wav')
         mimeTypes = this.concat(mimeTypes, 'voice/mp3')
       }
       return {

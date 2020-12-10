@@ -4087,12 +4087,12 @@
         // 如果默认的字段不够使用，可以通过监听此事件来扩展
         owner.trigger('uploadBeforeSend', block, data, headers)
         // 计算分片MD5
-        var chunkSize = owner.option.chunkSize
+        // var chunkSize = owner.option.chunkSize
 
-        var chunkMD5Fun = owner.md5File(block.file, block.start, block.end)
-        chunkMD5Fun.then(function (chunk_md5) {
+        // var chunkMD5Fun = owner.md5File(block.file, block.start, block.end)
+        // chunkMD5Fun.then(function (chunk_md5) {
           // data == body
-          data.chunkMD5 = chunk_md5
+          // data.chunkMD5 = chunk_md5
           // 开始发送。
 
           /**
@@ -4125,7 +4125,7 @@
           //    tr.setRequestHeader(headers)
           //    tr.send()
           //  }
-          })
+          // })
         },
 
       // 完成上传。
