@@ -113,7 +113,7 @@ export default {
                 let { current_chunk, extra, status } = res.data.data
                 if (status === '1') {
                   file.current_chunk = res.data.data.current_chunk
-                  that.uploadId = res.data.data.uuid
+                  file.uploadId = res.data.data.uuid
                 } else if (status === '2') {
                   // that.stop(file)
                   that.uploader.skipFile(file)
@@ -163,7 +163,7 @@ export default {
               }
               // that.uploader.md5File(file).then(val => {
                 let params = {
-                  uuid: that.uploadId,
+                  uuid: file.uploadId,
                   // file_MD5: val,
                   video_high_code_rate_limit: that.highLimit
                 }
@@ -239,7 +239,7 @@ export default {
         headers.token = getToken()
         headers.platform = 'PC'
         // headers.FileType = object.blob.type
-        data.uuid = this.uploadId
+        data.uuid = object.file.uploadId
       })
 
       that.uploader.on('uploadgetMd5Before', file => {
