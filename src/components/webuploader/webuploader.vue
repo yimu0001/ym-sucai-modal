@@ -131,10 +131,21 @@ export default {
                   that.$emit('success', file, file_responent)
                 }
               } else {
-                this.$emit('uploadError', file, res)
+                // that.$Message.error({
+                //     content: res.data.msg,
+                //     duration: 7
+                // });
+                that.$emit('uploadError', file, res)
               }
             }).catch(err => {
-              console.log(err)
+              console.log(err.response)
+              let errData = err.response.data
+              console.log(that.$Message)
+              // that.$Message.error({
+              //   content: errData.msg,
+              //   duration: 7
+              // })
+              that.$emit('error', errData.msg)
             })
           },
           // 开始上传分片触发
@@ -265,6 +276,7 @@ export default {
       })
 
       that.uploader.on('uploadError', (file, reason) => {
+        console.log('上传失败', reason)
         that.$emit('uploadError', file, reason)
       })
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2020-12-01 14:24:11
+ * @LastEditTime: 2020-12-17 15:28:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -175,7 +175,6 @@ export default {
       this.$emit('handleMaterialModalCancle');
     },
     changeShow(status) {
-      console.log('changeShow-status', status)
       if (status) {
         this.materialType = this.type;
         console.log('changeShow', this.type)

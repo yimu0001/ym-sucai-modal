@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2020-12-10 14:32:38
+ * @LastEditTime: 2021-01-05 17:45:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -225,7 +225,10 @@ export default {
     },
     // 文件上传
     uploadOnImgError(errorMessage) {
-      Message.error(errorMessage);
+      Message.error({
+        content: errorMessage,
+        duration: 7
+      });
     },
     uploadOnSuccess(res, data) {
       let extra = data.data.data;
@@ -389,8 +392,11 @@ export default {
       clearInterval(this.wsInterval)
       this.cutTUrls = [];
     },
-    uploadImgError(errorMessage) {
-      console.log(errorMessage);
+    uploadImgError(file, errorMessage) {
+      // Message.error({
+      //   content: errorMessage,
+      //   duration: 7
+      // });
     },
     // 视频插入预览
     previewVideo() {
