@@ -114,12 +114,10 @@ export default {
     },
   },
   mounted() {
-    Bus.$on('openModal', (args) => {
-      this.choosedMaterials = [];
-    });
-    // Bus.$on('openModal', () => {
-    //   this.getFolders()
-    // })
+    // Bus.$on('openModal', (args) => {
+    //   this.choosedMaterials = [];
+    // });
+
     this.getFolders();
   },
   methods: {
@@ -149,6 +147,9 @@ export default {
           console.error('逻辑错误', order);
         }
       }
+    },
+    clearChoosed() {
+      this.choosedMaterials = [];
     },
     getFolders(item, callback) {
       if (item) {

@@ -18,6 +18,7 @@
     >
       <div>
         <material-tabs
+          ref="materialTabs"
           :type="materialType"
           :fileLimitNum="fileLimitNum"
           :modalKey="modal"
@@ -82,6 +83,7 @@ export default {
   },
   watch: {
     modalKey() {
+      console.log('modal变了')
       this.modal = this.modalKey;
     },
     type() {
@@ -120,7 +122,8 @@ export default {
       },
       choosedMaterials: [],
       materialType: this.type,
-      m_high_code_rate_limit: this.high_code_rate_limit
+      m_high_code_rate_limit: this.high_code_rate_limit,
+      showComs: false
     };
   },
   computed: {
@@ -162,7 +165,8 @@ export default {
         this.materialType = 'coverImg';
         this.choosedMaterials = [];
         let params = {type: 'image', highLimit: this.high_code_rate_limit}
-        Bus.$emit('openModal', params);
+        // Bus.$emit('openModal', params);
+        this.$refs.materialTabs.watchOpenModal('image', this.high_code_rate_limit)
       } else if (this.materialType == 'coverImg') {
         this.$emit('chooseCoverOk', this.choosedMaterials);
         this.choosedMaterials = [];
@@ -177,11 +181,13 @@ export default {
     changeShow(status) {
       if (status) {
         this.materialType = this.type;
-        console.log('changeShow', this.type)
         let params = {type: this.type, highLimit: this.high_code_rate_limit}
-        Bus.$emit('openModal', params);
+        // Bus.$emit('openModal', params);
+        console.log(this.$refs.materialTabs)
+        this.$refs.materialTabs.watchOpenModal(this.type, this.high_code_rate_limit)
       } else {
-        Bus.$emit('closeModal');
+        this.$refs.materialTabs.watchCloseModal(this.type, this.high_code_rate_limit)
+        // Bus.$emit('closeModal');
       }
     },
     start_transcode(id) {

@@ -11,6 +11,7 @@
     <Tabs :value="materialVal" @on-click="handleClickTabs">
       <TabPane label="素材库" name="materialVal1">
         <sucai-list
+          ref="sucaiList"
           :list="sucaiList"
           :maxNum="fileLimitNum"
           @chooseFolder="chooseFolder"
@@ -210,6 +211,28 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    //打开窗口方法
+    watchOpenModal(type, highLimit) {
+      this.sucaiList = [];
+      this.path_id = 0;
+      console.log(this.materialType, type)
+      this.materialType = type;
+      this.materialVal = 'materialVal1';
+      this.getFileList(highLimit);
+      this.choosedMaterials = [];
+      this.$refs.sucaiList.clearChoosed()
+    },
+    watchCloseModal(){
+      this.choosedMaterials = [];
+      this.cutTUrls = [];
+      clearInterval(this.wsInterval);
+      clearInterval(this.wsInterval_transcode);
+      this.$refs.vueUploader && this.$refs.vueUploader.destroy()
+      if (this.ws) {
+        this.ws.close();
+      }
     },
     changePage(currentPage) {
       this.page = currentPage;
