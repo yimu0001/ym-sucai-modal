@@ -20,7 +20,7 @@
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
     @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'
-    @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/'
+    @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/' :showPictureOfArticle='showPictureOfArticle'
     ></sucai-modal>
   </div>
 </template>
@@ -43,7 +43,8 @@ export default {
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
       material_baseUrl: 'https://shandianyun-sck.iqilu.com/',
-      videoHighLimit: false
+      videoHighLimit: false,
+      showPictureOfArticle: false
     }
   },
   computed: {
@@ -63,6 +64,7 @@ export default {
       this.baseUrl = 'https://sucai.shandian.design/'
       if(type == 'image'){
         this.fileLimitNum = 3
+        // this.showPictureOfArticle = true
       }
       this.type = type
       this.modalKey = true

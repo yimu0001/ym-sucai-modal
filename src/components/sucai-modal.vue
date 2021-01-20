@@ -27,6 +27,7 @@
           :websocketUrl="websocketUrl"
           :highLimit="m_high_code_rate_limit"
           @start_transcode="start_transcode"
+          :showPictureOfArticle='articleCover'
         >
         </material-tabs>
       </div>
@@ -79,6 +80,10 @@ export default {
     high_code_rate_limit: {
       type: String | Number,
       default: '0'
+    },
+    showPictureOfArticle: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -94,6 +99,9 @@ export default {
     },
     high_code_rate_limit() {
       this.m_high_code_rate_limit = this.high_code_rate_limit
+    },
+    showPictureOfArticle() {
+      this.articleCover = this.showPictureOfArticle
     }
   },
   components: {
@@ -123,7 +131,8 @@ export default {
       choosedMaterials: [],
       materialType: this.type,
       m_high_code_rate_limit: this.high_code_rate_limit,
-      showComs: false
+      showComs: false,
+      articleCover: this.showPictureOfArticle
     };
   },
   computed: {

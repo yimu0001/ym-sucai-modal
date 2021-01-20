@@ -60,6 +60,14 @@
       <TabPane label="抽帧图片" name="materialVal4" v-if="type == 'coverImg'">
         <CoverList :list="cutTUrls"></CoverList>
       </TabPane>
+      <TabPane label="文章内图片" name="materialVal5" v-if="showPictureOfArticle && (type=='image')">
+        <CoverList :list="pictures_tabs5"></CoverList>
+        <Row>
+          <i-col offset="5" class="cutPageDom" span="18">
+            <Page :total="total5" show-elevator @on-change="changePage5" :page-size= '10' />
+          </i-col>
+        </Row>
+      </TabPane>
     </Tabs>
   </div>
 </template>
@@ -69,6 +77,7 @@ import { getFileList, saveFileToStore, checkIsTranscode } from '@/api/data';
 import SucaiList from './sucaiList';
 import CoverList from './coverList';
 import VueUploader from '_c/vueuploader/index.js';
+import Cookies from 'js-cookie'
 import {
   Tabs,
   TabPane,
@@ -115,6 +124,10 @@ export default {
     highLimit:{
       type: String | Number,
       default: '0'
+    },
+    showPictureOfArticle: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -140,6 +153,11 @@ export default {
     modalKey() {
       this.modal = this.modalKey
     },
+    showPictureOfArticle() {
+      if(this.showPictureOfArticle){
+        this.getPicturesOfArticle()
+      }
+    }
   },
   components: {
     SucaiList,
@@ -176,6 +194,9 @@ export default {
       cutTUrls: [],
       ws_transcode: null, //webSocket所用
       wsInterval_transcode: undefined,
+      picturesOfTheArticle: [],//文章内图片总数
+      pictures_tabs5: [],//文章内图片展示数量
+      total5: 1
     };
   },
   mounted() {
@@ -385,6 +406,39 @@ export default {
     //素材库选中 获取抽帧
     cutTimePic(list) {
       this.cutTUrls = this.cutTUrls.concat(list);
+    },
+    //获取文章内图片总数
+    getPicturesOfArticle() {
+      let imgs = JSON.parse(Cookies.get('picturesOftheArticle'))
+      let imgData = imgs.map((img, imgIndex) => {
+        let imgItem = {
+          name:  `文章内图片${imgIndex+1}`,
+          url: img
+        }
+        return imgItem
+      })
+      console.log(imgData)
+      this.picturesOfTheArticle = this.cutPages(imgData)
+      this.total5 = this.picturesOfTheArticle.length
+      this.pictures_tabs5 = this.picturesOfTheArticle[0]
+      console.log(this.pictures_tabs5)
+    },
+    //文章内图片页码改变
+    changePage5(currentPage) {
+      this.total5 = currentPage
+      this.pictures_tabs5 = this.picturesOfTheArticle[currentPage]
+    },
+    //图片分页
+    cutPages (data) {
+      const pages = []
+      data.forEach((res, index) => {
+        const page = Math.floor(index / 10)
+        if (!pages[page]) {
+          pages[page] = []
+        }
+        pages[page].push(res)
+      })
+      return pages
     },
   },
 };
