@@ -64,7 +64,7 @@ export default {
       this.baseUrl = 'https://sucai.shandian.design/'
       if(type == 'image'){
         this.fileLimitNum = 3
-        // this.showPictureOfArticle = true
+        this.showPictureOfArticle = true
       }
       this.type = type
       this.modalKey = true

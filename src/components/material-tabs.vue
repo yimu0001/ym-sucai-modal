@@ -153,11 +153,6 @@ export default {
     modalKey() {
       this.modal = this.modalKey
     },
-    showPictureOfArticle() {
-      if(this.showPictureOfArticle){
-        this.getPicturesOfArticle()
-      }
-    }
   },
   components: {
     SucaiList,
@@ -244,6 +239,7 @@ export default {
       this.getFileList(highLimit);
       this.choosedMaterials = [];
       this.$refs.sucaiList.clearChoosed()
+      this.showPictureOfArticle && this.getPicturesOfArticle()
     },
     watchCloseModal(){
       this.choosedMaterials = [];
