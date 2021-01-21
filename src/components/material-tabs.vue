@@ -153,6 +153,10 @@ export default {
     modalKey() {
       this.modal = this.modalKey
     },
+    showPictureOfArticle() {
+      this.articleCover = this.showPictureOfArticle
+      this.showPictureOfArticle && this.getPicturesOfArticle()
+    }
   },
   components: {
     SucaiList,
@@ -191,7 +195,8 @@ export default {
       wsInterval_transcode: undefined,
       picturesOfTheArticle: [],//文章内图片总数
       pictures_tabs5: [],//文章内图片展示数量
-      total5: 1
+      total5: 1,
+      articleCover: this.showPictureOfArticle
     };
   },
   mounted() {
@@ -239,7 +244,7 @@ export default {
       this.getFileList(highLimit);
       this.choosedMaterials = [];
       this.$refs.sucaiList.clearChoosed()
-      console.log(this.showPictureOfArticle, '-----------------')
+      console.log(this.showPictureOfArticle, this.articleCover, '-----------------')
       this.showPictureOfArticle && this.getPicturesOfArticle()
     },
     watchCloseModal(){

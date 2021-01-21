@@ -191,7 +191,7 @@ export default {
         this.materialType = this.type;
         let params = {type: this.type, highLimit: this.high_code_rate_limit}
         // Bus.$emit('openModal', params);
-        console.log(this.$refs.materialTabs)
+        console.log(this.articleCover)
         this.$refs.materialTabs.watchOpenModal(this.type, this.high_code_rate_limit)
       } else {
         this.$refs.materialTabs.watchCloseModal(this.type, this.high_code_rate_limit)
