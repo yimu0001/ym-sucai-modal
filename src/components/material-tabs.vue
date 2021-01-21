@@ -239,6 +239,7 @@ export default {
       this.getFileList(highLimit);
       this.choosedMaterials = [];
       this.$refs.sucaiList.clearChoosed()
+      console.log(this.showPictureOfArticle, '-----------------')
       this.showPictureOfArticle && this.getPicturesOfArticle()
     },
     watchCloseModal(){
@@ -416,6 +417,7 @@ export default {
       })
       console.log(imgData)
       this.picturesOfTheArticle = this.cutPages(imgData)
+      console.log(this.picturesOfTheArticle)
       this.total5 = this.picturesOfTheArticle.length
       this.pictures_tabs5 = this.picturesOfTheArticle[0]
       console.log(this.pictures_tabs5)

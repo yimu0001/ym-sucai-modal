@@ -88,7 +88,6 @@ export default {
   },
   watch: {
     modalKey() {
-      console.log('modal变了')
       this.modal = this.modalKey;
     },
     type() {
