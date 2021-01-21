@@ -322,6 +322,7 @@ export default {
             }
           };
           ws.send(JSON.stringify(item)); //将消息发送到服务端
+          _this.cutTUrls = []
           _this.wsInterval = setInterval(() => {
             _this.intervalSend();
           }, 45000);
