@@ -34,7 +34,7 @@
       <div slot="footer">
         <Button @click="cancel">取消</Button>
         <Button type="primary" @click="ok">{{
-          materialType == 'video' ? '添加封面' : '确定'
+          materialType == 'video' && !onlyChooseVideo ? '添加封面' : '确定'
         }}</Button>
       </div>
     </Modal>

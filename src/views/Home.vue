@@ -19,7 +19,7 @@
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item.url}}</div>
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
-    @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl'
+    @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl' onlyChooseVideo
     @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/' :showPictureOfArticle='showPictureOfArticle'
     ></sucai-modal>
   </div>
