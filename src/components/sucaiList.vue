@@ -22,7 +22,7 @@
               <img src="../assets/noChoosed.png" class="choosed_logo" v-else />
             </div>
             <div class="materialItemInfo">
-              <div class="materialItemTitle">{{ item.name }}</div>
+              <div class="materialItemTitle" :title='item.name'>{{ item.name }}</div>
               <div class="materialItemMore">
                 <span>{{ item.width }}*{{ item.height }}</span>
                 <span>{{ getSize(item.size) }}</span>

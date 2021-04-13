@@ -84,6 +84,10 @@ export default {
     showPictureOfArticle: {
       type: Boolean,
       default: false
+    },
+    onlyChooseVideo: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -168,13 +172,18 @@ export default {
         return false;
       }
       if (this.materialType == 'video') {
-        this.$emit('chooseVideoOk', this.choosedMaterials);
-        this.checkIsTranscode(this.choosedMaterials[0].id)
-        this.materialType = 'coverImg';
-        this.choosedMaterials = [];
-        let params = {type: 'image', highLimit: this.high_code_rate_limit}
-        // Bus.$emit('openModal', params);
-        this.$refs.materialTabs.watchOpenModal('image', this.high_code_rate_limit)
+        if(this.onlyChooseVideo) {
+          this.$emit('chooseVideoOk', this.choosedMaterials);
+        } else {
+          this.$emit('chooseVideoOk', this.choosedMaterials);
+          this.checkIsTranscode(this.choosedMaterials[0].id)
+          this.materialType = 'coverImg';
+          this.choosedMaterials = [];
+          let params = {type: 'image', highLimit: this.high_code_rate_limit}
+          // Bus.$emit('openModal', params);
+          this.$refs.materialTabs.watchOpenModal('image', this.high_code_rate_limit)
+        }
+        
       } else if (this.materialType == 'coverImg') {
         this.$emit('chooseCoverOk', this.choosedMaterials);
         this.choosedMaterials = [];

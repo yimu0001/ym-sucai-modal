@@ -238,13 +238,11 @@ export default {
     watchOpenModal(type, highLimit) {
       this.sucaiList = [];
       this.path_id = 0;
-      console.log(this.materialType, type)
       this.materialType = type;
       this.materialVal = 'materialVal1';
       this.getFileList(highLimit);
       this.choosedMaterials = [];
       this.$refs.sucaiList.clearChoosed()
-      console.log(this.showPictureOfArticle, this.articleCover, '-----------------')
       this.showPictureOfArticle && this.getPicturesOfArticle()
     },
     watchCloseModal(){
@@ -259,6 +257,8 @@ export default {
     },
     changePage(currentPage) {
       this.page = currentPage;
+      this.choosedMaterials = [];
+      this.$refs.sucaiList.clearChoosed()
       this.getFileList(this.highLimit);
     },
     handleClickTabs(name) {
@@ -343,7 +343,7 @@ export default {
               console.log(data.data);
               break;
             case 'push':
-              _this.cutTUrls = _this.cutTUrls.concat(data.data.urls);
+              _this.cutTUrls = data.data.urls.concat(_this.cutTUrls);
               break;
           }
         };
@@ -412,7 +412,7 @@ export default {
     },
     //获取文章内图片总数
     getPicturesOfArticle() {
-      let imgs = JSON.parse(Cookies.get('picturesOftheArticle'))
+      let imgs =Cookies.get('picturesOftheArticle')? JSON.parse(Cookies.get('picturesOftheArticle')): []
       let imgData = imgs.map((img, imgIndex) => {
         let imgItem = {
           name:  `文章内图片${imgIndex+1}`,
@@ -420,12 +420,9 @@ export default {
         }
         return imgItem
       })
-      console.log(imgData)
       this.picturesOfTheArticle = this.cutPages(imgData)
-      console.log(this.picturesOfTheArticle)
       this.total5 = this.picturesOfTheArticle.length
       this.pictures_tabs5 = this.picturesOfTheArticle[0]
-      console.log(this.pictures_tabs5)
     },
     //文章内图片页码改变
     changePage5(currentPage) {
