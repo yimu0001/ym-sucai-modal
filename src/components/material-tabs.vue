@@ -281,10 +281,8 @@ export default {
       console.log(extra)
       if (extra) {
         if (extra.url) {
-          if (this.materialType !== 'video') {
-            this.choosedMaterials.push(extra);
-            Bus.$emit('doMaterials', this.choosedMaterials);
-          }
+          this.choosedMaterials.push(extra);
+          Bus.$emit('doMaterials', this.choosedMaterials);
           this.saveFileToStore(extra);
         } else {
           Message.error('上传失败！');
@@ -297,8 +295,6 @@ export default {
           if (res.status === 200) {
             info.id = res.data.data.id;
             if (this.materialType === 'video') {
-              this.choosedMaterials.push(info);
-              Bus.$emit('doMaterials', this.choosedMaterials);
               this.initWebSocket('file_id', res.data.data.id);
               this.checkIsTranscode(res.data.data.id);
             }

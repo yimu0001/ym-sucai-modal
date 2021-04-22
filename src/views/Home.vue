@@ -18,6 +18,9 @@
     <div class="formItem">
       <div v-for="(item, index) of choosedMaterials" :key="index">{{item.url}}</div>
     </div>
+    <div>
+      <video :src="videoUrl"></video>
+    </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
     @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl' onlyChooseVideo
     @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/' :showPictureOfArticle='showPictureOfArticle'
@@ -44,7 +47,8 @@ export default {
       baseUrl: 'https://sucai.shandian.design/',
       material_baseUrl: 'https://shandianyun-sck.iqilu.com/',
       videoHighLimit: false,
-      showPictureOfArticle: false
+      showPictureOfArticle: false,
+      videoUrl: ''
     }
   },
   computed: {
@@ -78,6 +82,8 @@ export default {
     },
     chooseVideoOk(list) {
       console.log('chooseVideo',list)
+      this.videoUrl = list[0].url
+      this.modalKey = false
     },
     chooseCoverOk(list) {
       console.log('chooseCover', list)

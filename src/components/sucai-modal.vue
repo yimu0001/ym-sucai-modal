@@ -161,6 +161,7 @@ export default {
   mounted() {
     let vm = this;
     Bus.$on('doMaterials', (list) => {
+      console.log('modal', list)
       this.choosedMaterials = list;
     });
     config.baseUrl.pro = vm.baseUrl;
