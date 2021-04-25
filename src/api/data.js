@@ -32,14 +32,15 @@ export const getFolders = (baseUrl, type, path_id) => {
 
 
 //其他模块文件入库
-export const saveFileToStore = (baseUrl, type, url, from, red_soft_process) => {
+export const saveFileToStore = (baseUrl, type, url, from, red_soft_process, filename) => {
   return axios.request({
     url: baseUrl+'file/'+type,
     method: 'post',
     data:{
       url: url,
       from: from,
-      red_soft_process
+      red_soft_process,
+      filename
     }
   })
 }

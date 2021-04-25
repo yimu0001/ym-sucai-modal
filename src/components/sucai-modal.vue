@@ -28,12 +28,14 @@
           :highLimit="m_high_code_rate_limit"
           @start_transcode="start_transcode"
           :showPictureOfArticle='articleCover'
+          @beforeSaveToStore='beforeSaveToStore'
+          @afterSaveToStore = 'afterSaveToStore'
         >
         </material-tabs>
       </div>
       <div slot="footer">
         <Button @click="cancel">取消</Button>
-        <Button type="primary" @click="ok">{{
+        <Button type="primary" @click="ok" :loading='buttonLoading'>{{
           materialType == 'video' && !onlyChooseVideo ? '添加封面' : '确定'
         }}</Button>
       </div>
@@ -135,7 +137,8 @@ export default {
       materialType: this.type,
       m_high_code_rate_limit: this.high_code_rate_limit,
       showComs: false,
-      articleCover: this.showPictureOfArticle
+      articleCover: this.showPictureOfArticle,
+      buttonLoading: false
     };
   },
   computed: {
@@ -232,6 +235,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    beforeSaveToStore() {
+      this.buttonLoading = true
+    },
+    afterSaveToStore() {
+      this.buttonLoading = false
     }
   },
 };

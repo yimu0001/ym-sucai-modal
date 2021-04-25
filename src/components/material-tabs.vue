@@ -276,28 +276,35 @@ export default {
         duration: 7
       });
     },
-    uploadOnSuccess(res, data) {
-      let extra = data.data.data;
-      console.log(extra)
+    uploadOnSuccess(file, res) {
+      let extra = res.data.data;
+      console.log(file)
       if (extra) {
         if (extra.url) {
-          this.choosedMaterials.push(extra);
-          Bus.$emit('doMaterials', this.choosedMaterials);
-          this.saveFileToStore(extra);
+          if (this.materialType !== 'video') {
+            this.choosedMaterials.push(extra);
+            Bus.$emit('doMaterials', this.choosedMaterials);
+          } 
+          this.$emit('beforeSaveToStore')
+          this.saveFileToStore(file.name, extra);
         } else {
           Message.error('上传失败！');
         }
       }
     },
-    saveFileToStore(info) {
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit)
+    saveFileToStore(filename, info) {
+      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, filename)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
             if (this.materialType === 'video') {
+              this.choosedMaterials.push(info);
+              Bus.$emit('doMaterials', this.choosedMaterials);
               this.initWebSocket('file_id', res.data.data.id);
               this.checkIsTranscode(res.data.data.id);
             }
+            this.$emit('afterSaveToStore')
+
           } else {
             Message.error(res.data.msg);
           }
