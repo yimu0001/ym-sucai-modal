@@ -278,22 +278,22 @@ export default {
     },
     uploadOnSuccess(file, res) {
       let extra = res.data.data;
-      console.log(file)
       if (extra) {
         if (extra.url) {
+          extra.filename = file.name
           if (this.materialType !== 'video') {
             this.choosedMaterials.push(extra);
             Bus.$emit('doMaterials', this.choosedMaterials);
           } 
           this.$emit('beforeSaveToStore')
-          this.saveFileToStore(file.name, extra);
+          this.saveFileToStore(extra);
         } else {
           Message.error('上传失败！');
         }
       }
     },
-    saveFileToStore(filename, info) {
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, filename)
+    saveFileToStore(info) {
+      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, info.filename)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
