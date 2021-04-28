@@ -425,7 +425,7 @@ export default {
       })
       this.picturesOfTheArticle = this.cutPages(imgData)
       this.total5 = this.picturesOfTheArticle.length
-      this.pictures_tabs5 = this.picturesOfTheArticle[0]
+      this.pictures_tabs5 = this.picturesOfTheArticle[0]?this.picturesOfTheArticle[0] :[]
     },
     //文章内图片页码改变
     changePage5(currentPage) {

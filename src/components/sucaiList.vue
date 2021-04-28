@@ -117,8 +117,7 @@ export default {
     // Bus.$on('openModal', (args) => {
     //   this.choosedMaterials = [];
     // });
-
-    this.getFolders();
+    // this.getFolders();
   },
   methods: {
     chooseItemCheck(index) {
