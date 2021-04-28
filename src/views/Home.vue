@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       modalKey: false,
-      type: 'image',
+      type: '',
       choosedMaterials: [],
       fileLimitNum: 1,
       baseUrl: 'https://sucai.shandian.design/',
