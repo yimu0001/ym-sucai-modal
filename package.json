@@ -1,6 +1,6 @@
 {
   "name": "ym-sucai-modal",
-  "version": "2.1.41",
+  "version": "2.1.42",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
