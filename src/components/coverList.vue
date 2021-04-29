@@ -55,6 +55,7 @@ export default {
     },
   },
   mounted() {
+    console.log(1222)
     Bus.$on('closeModal', () => {
       this.choosedCover = [];
     });
@@ -100,6 +101,10 @@ export default {
       this.preview_cover = item.url;
       this.preview_value = true;
     },
+    //清除选中态
+    clearChoosedList() {
+      this.choosedCover = [];
+    }
   },
 };
 </script>

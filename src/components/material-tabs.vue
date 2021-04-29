@@ -58,10 +58,10 @@
         </div>
       </TabPane>
       <TabPane label="抽帧图片" name="materialVal4" v-if="type == 'coverImg'">
-        <CoverList :list="cutTUrls"></CoverList>
+        <CoverList :list="cutTUrls" ref="coverList"></CoverList>
       </TabPane>
       <TabPane label="文章内图片" name="materialVal5" v-if="showPictureOfArticle && (type=='image')">
-        <CoverList :list="pictures_tabs5"></CoverList>
+        <CoverList :list="pictures_tabs5" ref="coverList"></CoverList>
         <Row>
           <i-col offset="5" class="cutPageDom" span="18">
             <Page :total="total5" show-elevator @on-change="changePage5" :page-size= '10' />
@@ -210,6 +210,7 @@ export default {
     });
     Bus.$on('closeModal', () => {
       this.choosedMaterials = [];
+      console.log('触发关闭')
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
@@ -251,6 +252,7 @@ export default {
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
       this.$refs.vueUploader && this.$refs.vueUploader.destroy()
+      this.$refs.coverList.clearChoosedList()
       if (this.ws) {
         this.ws.close();
       }
