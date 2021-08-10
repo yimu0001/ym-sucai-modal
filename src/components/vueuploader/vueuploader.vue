@@ -36,7 +36,7 @@
 			:fileSingleSizeLimit="fileSingleSizeLimit"
 			:formData="formData"
 			:keyGenerator="keyGenerator"
-			:url="url"
+			:url="uploadUrl"
       :baseUrl='baseUrl'
       :highLimit='highLimit'
 			@fileChange="fileChange"
@@ -123,10 +123,16 @@ export default {
       percent: {}
     }
   },
-  mounted () {},
+  mounted () {
+    console.log(this.url)
+    console.log(this.baseUrl)
+  },
   computed: {
     uploader () {
       return this.$refs.uploader
+    },
+    uploadUrl() {
+      return this.baseUrl+this.url
     }
   },
   methods: {
@@ -231,6 +237,9 @@ export default {
   watch: {
     percent (val) {
       console.log(val)
+    },
+    url(newValue, oldValue) {
+      console.log('处设立上帝=======', newValue)
     }
   }
 }

@@ -55,7 +55,6 @@ export default {
     },
   },
   mounted() {
-    console.log(1222)
     Bus.$on('closeModal', () => {
       this.choosedCover = [];
     });

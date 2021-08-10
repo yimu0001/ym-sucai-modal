@@ -57,11 +57,11 @@ export default {
     }
   },
   mounted () {
-    // if(process.env.NODE_ENV === 'development'){
-    //   this.material_baseUrl = 'https://sucai.shandian.design/'
-    // } else {
-    //   this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/'
-    // };
+    if(process.env.NODE_ENV === 'development'){
+      this.material_baseUrl = 'https://sucai.shandian8.com/'
+    } else {
+      this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/'
+    };
   },
   methods: {
     openModal(type) {

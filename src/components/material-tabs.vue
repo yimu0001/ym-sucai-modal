@@ -187,7 +187,7 @@ export default {
       uploadVideoUrl: '',
       showPreview: false,
       materialType: this.type,
-      uploadUrl: this.baseUrl + 'upload/chunk-resume/process',
+      uploadUrl: 'upload/chunk-resume/process',
       ws: null, //webSocket所用
       wsInterval: undefined,
       cutTUrls: [],

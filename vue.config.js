@@ -60,6 +60,6 @@ module.exports = {
         extract: false,
     },
     devServer: {
-        proxy: 'http://sucai.shandian.design/'
+        proxy: 'http://sucai.shandian8.com/'
     }
 }
