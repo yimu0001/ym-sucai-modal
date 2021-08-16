@@ -302,8 +302,12 @@ export default {
       }
     },
     saveFileToStore(info) {
-      console.log(this.from)
       if(this.from === 'notSave'){
+        this.$emit('afterSaveToStore')
+        if (this.materialType === 'video') {
+          this.choosedMaterials.push(info);
+          Bus.$emit('doMaterials', this.choosedMaterials);
+        }
         return false
       }
       saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, info.filename)
