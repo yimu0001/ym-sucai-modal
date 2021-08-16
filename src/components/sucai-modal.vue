@@ -157,6 +157,9 @@ export default {
         case 'coverImg':
           mtypeName = '封面选择';
           break;
+        case 'transcodeVideo':
+          mtypeName = '转码视频选择';
+          break;
       }
       return mtypeName;
     },

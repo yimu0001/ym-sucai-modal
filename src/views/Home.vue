@@ -11,6 +11,7 @@
     <button @click="openModal('image')">打开图片modal</button>
     <button @click="openModal('video')">打开视频modal</button>
     <button @click="openModal('voice')">打开音频modal</button>
+    <button @click="openModal('transcodeVideo')">打开转码modal</button>
     <div>
       <Checkbox v-model="videoHighLimit">素材可在电视播出</Checkbox>
     </div>
@@ -22,7 +23,7 @@
       <video :src="videoUrl"></video>
     </div>
     <sucai-modal :modalKey = 'modalKey' @handleMaterialModalOk= 'handleModalOk' :fileLimitNum='fileLimitNum' @handleMaterialModalCancle = 'handleModalCancle' :type='type' 
-    @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl' onlyChooseVideo
+    @chooseVideoOk="chooseVideoOk" :baseUrl='material_baseUrl' onlyChooseVideo :from='materialFrom'
     @chooseCoverOk = "chooseCoverOk" :high_code_rate_limit='highLimit' websocketUrl='wss://shandianyun-sck.iqilu.com/' :showPictureOfArticle='showPictureOfArticle'
     ></sucai-modal>
   </div>
@@ -48,7 +49,8 @@ export default {
       material_baseUrl: 'https://shandianyun-sck.iqilu.com/',
       videoHighLimit: false,
       showPictureOfArticle: false,
-      videoUrl: ''
+      videoUrl: '',
+      materialFrom: 'article'
     }
   },
   computed: {
@@ -65,10 +67,11 @@ export default {
   },
   methods: {
     openModal(type) {
-      this.baseUrl = 'https://sucai.shandian.design/'
       if(type == 'image'){
         this.fileLimitNum = 3
         this.showPictureOfArticle = true
+      } else if(type == 'transcodeVideo'){
+        this.materialFrom = 'notSave'
       }
       this.type = type
       this.modalKey = true

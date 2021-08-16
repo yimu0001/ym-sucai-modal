@@ -123,10 +123,6 @@ export default {
       percent: {}
     }
   },
-  mounted () {
-    console.log(this.url)
-    console.log(this.baseUrl)
-  },
   computed: {
     uploader () {
       return this.$refs.uploader
@@ -238,9 +234,6 @@ export default {
     percent (val) {
       console.log(val)
     },
-    url(newValue, oldValue) {
-      console.log('处设立上帝=======', newValue)
-    }
   }
 }
 </script>

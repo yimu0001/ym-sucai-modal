@@ -9,7 +9,7 @@
 <template>
   <div>
     <Tabs :value="materialVal" @on-click="handleClickTabs">
-      <TabPane label="素材库" name="materialVal1">
+      <TabPane label="素材库" name="materialVal1" v-if="type != 'transcodeVideo'">
         <sucai-list
           ref="sucaiList"
           :list="sucaiList"
@@ -133,10 +133,13 @@ export default {
   watch: {
     type() {
       this.materialType = this.type;
+      this.materialVal = 'materialVal1';
       if (this.type == 'coverImg') {
         this.materialType = 'image';
+      } else if(this.type == 'transcodeVideo'){
+        this.materialType = 'video'
+        this.materialVal = 'materialVal2';
       }
-      this.materialVal = 'materialVal1';
       this.choosedMaterials = [];
       this.uploadVideoUrl = '';
       this.showPreview = false;
@@ -210,7 +213,6 @@ export default {
     });
     Bus.$on('closeModal', () => {
       this.choosedMaterials = [];
-      console.log('触发关闭')
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
@@ -239,11 +241,16 @@ export default {
     watchOpenModal(type, highLimit) {
       this.sucaiList = [];
       this.path_id = 0;
-      this.materialType = type;
-      this.materialVal = 'materialVal1';
-      this.getFileList(highLimit);
+      if(this.type == 'transcodeVideo'){
+        this.materialType = 'video'
+        this.materialVal = 'materialVal2';
+      } else {
+        this.materialType = type;
+        this.materialVal = 'materialVal1';
+        this.getFileList(highLimit);
+      }
       this.choosedMaterials = [];
-      this.$refs.sucaiList.clearChoosed()
+      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed()
       this.showPictureOfArticle && this.getPicturesOfArticle()
     },
     watchCloseModal(){
@@ -260,7 +267,7 @@ export default {
     changePage(currentPage) {
       this.page = currentPage;
       this.choosedMaterials = [];
-      this.$refs.sucaiList.clearChoosed()
+      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed()
       this.getFileList(this.highLimit);
     },
     handleClickTabs(name) {
@@ -295,6 +302,10 @@ export default {
       }
     },
     saveFileToStore(info) {
+      console.log(this.from)
+      if(this.from === 'notSave'){
+        return false
+      }
       saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, info.filename)
         .then((res) => {
           if (res.status === 200) {
