@@ -413,8 +413,10 @@ export default {
     },
     // 视频插入预览
     previewVideo() {
-      let isHttps = /^https:\/\/.*/i.test(this.uploadVideoUrl);
-      if (isHttps) {
+      // let isHttps = /^https:\/\/.*/i.test(this.uploadVideoUrl);
+      let isHttps = this.uploadVideoUrl.substr(0, 5) == 'https'
+      let searchKey = this.uploadVideoUrl.indexOf('iqilu.com')
+      if (isHttps && searchKey > -1) {
         let item = {
           url: this.uploadVideoUrl,
         };
@@ -423,7 +425,7 @@ export default {
         this.initWebSocket('url', this.uploadVideoUrl);
         Bus.$emit('doMaterials', this.choosedMaterials);
       } else {
-        Message.error('请填写https协议视频');
+        Message.error('出于系统安全性考虑，请填写本网站下https协议视频');
       }
     },
     //素材库选中 获取抽帧
