@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 16:21:50
- * @LastEditTime: 2020-11-06 18:17:35
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-15 14:40:40
+ * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucaiku_front_pc\src\api\webupload.js
  */
-import axios from '@/libs/api.request'
+import axios from '@/libs/api.request';
 
 /**
  * @description: 创建分片上传过程
@@ -15,11 +15,11 @@ import axios from '@/libs/api.request'
  */
 export const uploadInit = (baseUrl, args) => {
   return axios.request({
-    url: baseUrl+'upload/chunk-resume/init',
+    url: baseUrl + 'upload/chunk-resume/init',
     method: 'post',
-    data: args
-  })
-}
+    data: args,
+  });
+};
 
 /**
  * @description: 分片上传 顺序 需等待上片返回后下一片请求
@@ -28,11 +28,11 @@ export const uploadInit = (baseUrl, args) => {
  */
 export const uploadProcess = (baseUrl, args) => {
   return axios.request({
-    url: baseUrl+'upload/chunk-resume/process',
+    url: baseUrl + 'upload/chunk-resume/process',
     method: 'post',
-    data: new URLSearchParams(args)
-  })
-}
+    data: new URLSearchParams(args),
+  });
+};
 
 /**
  * @description: 终止
@@ -41,11 +41,11 @@ export const uploadProcess = (baseUrl, args) => {
  */
 export const uploadStop = (baseUrl, args) => {
   return axios.request({
-    url: baseUrl+'upload/chunk-resume/abort',
+    url: baseUrl + 'upload/chunk-resume/abort',
     method: 'post',
-    data: args
-  })
-}
+    data: args,
+  });
+};
 
 /**
  * @description: 完成 开始合并
@@ -54,8 +54,8 @@ export const uploadStop = (baseUrl, args) => {
  */
 export const uploadFinish = (baseUrl, args) => {
   return axios.request({
-    url: baseUrl+ '/upload/chunk-resume/finish',
+    url: baseUrl + 'upload/chunk-resume/finish',
     method: 'post',
-    data: args
-  })
-}
+    data: args,
+  });
+};

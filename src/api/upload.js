@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 16:21:50
- * @LastEditTime: 2022-02-11 17:49:24
+ * @LastEditTime: 2022-02-15 14:41:23
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucaiku_front_pc\src\api\webupload.js
@@ -64,7 +64,7 @@ export const uploadStop = (args) => {
  */
 export const uploadFinish = (args) => {
   return axios.request({
-    url: BASE_URL + '/upload/chunk-resume/finish',
+    url: BASE_URL + 'upload/chunk-resume/finish',
     method: 'post',
     data: args,
   });

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2021-01-06 09:51:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-15 16:56:39
+ * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
 -->
@@ -22,25 +22,35 @@
         ></sucai-list>
         <Row>
           <i-col offset="5" class="cutPageDom" span="18">
-            <Page :total="total" show-elevator @on-change="changePage" :page-size= '8' />
+            <Page :total="total" show-elevator @on-change="changePage" :page-size="8" />
           </i-col>
         </Row>
       </TabPane>
       <TabPane label="本地库" name="materialVal2">
-        <vue-uploader
+        <!-- <vue-uploader
           :url="uploadUrl"
-          :baseUrl='baseUrl'
+          :baseUrl="baseUrl"
           :fileNumLimit="fileLimitNum"
           @error="uploadOnImgError"
           @success="uploadOnSuccess"
           @remove="uploadOnImgRemove"
           @uploadError="uploadImgError"
           :accept="materialType"
-          :highLimit='highLimit'
+          :highLimit="highLimit"
           compress="false"
           ref="vueUploader"
           v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
-        ></vue-uploader>
+        ></vue-uploader> -->
+        <js-uploader
+          v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
+          ref="vueUploader"
+          :accept="materialType"
+          :fileNumLimit="fileLimitNum"
+          :highLimit="highLimit"
+          @error="uploadOnImgError"
+          @success="uploadOnSuccess"
+          @remove="uploadOnImgRemove"
+        ></js-uploader>
       </TabPane>
       <TabPane label="插入视频" name="materialVal3" v-if="type == 'video'">
         <div class="setVideoByPath">
@@ -60,11 +70,15 @@
       <TabPane label="抽帧图片" name="materialVal4" v-if="type == 'coverImg'">
         <CoverList :list="cutTUrls" ref="ymCoverList"></CoverList>
       </TabPane>
-      <TabPane label="文章内图片" name="materialVal5" v-if="showPictureOfArticle && (type=='image')">
+      <TabPane
+        label="文章内图片"
+        name="materialVal5"
+        v-if="showPictureOfArticle && type == 'image'"
+      >
         <CoverList :list="pictures_tabs5" ref="ymCoverList"></CoverList>
         <Row>
           <i-col offset="5" class="cutPageDom" span="18">
-            <Page :total="total5" show-elevator @on-change="changePage5" :page-size= '10' />
+            <Page :total="total5" show-elevator @on-change="changePage5" :page-size="10" />
           </i-col>
         </Row>
       </TabPane>
@@ -77,7 +91,8 @@ import { getFileList, saveFileToStore, checkIsTranscode } from '@/api/data';
 import SucaiList from './sucaiList';
 import CoverList from './coverList';
 import VueUploader from '_c/vueuploader/index.js';
-import Cookies from 'js-cookie'
+import JsUploader from '_c/jsuploader';
+import Cookies from 'js-cookie';
 import {
   Tabs,
   TabPane,
@@ -121,14 +136,14 @@ export default {
       type: String,
       default: 'wss://sucai.shandian.design/',
     },
-    highLimit:{
+    highLimit: {
       type: String | Number,
-      default: '0'
+      default: '0',
     },
     showPictureOfArticle: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   watch: {
     type() {
@@ -136,8 +151,8 @@ export default {
       this.materialVal = 'materialVal1';
       if (this.type == 'coverImg') {
         this.materialType = 'image';
-      } else if(this.type == 'transcodeVideo'){
-        this.materialType = 'video'
+      } else if (this.type == 'transcodeVideo') {
+        this.materialType = 'video';
         this.materialVal = 'materialVal2';
       }
       this.choosedMaterials = [];
@@ -151,20 +166,21 @@ export default {
       this.showPreview = false;
     },
     baseUrl() {
-      console.log(this.baseUrl)
+      console.log(this.baseUrl);
     },
     modalKey() {
-      this.modal = this.modalKey
+      this.modal = this.modalKey;
     },
     showPictureOfArticle() {
-      this.articleCover = this.showPictureOfArticle
-      this.showPictureOfArticle && this.getPicturesOfArticle()
-    }
+      this.articleCover = this.showPictureOfArticle;
+      this.showPictureOfArticle && this.getPicturesOfArticle();
+    },
   },
   components: {
     SucaiList,
     CoverList,
     VueUploader,
+    JsUploader,
     Tabs,
     TabPane,
     [Row.name]: Row,
@@ -196,10 +212,10 @@ export default {
       cutTUrls: [],
       ws_transcode: null, //webSocket所用
       wsInterval_transcode: undefined,
-      picturesOfTheArticle: [],//文章内图片总数
-      pictures_tabs5: [],//文章内图片展示数量
+      picturesOfTheArticle: [], //文章内图片总数
+      pictures_tabs5: [], //文章内图片展示数量
       total5: 1,
-      articleCover: this.showPictureOfArticle
+      articleCover: this.showPictureOfArticle,
     };
   },
   mounted() {
@@ -216,7 +232,7 @@ export default {
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
-      this.$refs.vueUploader && this.$refs.vueUploader.destroy()
+      this.$refs.vueUploader && this.$refs.vueUploader.destroy();
       if (this.ws) {
         this.ws.close();
       }
@@ -241,8 +257,8 @@ export default {
     watchOpenModal(type, highLimit) {
       this.sucaiList = [];
       this.path_id = 0;
-      if(this.type == 'transcodeVideo'){
-        this.materialType = 'video'
+      if (this.type == 'transcodeVideo') {
+        this.materialType = 'video';
         this.materialVal = 'materialVal2';
       } else {
         this.materialType = type;
@@ -250,16 +266,16 @@ export default {
         this.getFileList(highLimit);
       }
       this.choosedMaterials = [];
-      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed()
-      this.showPictureOfArticle && this.getPicturesOfArticle()
+      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed();
+      this.showPictureOfArticle && this.getPicturesOfArticle();
     },
-    watchCloseModal(){
+    watchCloseModal() {
       this.choosedMaterials = [];
       this.cutTUrls = [];
       clearInterval(this.wsInterval);
       clearInterval(this.wsInterval_transcode);
-      this.$refs.vueUploader && this.$refs.vueUploader.destroy()
-      this.$refs.ymCoverList && this.$refs.ymCoverList.clearChoosedList()
+      this.$refs.vueUploader && this.$refs.vueUploader.destroy();
+      this.$refs.ymCoverList && this.$refs.ymCoverList.clearChoosedList();
       if (this.ws) {
         this.ws.close();
       }
@@ -267,7 +283,7 @@ export default {
     changePage(currentPage) {
       this.page = currentPage;
       this.choosedMaterials = [];
-      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed()
+      this.$refs.sucaiList && this.$refs.sucaiList.clearChoosed();
       this.getFileList(this.highLimit);
     },
     handleClickTabs(name) {
@@ -282,35 +298,42 @@ export default {
     uploadOnImgError(errorMessage) {
       Message.error({
         content: errorMessage,
-        duration: 7
+        duration: 7,
       });
     },
-    uploadOnSuccess(file, res) {
-      let extra = res.data.data;
+    uploadOnSuccess(file, extra) {
       if (extra) {
-        if (extra.url) {
-          extra.filename = file.name
-          if (this.materialType !== 'video') {
-            this.choosedMaterials.push(extra);
-            Bus.$emit('doMaterials', this.choosedMaterials);
-          } 
-          this.$emit('beforeSaveToStore')
-          this.saveFileToStore(extra);
-        } else {
+        if (!extra.url) {
           Message.error('上传失败！');
+          return;
         }
+
+        extra.filename = file.name;
+        if (this.materialType !== 'video') {
+          this.choosedMaterials.push(extra);
+          Bus.$emit('doMaterials', this.choosedMaterials);
+        }
+        this.$emit('beforeSaveToStore');
+        this.saveFileToStore(extra);
       }
     },
     saveFileToStore(info) {
-      if(this.from === 'notSave'){
-        this.$emit('afterSaveToStore')
+      if (this.from === 'notSave') {
+        this.$emit('afterSaveToStore');
         if (this.materialType === 'video') {
           this.choosedMaterials.push(info);
           Bus.$emit('doMaterials', this.choosedMaterials);
         }
-        return false
+        return false;
       }
-      saveFileToStore(this.baseUrl, this.materialType, info.url, this.from, this.highLimit, info.filename)
+      saveFileToStore(
+        this.baseUrl,
+        this.materialType,
+        info.url,
+        this.from,
+        this.highLimit,
+        info.filename
+      )
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
@@ -320,8 +343,7 @@ export default {
               this.initWebSocket('file_id', res.data.data.id);
               this.checkIsTranscode(res.data.data.id);
             }
-            this.$emit('afterSaveToStore')
-
+            this.$emit('afterSaveToStore');
           } else {
             Message.error(res.data.msg);
           }
@@ -344,11 +366,11 @@ export default {
             version: '2.00',
             request: {
               ident_type: ident_type,
-              ident : ident
-            }
+              ident: ident,
+            },
           };
           ws.send(JSON.stringify(item)); //将消息发送到服务端
-          _this.cutTUrls = []
+          _this.cutTUrls = [];
           _this.wsInterval = setInterval(() => {
             _this.intervalSend();
           }, 45000);
@@ -401,8 +423,8 @@ export default {
     uploadOnImgRemove(file, index) {
       this.choosedMaterials.splice(index, 1);
       Bus.$emit('doMaterials', this.choosedMaterials);
-      this.ws && this.ws.close()
-      clearInterval(this.wsInterval)
+      this.ws && this.ws.close();
+      clearInterval(this.wsInterval);
       this.cutTUrls = [];
     },
     uploadImgError(file, errorMessage) {
@@ -414,8 +436,8 @@ export default {
     // 视频插入预览
     previewVideo() {
       // let isHttps = /^https:\/\/.*/i.test(this.uploadVideoUrl);
-      let isHttps = this.uploadVideoUrl.substr(0, 5) == 'https'
-      let searchKey = this.uploadVideoUrl.indexOf('iqilu.com')
+      let isHttps = this.uploadVideoUrl.substr(0, 5) == 'https';
+      let searchKey = this.uploadVideoUrl.indexOf('iqilu.com');
       if (isHttps && searchKey > -1) {
         let item = {
           url: this.uploadVideoUrl,
@@ -434,34 +456,36 @@ export default {
     },
     //获取文章内图片总数
     getPicturesOfArticle() {
-      let imgs =Cookies.get('picturesOftheArticle')? JSON.parse(Cookies.get('picturesOftheArticle')): []
+      let imgs = Cookies.get('picturesOftheArticle')
+        ? JSON.parse(Cookies.get('picturesOftheArticle'))
+        : [];
       let imgData = imgs.map((img, imgIndex) => {
         let imgItem = {
-          name:  `文章内图片${imgIndex+1}`,
-          url: img
-        }
-        return imgItem
-      })
-      this.picturesOfTheArticle = this.cutPages(imgData)
-      this.total5 = this.picturesOfTheArticle.length
-      this.pictures_tabs5 = this.picturesOfTheArticle[0]?this.picturesOfTheArticle[0] :[]
+          name: `文章内图片${imgIndex + 1}`,
+          url: img,
+        };
+        return imgItem;
+      });
+      this.picturesOfTheArticle = this.cutPages(imgData);
+      this.total5 = this.picturesOfTheArticle.length;
+      this.pictures_tabs5 = this.picturesOfTheArticle[0] ? this.picturesOfTheArticle[0] : [];
     },
     //文章内图片页码改变
     changePage5(currentPage) {
-      this.total5 = currentPage
-      this.pictures_tabs5 = this.picturesOfTheArticle[currentPage]
+      this.total5 = currentPage;
+      this.pictures_tabs5 = this.picturesOfTheArticle[currentPage];
     },
     //图片分页
-    cutPages (data) {
-      const pages = []
+    cutPages(data) {
+      const pages = [];
       data.forEach((res, index) => {
-        const page = Math.floor(index / 10)
+        const page = Math.floor(index / 10);
         if (!pages[page]) {
-          pages[page] = []
+          pages[page] = [];
         }
-        pages[page].push(res)
-      })
-      return pages
+        pages[page].push(res);
+      });
+      return pages;
     },
   },
 };
