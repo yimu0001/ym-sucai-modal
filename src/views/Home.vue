@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 10:58:54
+ * @LastEditTime: 2022-02-16 15:28:21
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -19,9 +19,11 @@
     <div class="formItem">
       <div v-for="(item, index) of choosedMaterials" :key="index">{{ item.url }}</div>
     </div>
-    <div>
-      <video :src="videoUrl"></video>
+    <div v-if="videoUrl !== '' && coverUrl !== ''" class="video-test">
+      视频预览
+      <video :poster="coverUrl" :src="videoUrl" controls="controls"></video>
     </div>
+    <!-- onlyChooseVideo -->
     <sucai-modal
       :modalKey="modalKey"
       @handleMaterialModalOk="handleModalOk"
@@ -30,7 +32,6 @@
       :type="type"
       @chooseVideoOk="chooseVideoOk"
       :baseUrl="material_baseUrl"
-      onlyChooseVideo
       :from="materialFrom"
       @chooseCoverOk="chooseCoverOk"
       :high_code_rate_limit="highLimit"
@@ -61,6 +62,7 @@ export default {
       videoHighLimit: false,
       showPictureOfArticle: false,
       videoUrl: '',
+      coverUrl: '',
       materialFrom: 'article',
     };
   },
@@ -97,12 +99,24 @@ export default {
     chooseVideoOk(list) {
       console.log('chooseVideo', list);
       this.videoUrl = list[0].url;
-      this.modalKey = false;
+      // this.modalKey = false;
     },
     chooseCoverOk(list) {
       console.log('chooseCover', list);
+      this.coverUrl = list[0].url;
       this.modalKey = false;
     },
   },
 };
 </script>
+
+<style scoped>
+.video-test {
+  width: 700px;
+  height: 700px;
+}
+.video-test video {
+  width: 100%;
+  height: auto;
+}
+</style>

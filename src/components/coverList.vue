@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2020-08-25 09:55:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-16 17:01:28
+ * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
 -->
@@ -103,7 +103,7 @@ export default {
     //清除选中态
     clearChoosedList() {
       this.choosedCover = [];
-    }
+    },
   },
 };
 </script>
@@ -144,6 +144,7 @@ export default {
       margin-bottom: 15px;
       .materialItemTitle {
         width: 100%;
+        height: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
         word-break: none;

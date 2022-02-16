@@ -2,7 +2,7 @@
  * 修改 适应原本的sucai-modal
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 11:50:57
+ * @LastEditTime: 2022-02-16 17:15:59
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -20,6 +20,7 @@
 
     <div class="file-list">
       <div class="file-item" v-for="(item, index) in uploadList" :key="index">
+        <!-- stroke-color="#E2EDFE" -->
         <Progress
           class="deep-pro-bar"
           :percent="calcPercent(index, item.id)"
@@ -187,17 +188,14 @@ export default {
         filename: file.name,
         upload_status: 0, // 文件校验中
       });
-      console.log('getFileMD5', file);
       // 得到md5码
       this.getFileMD5(file, (md5) => {
-        console.log('得到md5码', md5);
         file.file_md5 = md5;
         // 拿md5码查询后台数据库是否存在此md5码，如果存在则无需上传
         this.initCheckUpload(file);
       });
     },
     initCheckUpload(file) {
-      console.log('initCheckUpload', file);
       let { ext, file_md5, type } = file;
       let initArgs = {
         ext, // "jpg"
@@ -407,7 +405,7 @@ export default {
     removeFile(item, index) {
       if (item.upload_status === 1) {
         uploadStop(this.env, item.uuid).then((res) => {
-          console.log('如果正在上传中--终止下载', res);
+          console.log('如果正在上传中--终止', res);
         });
       }
 

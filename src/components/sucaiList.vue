@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2020-12-08 17:25:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-16 17:05:46
+ * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
 -->
@@ -10,7 +10,12 @@
   <div>
     <Row :gutter="20">
       <i-col span="5">
-        <Tree :data="foldersMenu" :load-data="getFolders" @on-select-change="chooseFolder"></Tree>
+        <Tree
+          class="folder-tree"
+          :data="foldersMenu"
+          :load-data="getFolders"
+          @on-select-change="chooseFolder"
+        ></Tree>
       </i-col>
       <i-col span="18">
         <div class="chooseTips">已选{{ chooseNum }} 张</div>
@@ -22,7 +27,7 @@
               <img src="../assets/noChoosed.png" class="choosed_logo" v-else />
             </div>
             <div class="materialItemInfo">
-              <div class="materialItemTitle" :title='item.name'>{{ item.name }}</div>
+              <div class="materialItemTitle" :title="item.name">{{ item.name }}</div>
               <div class="materialItemMore">
                 <span>{{ item.width }}*{{ item.height }}</span>
                 <span>{{ getSize(item.size) }}</span>
@@ -46,7 +51,7 @@ import config from '@/config';
 // import 'view-design/dist/styles/iview.css';
 import '@/index.less';
 import Bus from '../libs/bus';
-import voiceLogo from '../assets/voice.png'
+import voiceLogo from '../assets/voice.png';
 export default {
   name: 'sucaiList',
   components: {
@@ -214,8 +219,8 @@ export default {
             version: '2.00',
             request: {
               ident_type: ident_type,
-              ident : ident
-            }
+              ident: ident,
+            },
           };
           ws.send(JSON.stringify(item)); //将消息发送到服务端
           _this.wsInterval = setInterval(() => {
@@ -293,6 +298,7 @@ export default {
     margin-top: 10px;
     .materialItemTitle {
       width: 100%;
+      height: 24px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -307,5 +313,8 @@ export default {
       }
     }
   }
+}
+.folder-tree ::v-deep .ivu-tree-children {
+  overflow: hidden;
 }
 </style>
