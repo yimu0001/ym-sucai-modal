@@ -2,7 +2,7 @@
  * 修改 适应原本的sucai-modal
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-15 16:56:16
+ * @LastEditTime: 2022-02-16 09:48:21
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -108,13 +108,6 @@ export default {
   },
   data() {
     return {
-      modalKey: false,
-      type: '',
-      choosedMaterials: [],
-      fileLimitNum: 1,
-      showPictureOfArticle: false,
-      videoUrl: '',
-      materialFrom: 'article',
       uploadStatusText: {
         0: '校验中...',
         1: '上传中...',
@@ -122,9 +115,6 @@ export default {
         3: '上传失败',
       },
       uploadList: [],
-      typeTitle: '文件上传',
-      buttonLoading: false,
-      finished: false, // 上传完成
       chunkMap: {},
       chunkIndexMap: {},
     };
@@ -152,12 +142,18 @@ export default {
       return fileType;
     },
   },
-  mounted() {},
   methods: {
     handleFileChange(e) {
       const files = e.target.files;
       console.log('handleFileChange files', files);
       if (!files) return;
+
+      let fileCount = files.length;
+      if (fileCount > this.fileNumLimit) {
+        // 不符合数量的处理
+        Message.warning('文件数不能超过' + this.fileNumLimit + '个，你选择了' + fileCount + '个');
+        return false;
+      }
 
       Object.values(files).forEach((file, index) => {
         // 防止多文件上传出现错误
@@ -186,7 +182,6 @@ export default {
         file_name: file.name,
         upload_status: 0, // 文件校验中
       });
-      console.log('最开始uploadList2', this.uploadList);
 
       // 得到md5码
       this.getFileMD5(file, (md5) => {
@@ -207,7 +202,6 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             let { status, uuid, current_chunk, extra } = res.data.data;
-            console.log('init res', res.data.data);
             // 1：未上传过 2：已存在了 直接finish
             if (status === '1') {
               file.current_chunk = current_chunk;
@@ -251,7 +245,6 @@ export default {
         let piece = file.slice(start, end);
 
         this.chunkMap[file.id][currentChunk] = piece;
-        // console.log('计算分片=====', start, end, currentChunk, piece);
         fileReader.readAsBinaryString(piece);
       };
 
@@ -320,7 +313,6 @@ export default {
       console.log('开始上传分片', file, this.chunkMap[file.id]);
       let list = Object.entries(this.chunkMap[file.id]);
       list.forEach(([i, blob]) => {
-        // console.log('上传blob', i, blob);
         this.uploadChunk(file, blob, Number(i));
       });
     },
@@ -381,7 +373,7 @@ export default {
     uploadSuccess(file, data) {
       delete this.chunkMap[file.id];
       delete this.chunkIndexMap[file.id];
-      this.finished = true;
+
       this.uploadList.forEach((item, index) => {
         if (item.id === file.id) {
           let extra = {
@@ -398,8 +390,6 @@ export default {
     },
     // 上传失败调用
     uploadError(file, error) {
-      console.log('uploadError', error);
-
       // 文件上传中
       this.uploadList.forEach((item) => {
         item.id === file.id && (item.upload_status = 3);
@@ -407,7 +397,6 @@ export default {
       this.$emit('error', file, error.msg || '上传失败');
     },
     removeFile(item, index) {
-      console.log('removeFile', item, index);
       if (item.upload_status === 1) {
         uploadStop(item.uuid).then((res) => {
           console.log('如果正在上传中--终止下载', res);
@@ -429,9 +418,6 @@ export default {
 
       return attachments;
     },
-    changeShow(status) {
-      console.log('监听打开还是关闭了', status);
-    },
     // 根据文件扩展名得到文件类型  ext ==> type
     fileCategory(ext, fileType) {
       if (fileType) return fileType;
@@ -445,7 +431,8 @@ export default {
       });
 
       return type;
-    }, // 单位转换
+    },
+    // 单位转换
     bytesToSize(size) {
       var data = '';
       if (size < 1024) {
@@ -471,6 +458,12 @@ export default {
       }
 
       return sizestr;
+    },
+    destroy() {
+      console.log('组件销毁');
+      this.uploadList = [];
+      this.chunkMap = {};
+      this.chunkIndexMap = {};
     },
   },
 };
