@@ -2,7 +2,7 @@
  * 修改 适应原本的sucai-modal
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 09:48:21
+ * @LastEditTime: 2022-02-16 10:54:25
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -30,7 +30,7 @@
         <div class="file-info-line">
           <div class="title-col">
             <div class="file-type top-level" :icon="fileCategory(item.ext, item.file_type)"></div>
-            <p class="name-text top-level" :title="item.file_name">{{ item.file_name }}</p>
+            <p class="name-text top-level" :title="item.filename">{{ item.filename }}</p>
           </div>
           <p class="size-text top-level">{{ bytesToSize(item.size) }}</p>
           <p class="status-text top-level">
@@ -165,6 +165,7 @@ export default {
     },
     // 处理上传
     beforeUpload(file) {
+      console.log('beforeUpload', file);
       let arr = file.name ? file.name.split('.') : [];
       if (arr && arr.length > 0) {
         file.ext = arr[arr.length - 1];
@@ -179,18 +180,20 @@ export default {
         lastModifiedDate,
         size,
         ext,
-        file_name: file.name,
+        filename: file.name,
         upload_status: 0, // 文件校验中
       });
-
+      console.log('getFileMD5', file);
       // 得到md5码
       this.getFileMD5(file, (md5) => {
+        console.log('得到md5码', md5);
         file.file_md5 = md5;
         // 拿md5码查询后台数据库是否存在此md5码，如果存在则无需上传
         this.initCheckUpload(file);
       });
     },
     initCheckUpload(file) {
+      console.log('initCheckUpload', file);
       let { ext, file_md5, type } = file;
       let initArgs = {
         ext, // "jpg"
@@ -201,6 +204,7 @@ export default {
       uploadInit(initArgs)
         .then((res) => {
           if (res.status == 200) {
+            console.log('res init', res, res.data.data);
             let { status, uuid, current_chunk, extra } = res.data.data;
             // 1：未上传过 2：已存在了 直接finish
             if (status === '1') {
@@ -379,7 +383,7 @@ export default {
           let extra = {
             ...item,
             ...data,
-            file_name: file.name,
+            filename: file.name,
             upload_status: 2,
           };
           this.$set(this.uploadList, index, extra);

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-15 16:56:39
+ * @LastEditTime: 2022-02-16 10:25:25
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -318,6 +318,7 @@ export default {
       }
     },
     saveFileToStore(info) {
+      console.log('入库', info, this.from);
       if (this.from === 'notSave') {
         this.$emit('afterSaveToStore');
         if (this.materialType === 'video') {
