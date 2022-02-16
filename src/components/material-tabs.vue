@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-16 10:25:25
+ * @LastEditTime: 2022-02-16 11:49:59
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -44,6 +44,7 @@
         <js-uploader
           v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
           ref="vueUploader"
+          :env="env"
           :accept="materialType"
           :fileNumLimit="fileLimitNum"
           :highLimit="highLimit"
@@ -174,6 +175,15 @@ export default {
     showPictureOfArticle() {
       this.articleCover = this.showPictureOfArticle;
       this.showPictureOfArticle && this.getPicturesOfArticle();
+    },
+  },
+  computed: {
+    env() {
+      if (this.baseUrl.includes('https://shandianyun-sck.iqilu.com')) {
+        return 'prod';
+      } else if (this.baseUrl.includes('https://sucai.shandian8.com')) {
+        return 'test';
+      }
     },
   },
   components: {

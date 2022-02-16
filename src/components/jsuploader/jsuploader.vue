@@ -2,7 +2,7 @@
  * 修改 适应原本的sucai-modal
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 10:54:25
+ * @LastEditTime: 2022-02-16 11:50:57
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -105,6 +105,10 @@ export default {
       type: String | Number,
       default: '0',
     },
+    env: {
+      type: String,
+      default: 'prod',
+    },
   },
   data() {
     return {
@@ -201,7 +205,7 @@ export default {
         file_md5: file_md5, // "6e259b9afb49248cd60c2dc78aaf9498"
         video_high_code_rate_limit: this.highLimit, // "0"
       };
-      uploadInit(initArgs)
+      uploadInit(this.env, initArgs)
         .then((res) => {
           if (res.status == 200) {
             console.log('res init', res, res.data.data);
@@ -333,7 +337,7 @@ export default {
       fd.append('chunk', index + 1);
 
       // fd.append('pieceIndex', index);
-      uploadProcess(fd).then((res) => {
+      uploadProcess(this.env, fd).then((res) => {
         if (res.status === 200) {
           // 这一片上传完成
           let indexs = this.chunkIndexMap[file.id].filter((i) => i !== index);
@@ -353,7 +357,7 @@ export default {
         uuid: file.uuid,
         video_high_code_rate_limit: this.highLimit,
       };
-      uploadFinish(params)
+      uploadFinish(this.env, params)
         .then((res) => {
           let { data, status } = res;
           if (status === 200) {
@@ -402,7 +406,7 @@ export default {
     },
     removeFile(item, index) {
       if (item.upload_status === 1) {
-        uploadStop(item.uuid).then((res) => {
+        uploadStop(this.env, item.uuid).then((res) => {
           console.log('如果正在上传中--终止下载', res);
         });
       }
