@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-14 17:34:18
+ * @LastEditTime: 2022-02-18 15:20:43
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\router\index.js
@@ -10,7 +10,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
-import UploadPage from '../views/upload-page';
+import Demo from '../views/demo';
 
 Vue.use(VueRouter);
 
@@ -21,9 +21,9 @@ const routes = [
     component: Home,
   },
   {
-    path: '/upload-page',
-    name: 'upload-page',
-    component: UploadPage,
+    path: '/demo',
+    name: 'demo',
+    component: Demo,
   },
   // {
   //   path: '/about',

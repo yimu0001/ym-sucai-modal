@@ -2,7 +2,7 @@
  * 修改 适应原本的sucai-modal
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 17:15:59
+ * @LastEditTime: 2022-02-17 09:26:07
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import { Button, Message, Progress } from 'view-design';
 import SparkMD5 from 'spark-md5';
 import Cookies from 'js-cookie';
 import { uploadInit, uploadProcess, uploadFinish, uploadStop } from '@/api/upload';
@@ -90,7 +89,6 @@ const FILE_TYPE_MAP = {
 
 export default {
   name: 'js-upload',
-  components: { Button, Progress },
   props: {
     accept: {
       type: String,
@@ -138,7 +136,7 @@ export default {
     // image video text voice
     acceptType() {
       if (!Object.keys(FILE_TYPE_MAP).includes(this.accept)) {
-        Message.error('选择的文件类型错误');
+        this.$Message.error('选择的文件类型错误');
         return '';
       }
 
@@ -156,7 +154,9 @@ export default {
       let fileCount = files.length;
       if (fileCount > this.fileNumLimit) {
         // 不符合数量的处理
-        Message.warning('文件数不能超过' + this.fileNumLimit + '个，你选择了' + fileCount + '个');
+        this.$Message.warning(
+          '文件数不能超过' + this.fileNumLimit + '个，你选择了' + fileCount + '个'
+        );
         return false;
       }
 
@@ -415,7 +415,7 @@ export default {
     // 点击提交传参
     getUploadFiles() {
       if (!this.uploadList || this.uploadList.length === 0) {
-        Message.warning('请先上传文件');
+        this.$Message.warning('请先上传文件');
         return;
       }
 

@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2021-01-06 10:16:03
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-17 10:00:30
+ * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
 -->
 <template>
   <div>
-      <Modal
+    <Modal
       v-model="modal"
       :title="`${typeName}`"
       width="970px"
@@ -22,20 +22,19 @@
           :type="materialType"
           :fileLimitNum="fileLimitNum"
           :modalKey="modal"
-          :baseUrl="baseUrl"
           :from="from"
           :websocketUrl="websocketUrl"
           :highLimit="m_high_code_rate_limit"
           @start_transcode="start_transcode"
-          :showPictureOfArticle='articleCover'
-          @beforeSaveToStore='beforeSaveToStore'
-          @afterSaveToStore = 'afterSaveToStore'
+          :showPictureOfArticle="articleCover"
+          @beforeSaveToStore="beforeSaveToStore"
+          @afterSaveToStore="afterSaveToStore"
         >
         </material-tabs>
       </div>
       <div slot="footer">
         <Button @click="cancel">取消</Button>
-        <Button type="primary" @click="ok" :loading='buttonLoading'>{{
+        <Button type="primary" @click="ok" :loading="buttonLoading">{{
           materialType == 'video' && !onlyChooseVideo ? '添加封面' : '确定'
         }}</Button>
       </div>
@@ -45,13 +44,11 @@
 
 <script>
 import MaterialTabs from './material-tabs';
-import { Button, Modal, Message } from 'view-design';
-// import 'view-design/dist/styles/iview.css';
-import '@/index.less';
+
 import config from '@/config';
 import Bus from '../libs/bus';
-import { checkIsTranscode } from '@/api/data'
-import Cookies from 'js-cookie'
+import { checkIsTranscode } from '@/api/data';
+import Cookies from 'js-cookie';
 export default {
   name: 'sucaiModal',
   props: {
@@ -67,10 +64,6 @@ export default {
       type: Number,
       default: 1,
     },
-    baseUrl: {
-      type: String,
-      default: '',
-    },
     from: {
       type: String,
       default: 'article',
@@ -81,16 +74,16 @@ export default {
     },
     high_code_rate_limit: {
       type: String | Number,
-      default: '0'
+      default: '0',
     },
     showPictureOfArticle: {
       type: Boolean,
-      default: false
+      default: false,
     },
     onlyChooseVideo: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   watch: {
     modalKey() {
@@ -99,21 +92,15 @@ export default {
     type() {
       this.materialType = this.type;
     },
-    baseUrl() {
-      config.baseUrl.pro = this.baseUrl;
-    },
     high_code_rate_limit() {
-      this.m_high_code_rate_limit = this.high_code_rate_limit
+      this.m_high_code_rate_limit = this.high_code_rate_limit;
     },
     showPictureOfArticle() {
-      this.articleCover = this.showPictureOfArticle
-    }
+      this.articleCover = this.showPictureOfArticle;
+    },
   },
   components: {
     MaterialTabs,
-    Button,
-    Modal,
-    Message,
   },
   data() {
     return {
@@ -138,7 +125,7 @@ export default {
       m_high_code_rate_limit: this.high_code_rate_limit,
       showComs: false,
       articleCover: this.showPictureOfArticle,
-      buttonLoading: false
+      buttonLoading: false,
     };
   },
   computed: {
@@ -167,30 +154,28 @@ export default {
   mounted() {
     let vm = this;
     Bus.$on('doMaterials', (list) => {
-      console.log('modal', list)
+      console.log('modal', list);
       this.choosedMaterials = list;
     });
-    config.baseUrl.pro = vm.baseUrl;
   },
   methods: {
     ok() {
       if (this.choosedMaterials.length === 0) {
-        Message.error('请选择素材！');
+        this.$Message.error('请选择素材！');
         return false;
       }
       if (this.materialType == 'video') {
-        if(this.onlyChooseVideo) {
+        if (this.onlyChooseVideo) {
           this.$emit('chooseVideoOk', this.choosedMaterials);
         } else {
           this.$emit('chooseVideoOk', this.choosedMaterials);
-          this.checkIsTranscode(this.choosedMaterials[0].id)
+          this.checkIsTranscode(this.choosedMaterials[0].id);
           this.materialType = 'coverImg';
           this.choosedMaterials = [];
-          let params = {type: 'image', highLimit: this.high_code_rate_limit}
+          let params = { type: 'image', highLimit: this.high_code_rate_limit };
           // Bus.$emit('openModal', params);
-          this.$refs.materialTabs.watchOpenModal('image', this.high_code_rate_limit)
+          this.$refs.materialTabs.watchOpenModal('image', this.high_code_rate_limit);
         }
-        
       } else if (this.materialType == 'coverImg') {
         this.$emit('chooseCoverOk', this.choosedMaterials);
         this.choosedMaterials = [];
@@ -205,12 +190,12 @@ export default {
     changeShow(status) {
       if (status) {
         this.materialType = this.type;
-        let params = {type: this.type, highLimit: this.high_code_rate_limit}
+        let params = { type: this.type, highLimit: this.high_code_rate_limit };
         // Bus.$emit('openModal', params);
-        console.log(this.articleCover)
-        this.$refs.materialTabs.watchOpenModal(this.type, this.high_code_rate_limit)
+        console.log(this.articleCover);
+        this.$refs.materialTabs.watchOpenModal(this.type, this.high_code_rate_limit);
       } else {
-        this.$refs.materialTabs.watchCloseModal(this.type, this.high_code_rate_limit)
+        this.$refs.materialTabs.watchCloseModal(this.type, this.high_code_rate_limit);
         // Bus.$emit('closeModal');
       }
     },
@@ -223,13 +208,13 @@ export default {
       // }
     },
     checkIsTranscode(id) {
-      checkIsTranscode(this.baseUrl)
+      checkIsTranscode()
         .then((res) => {
           let mSwitch = res.data.data.switch;
           if (mSwitch) {
-            let orgId = Cookies.get('orgId')
-            if(orgId && orgId == '10339' && this.high_code_rate_limit == '0'){
-              console.log('这是融媒体,并且没开电视播放，不转码')
+            let orgId = Cookies.get('orgId');
+            if (orgId && orgId == '10339' && this.high_code_rate_limit == '0') {
+              console.log('这是融媒体,并且没开电视播放，不转码');
             } else {
               this.$emit('start_transcode', id);
             }
@@ -240,11 +225,11 @@ export default {
         });
     },
     beforeSaveToStore() {
-      this.buttonLoading = true
+      this.buttonLoading = true;
     },
     afterSaveToStore() {
-      this.buttonLoading = false
-    }
+      this.buttonLoading = false;
+    },
   },
 };
 </script>

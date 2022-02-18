@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 15:28:21
+ * @LastEditTime: 2022-02-17 10:00:27
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -31,7 +31,6 @@
       @handleMaterialModalCancle="handleModalCancle"
       :type="type"
       @chooseVideoOk="chooseVideoOk"
-      :baseUrl="material_baseUrl"
       :from="materialFrom"
       @chooseCoverOk="chooseCoverOk"
       :high_code_rate_limit="highLimit"
@@ -57,8 +56,6 @@ export default {
       type: '',
       choosedMaterials: [],
       fileLimitNum: 1,
-      baseUrl: 'https://sucai.shandian.design/',
-      material_baseUrl: 'https://shandianyun-sck.iqilu.com/',
       videoHighLimit: false,
       showPictureOfArticle: false,
       videoUrl: '',
@@ -71,13 +68,7 @@ export default {
       return this.videoHighLimit ? '1' : '0';
     },
   },
-  mounted() {
-    if (process.env.NODE_ENV === 'development') {
-      this.material_baseUrl = 'https://sucai.shandian8.com/';
-    } else {
-      this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/';
-    }
-  },
+  mounted() {},
   methods: {
     openModal(type) {
       if (type == 'image') {

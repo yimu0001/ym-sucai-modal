@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 14:51:28
- * @LastEditTime: 2022-02-16 17:05:46
+ * @LastEditTime: 2022-02-17 10:00:29
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucaiList.vue
@@ -41,26 +41,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { getFolders } from '@/api/data';
 import { renderSize } from '@/libs/util.js';
-import { Row, Col, Tree, Dropdown, DropdownItem, DropdownMenu, Message } from 'view-design';
-Vue.component('Dropdown', Dropdown);
-Vue.component('DropdownMenu', DropdownMenu);
-import config from '@/config';
-// import 'view-design/dist/styles/iview.css';
-import '@/index.less';
 import Bus from '../libs/bus';
-import voiceLogo from '../assets/voice.png';
+
 export default {
   name: 'sucaiList',
-  components: {
-    [Row.name]: Row,
-    [Col.name]: Col,
-    Tree,
-    Message,
-  },
-
   props: {
     list: {
       type: Array,
@@ -71,9 +57,6 @@ export default {
     maxNum: {
       type: Number,
       default: 1,
-    },
-    baseUrl: {
-      type: String,
     },
     type: {
       type: String,
@@ -132,7 +115,7 @@ export default {
       let choosed = _this.materialList[index].choosed ? true : false;
       if (!choosed) {
         if (_this.chooseNum > _this.maxNum - 1) {
-          Message.error(`已选素材已超过${this.maxNum}张！`);
+          this.$Message.error(`已选素材已超过${this.maxNum}张！`);
         } else {
           _this.$set(this.materialList[index], 'choosed', true);
           _this.choosedMaterials.push(item);
@@ -157,7 +140,7 @@ export default {
     },
     getFolders(item, callback) {
       if (item) {
-        getFolders(this.baseUrl, this.materialType, item.id)
+        getFolders(this.materialType, item.id)
           .then((res) => {
             let foldersMenu = res.data.data.map((folder) => {
               let folderItem = {
@@ -174,7 +157,7 @@ export default {
             console.log(err);
           });
       } else {
-        getFolders(this.baseUrl, this.materialType, 0)
+        getFolders(this.materialType, 0)
           .then((res) => {
             let foldersMenu = res.data.data.map((folder) => {
               let folderItem = {

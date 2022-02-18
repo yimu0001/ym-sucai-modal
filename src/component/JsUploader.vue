@@ -1,87 +1,73 @@
 <!--
+ * 本地上传
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-14 17:54:45
+ * @LastEditTime: 2022-02-18 16:03:37
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
 -->
 <template>
-  <div class="home">
-    <Modal
-      v-model="uploadPop"
-      :title="typeTitle"
-      width="700px"
-      :mask-closable="false"
-      :closable="false"
-      @on-visible-change="changeShow"
-    >
-      <div class="js-modal-inner">
-        <Button class="upload-btn" type="primary" icon="ios-cloud-upload-outline"
-          >上传<input
-            type="file"
-            multiple
-            class="select-file-input"
-            :accept="fileType"
-            @change="handleFileChange"
-        /></Button>
+  <div class="js-modal-inner">
+    <Button class="upload-btn" type="primary" icon="ios-cloud-upload-outline"
+      >上传<input
+        type="file"
+        multiple
+        class="select-file-input"
+        :accept="acceptType"
+        @change="handleFileChange"
+    /></Button>
 
-        <div class="file-list">
-          <div class="file-item" v-for="(item, index) in uploadList" :key="index">
-            <Progress
-              class="deep-pro-bar"
-              :percent="calcPercent(index, item.id)"
-              :stroke-width="40"
-              stroke-color="#F3F3F3"
-              hide-info
-            />
-            <div class="file-info-line">
-              <div class="file-type top-level" :icon="fileCategory(item.ext, item.file_type)"></div>
-              <p class="name-text top-level" :title="item.file_name">{{ item.file_name }}</p>
-              <p class="size-text top-level">{{ bytesToSize(item.size) }}</p>
-              <p class="status-text top-level">
-                <span class="green-tips" v-if="item.upload_status === 2">{{
-                  uploadStatusText[item.upload_status]
-                }}</span>
-                <span class="red-tips" v-else-if="item.upload_status === 3">{{
-                  uploadStatusText[item.upload_status]
-                }}</span>
-                <span class="grey-tips" v-else>{{ uploadStatusText[item.upload_status] }}</span>
-              </p>
-              <Icon
-                class="close-icon top-level"
-                size="18"
-                type="md-close"
-                @click="removeFile(item, index)"
-              />
-            </div>
+    <div class="file-list">
+      <div class="file-item" v-for="(item, index) in uploadList" :key="index">
+        <!-- stroke-color="#E2EDFE" -->
+        <Progress
+          class="deep-pro-bar"
+          :percent="calcPercent(index, item.id)"
+          :stroke-width="40"
+          stroke-color="#F3F3F3"
+          hide-info
+        />
+        <div class="file-info-line">
+          <div class="title-col">
+            <div class="file-type top-level" :icon="fileCategory(item.ext, item.file_type)"></div>
+            <p class="name-text top-level" :title="item.filename">{{ item.filename }}</p>
           </div>
-          <p class="no-content-tips" v-if="!uploadList || uploadList.length === 0">
-            暂无文件
+          <p class="size-text top-level">{{ calcFileSize(item.size) }}</p>
+          <p class="status-text top-level">
+            <span class="green-tips" v-if="item.upload_status === 2">{{
+              uploadStatusText[item.upload_status]
+            }}</span>
+            <span class="red-tips" v-else-if="item.upload_status === 3">{{
+              uploadStatusText[item.upload_status]
+            }}</span>
+            <span class="grey-tips" v-else>{{ uploadStatusText[item.upload_status] }}</span>
           </p>
+          <Icon
+            class="close-icon top-level"
+            size="18"
+            type="md-close"
+            @click="removeFile(item, index)"
+          />
         </div>
       </div>
-      <div slot="footer">
-        <Button @click="handleCancel">取消</Button>
-
-        <!-- {{ materialType == 'video' && !onlyChooseVideo ? '添加封面' : '确定' }} -->
-        <Button type="primary" @click="handleConfirm" class="issues" :loading="buttonLoading">
-          提交
-        </Button>
-      </div>
-    </Modal>
+      <p class="no-content-tips" v-if="!uploadList || uploadList.length === 0">
+        暂无文件
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import { Modal, Button, Message, Progress } from 'view-design';
 import SparkMD5 from 'spark-md5';
 import Cookies from 'js-cookie';
 import { uploadInit, uploadProcess, uploadFinish, uploadStop } from '@/api/upload';
+import { bytesToSize } from '@/libs/tools';
 
 const FILE_TYPE_MAP = {
   image: { title: '图片', format: ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'webp'] },
   video: { title: '视频', format: ['mp4', 'm3u8', 'rmvb', 'avi', 'swf', '3gp', 'mkv', 'flv'] },
+  voice: { title: '音频', format: ['wav', 'mp3'] },
   text: {
     title: '文本',
     format: [
@@ -100,55 +86,39 @@ const FILE_TYPE_MAP = {
       'pptx',
     ],
   },
-  voice: { title: '音频', format: ['wav', 'mp3'] },
 };
 
 export default {
-  name: 'upload-vue',
-  components: { Modal, Button, Progress },
+  name: 'js-upload',
+  props: {
+    accept: {
+      type: String,
+      default: null,
+    },
+    // 上传最大数量 默认为100
+    fileNumLimit: {
+      type: Number,
+      default: 100,
+    },
+    // 是否需要高码率
+    highLimit: {
+      type: String | Number,
+      default: '0',
+    },
+    env: {
+      type: String,
+      default: 'prod',
+    },
+  },
   data() {
     return {
-      modalKey: false,
-      type: '',
-      choosedMaterials: [],
-      fileLimitNum: 1,
-      videoHighLimit: false,
-      showPictureOfArticle: false,
-      videoUrl: '',
-      materialFrom: 'article',
       uploadStatusText: {
         0: '校验中...',
         1: '上传中...',
         2: '上传完成',
         3: '上传失败',
       },
-      uploadList: [
-        // {
-        //   id: '5463456245_0',
-        //   file_name: '通知.png',
-        //   upload_status: 2, // 0校验中 1上传中 2上传完成 3上传失败
-        //   compress_url:
-        //     'https://img12.shandian8.com/1/sucaiku/compress/202202/11/cb3987af9dd14cdfbf415fe7b14146ff.png',
-        //   cover_url: '',
-        //   duration: '0',
-        //   duration_string: '00:00:00',
-        //   file_type: 'image',
-        //   height: 777,
-        //   thumb_url:
-        //     'https://img12.shandian8.com/1/sucaiku/image_thumb/202202/11/cb3987af9dd14cdfbf415fe7b14146ff.png',
-        //   url:
-        //     'https://img12.shandian8.com/1/sucaiku/202202/11/cb3987af9dd14cdfbf415fe7b14146ff.jpg',
-        //   width: 621,
-        //   ext: 'png',
-        // },
-      ],
-      attachments: '', // 附件 不是很懂 为什么拼接起来url
-      md5loading: false,
-      uploadPop: true,
-      typeTitle: '文件上传',
-      buttonLoading: false,
-      fileType: '',
-      finished: false, // 上传完成
+      uploadList: [],
       chunkMap: {},
       chunkIndexMap: {},
     };
@@ -164,18 +134,32 @@ export default {
     },
   },
   computed: {
-    highLimit() {
-      return this.videoHighLimit ? '1' : '0';
+    // image video text voice
+    acceptType() {
+      if (!Object.keys(FILE_TYPE_MAP).includes(this.accept)) {
+        this.$Message.error('选择的文件类型错误');
+        return '';
+      }
+
+      let fileType = FILE_TYPE_MAP[this.accept].format.map((ext) => `.${ext}`).join(',');
+
+      return fileType;
     },
-  },
-  mounted() {
-    this.setUploadFormat('image');
   },
   methods: {
     handleFileChange(e) {
       const files = e.target.files;
       console.log('handleFileChange files', files);
       if (!files) return;
+
+      let fileCount = files.length;
+      if (fileCount > this.fileNumLimit) {
+        // 不符合数量的处理
+        this.$Message.warning(
+          '文件数不能超过' + this.fileNumLimit + '个，你选择了' + fileCount + '个'
+        );
+        return false;
+      }
 
       Object.values(files).forEach((file, index) => {
         // 防止多文件上传出现错误
@@ -187,16 +171,13 @@ export default {
     },
     // 处理上传
     beforeUpload(file) {
-      // 文件校验中
-      this.md5loading = true;
-
+      console.log('beforeUpload', file);
       let arr = file.name ? file.name.split('.') : [];
       if (arr && arr.length > 0) {
         file.ext = arr[arr.length - 1];
       }
 
       let newIndex = this.uploadList ? this.uploadList.length : 0;
-
       let { id, name, type, lastModifiedDate, size, ext } = file;
       this.$set(this.uploadList, newIndex, {
         id,
@@ -205,18 +186,13 @@ export default {
         lastModifiedDate,
         size,
         ext,
-        file_name: file.name,
-        upload_status: 0,
+        filename: file.name,
+        upload_status: 0, // 文件校验中
       });
-      console.log('最开始uploadList2', this.uploadList);
-
       // 得到md5码
       this.getFileMD5(file, (md5) => {
-        this.md5loading = false;
-        // 存储文件的md5码
         file.file_md5 = md5;
         // 拿md5码查询后台数据库是否存在此md5码，如果存在则无需上传
-        // init ...
         this.initCheckUpload(file);
       });
     },
@@ -231,13 +207,13 @@ export default {
       uploadInit(initArgs)
         .then((res) => {
           if (res.status == 200) {
+            console.log('res init', res, res.data.data);
             let { status, uuid, current_chunk, extra } = res.data.data;
-            console.log('init res', res.data.data);
             // 1：未上传过 2：已存在了 直接finish
             if (status === '1') {
               file.current_chunk = current_chunk;
               file.uuid = uuid;
-
+              // TODO 断点续传
               this.uploadAllChunk(file);
               console.log('继续上传', file);
             } else if (status === '2') {
@@ -276,7 +252,6 @@ export default {
         let piece = file.slice(start, end);
 
         this.chunkMap[file.id][currentChunk] = piece;
-        // console.log('计算分片=====', start, end, currentChunk, piece);
         fileReader.readAsBinaryString(piece);
       };
 
@@ -345,7 +320,6 @@ export default {
       console.log('开始上传分片', file, this.chunkMap[file.id]);
       let list = Object.entries(this.chunkMap[file.id]);
       list.forEach(([i, blob]) => {
-        // console.log('上传blob', i, blob);
         this.uploadChunk(file, blob, Number(i));
       });
     },
@@ -406,67 +380,38 @@ export default {
     uploadSuccess(file, data) {
       delete this.chunkMap[file.id];
       delete this.chunkIndexMap[file.id];
-      this.finished = true;
 
       this.uploadList.forEach((item, index) => {
         if (item.id === file.id) {
-          this.$set(this.uploadList, index, {
+          let extra = {
             ...item,
             ...data,
-            file_name: file.name,
+            filename: file.name,
             upload_status: 2,
-          });
+          };
+          this.$set(this.uploadList, index, extra);
+          this.$emit('success', file, extra);
         }
       });
       console.log('上传完成', this.uploadList);
     },
     // 上传失败调用
     uploadError(file, error) {
-      console.log('uploadError', error);
-      Message.error(error.msg || '上传失败');
       // 文件上传中
       this.uploadList.forEach((item) => {
         item.id === file.id && (item.upload_status = 3);
       });
+      this.$emit('error', file, error.msg || '上传失败');
     },
     removeFile(item, index) {
-      console.log('removeFile', item, index);
       if (item.upload_status === 1) {
         uploadStop(item.uuid).then((res) => {
-          console.log('如果正在上传中--终止下载', res);
+          console.log('如果正在上传中--终止', res);
         });
       }
 
       this.uploadList.splice(index, 1);
-    },
-    // 点击提交传参
-    handleConfirm() {
-      if (!this.uploadList || this.uploadList.length === 0) {
-        Message.warning('请先上传文件');
-        return;
-      }
-
-      this.attachments = this.uploadList.map(({ url }) => url).join(',');
-      console.log('handleConfirm', this.uploadList, this.attachments);
-    },
-    handleCancel() {
-      this.uploadList = [];
-      this.uploadPop = false;
-    },
-    changeShow(status) {
-      console.log('监听打开还是关闭了', status);
-    },
-    // 工具函数
-    // image video text voice
-    setUploadFormat(type) {
-      if (!Object.keys(FILE_TYPE_MAP).includes(type)) {
-        Message.error('选择的文件类型错误');
-        return false;
-      }
-
-      this.typeTitle = FILE_TYPE_MAP[type].title;
-      this.fileType = FILE_TYPE_MAP[type].format.map((ext) => `.${ext}`).join(',');
-      console.log('setUploadFormat', this.typeTitle, this.fileType);
+      this.$emit('remove', index);
     },
     // 根据文件扩展名得到文件类型  ext ==> type
     fileCategory(ext, fileType) {
@@ -481,59 +426,13 @@ export default {
       });
 
       return type;
-    }, // 单位转换
-    bytesToSize(size) {
-      var data = '';
-      if (size < 1024) {
-        //如果小于1KB转化成B
-        data = size.toFixed(2) + 'B';
-      } else if (size < 1024 * 1024) {
-        //如果小于1MB转化成KB
-        data = (size / 1024).toFixed(2) + 'KB';
-      } else if (size < 1024 * 1024 * 1024) {
-        //如果小于1GB转化成MB
-        data = (size / (1024 * 1024)).toFixed(2) + 'MB';
-      } else {
-        //其他转化成GB
-        data = (size / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
-      }
-
-      var sizestr = data + '';
-      var len = sizestr.indexOf('\.');
-      var dec = sizestr.substr(len + 1, 2);
-      if (dec == '00') {
-        //当小数点后为00时 去掉小数部分
-        return sizestr.substring(0, len) + sizestr.substr(len + 3, 2);
-      }
-
-      return sizestr;
     },
-
-    openModal(type) {
-      if (type == 'image') {
-        this.fileLimitNum = 3;
-        this.showPictureOfArticle = true;
-      } else if (type == 'transcodeVideo') {
-        this.materialFrom = 'notSave';
-      }
-      this.type = type;
-      this.modalKey = true;
-    },
-    handleModalOk(list) {
-      this.choosedMaterials = list;
-      this.modalKey = false;
-    },
-    handleModalCancle() {
-      this.modalKey = false;
-    },
-    chooseVideoOk(list) {
-      console.log('chooseVideo', list);
-      this.videoUrl = list[0].url;
-      this.modalKey = false;
-    },
-    chooseCoverOk(list) {
-      console.log('chooseCover', list);
-      this.modalKey = false;
+    // 单位转换
+    calcFileSize: bytesToSize,
+    clearChoosed() {
+      this.uploadList = [];
+      this.chunkMap = {};
+      this.chunkIndexMap = {};
     },
   },
 };
@@ -593,7 +492,13 @@ export default {
       .top-level {
         z-index: 1;
       }
+      .title-col {
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
       .name-text {
+        margin: 10px;
         width: 320px;
         overflow: hidden;
         text-overflow: ellipsis;

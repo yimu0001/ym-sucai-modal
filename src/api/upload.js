@@ -1,33 +1,22 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 16:21:50
- * @LastEditTime: 2022-02-16 11:56:05
+ * @LastEditTime: 2022-02-17 09:55:52
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
- * @FilePath: \sucaiku_front_pc\src\api\webupload.js
+ * @FilePath:
  */
 import axios from '@/libs/api.request';
 import { getUploadHeaders } from '@/libs/util';
-
-let TEST_BASE_URL = 'https://sucai.shandian8.com/';
-let PROD_BASE_URL = 'https://shandianyun-sck.iqilu.com/';
-
-// let BASE_URL = 'https://shandianyun-sck.iqilu.com/';
-// if (process.env.NODE_ENV === 'development') {
-//   BASE_URL = 'https://sucai.shandian8.com/';
-// } else {
-//   BASE_URL = 'https://shandianyun-sck.iqilu.com/';
-// }
 
 /**
  * @description: 创建分片上传过程
  * @param {MIME_type： MIME-TYPE ext : 文件扩展名 file_md5 : 整个文件MD5}
  * @return {type}
  */
-export const uploadInit = (env, args) => {
-  let base_url = env === 'test' ? TEST_BASE_URL : PROD_BASE_URL;
+export const uploadInit = (args) => {
   return axios.request({
-    url: base_url + 'upload/chunk-resume/init',
+    url: '/upload/chunk-resume/init',
     method: 'post',
     data: args,
   });
@@ -38,10 +27,9 @@ export const uploadInit = (env, args) => {
  * @param {chunk : 分片编号 递增, uuid : 创建分片上传过程返回 upload_id, chunkMD5： 分片MD5}
  * @return {type}
  */
-export const uploadProcess = (env, args) => {
-  let base_url = env === 'test' ? TEST_BASE_URL : PROD_BASE_URL;
+export const uploadProcess = (args) => {
   return axios.request({
-    url: base_url + 'upload/chunk-resume/process',
+    url: '/upload/chunk-resume/process',
     method: 'post',
     headers: { ...getUploadHeaders(), 'content-type': 'multipart/form-data' },
     // data: new URLSearchParams(args),
@@ -54,10 +42,9 @@ export const uploadProcess = (env, args) => {
  * @param {uuid ： 创建分片上传过程返回 upload_id}
  * @return {type}
  */
-export const uploadStop = (env, args) => {
-  let base_url = env === 'test' ? TEST_BASE_URL : PROD_BASE_URL;
+export const uploadStop = (args) => {
   return axios.request({
-    url: base_url + 'upload/chunk-resume/abort',
+    url: '/upload/chunk-resume/abort',
     method: 'post',
     data: args,
   });
@@ -68,10 +55,9 @@ export const uploadStop = (env, args) => {
  * @param {uuid ： 创建分片上传过程返回 upload_id, fileMD5 : 文件整体MD5}
  * @return {type}
  */
-export const uploadFinish = (env, args) => {
-  let base_url = env === 'test' ? TEST_BASE_URL : PROD_BASE_URL;
+export const uploadFinish = (args) => {
   return axios.request({
-    url: base_url + 'upload/chunk-resume/finish',
+    url: '/upload/chunk-resume/finish',
     method: 'post',
     data: args,
   });

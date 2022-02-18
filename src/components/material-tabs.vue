@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-16 11:49:59
+ * @LastEditTime: 2022-02-17 10:00:33
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -15,7 +15,6 @@
           :list="sucaiList"
           :maxNum="fileLimitNum"
           @chooseFolder="chooseFolder"
-          :baseUrl="baseUrl"
           :type="materialType"
           :websocketUrl="websocketUrl"
           @cutTimePic="cutTimePic"
@@ -27,22 +26,8 @@
         </Row>
       </TabPane>
       <TabPane label="本地库" name="materialVal2">
-        <!-- <vue-uploader
-          :url="uploadUrl"
-          :baseUrl="baseUrl"
-          :fileNumLimit="fileLimitNum"
-          @error="uploadOnImgError"
-          @success="uploadOnSuccess"
-          @remove="uploadOnImgRemove"
-          @uploadError="uploadImgError"
-          :accept="materialType"
-          :highLimit="highLimit"
-          compress="false"
-          ref="vueUploader"
-          v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
-        ></vue-uploader> -->
         <js-uploader
-          v-if="materialVal === 'materialVal2' && baseUrl != '' && modal"
+          v-if="materialVal === 'materialVal2' && modal"
           ref="vueUploader"
           :env="env"
           :accept="materialType"
@@ -91,24 +76,9 @@
 import { getFileList, saveFileToStore, checkIsTranscode } from '@/api/data';
 import SucaiList from './sucaiList';
 import CoverList from './coverList';
-import VueUploader from '_c/vueuploader/index.js';
 import JsUploader from '_c/jsuploader';
 import Cookies from 'js-cookie';
-import {
-  Tabs,
-  TabPane,
-  Row,
-  Col,
-  Input,
-  Page,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Icon,
-  Message,
-} from 'view-design';
-// import 'view-design/dist/styles/iview.css';
-import '@/index.less';
+
 import Bus from '../libs/bus';
 export default {
   name: 'imageTabs',
@@ -125,9 +95,6 @@ export default {
     modalKey: {
       type: Boolean,
       default: false,
-    },
-    baseUrl: {
-      type: String,
     },
     from: {
       type: String,
@@ -166,9 +133,6 @@ export default {
       this.uploadVideoUrl = '';
       this.showPreview = false;
     },
-    baseUrl() {
-      console.log(this.baseUrl);
-    },
     modalKey() {
       this.modal = this.modalKey;
     },
@@ -177,31 +141,10 @@ export default {
       this.showPictureOfArticle && this.getPicturesOfArticle();
     },
   },
-  computed: {
-    env() {
-      if (this.baseUrl.includes('https://shandianyun-sck.iqilu.com')) {
-        return 'prod';
-      } else if (this.baseUrl.includes('https://sucai.shandian8.com')) {
-        return 'test';
-      }
-    },
-  },
   components: {
     SucaiList,
     CoverList,
-    VueUploader,
     JsUploader,
-    Tabs,
-    TabPane,
-    [Row.name]: Row,
-    [Col.name]: Col,
-    Input,
-    Page,
-    [Dropdown.name]: Dropdown,
-    DropdownItem,
-    [DropdownMenu.name]: DropdownMenu,
-    Icon,
-    Message,
   },
   data() {
     return {
@@ -250,7 +193,7 @@ export default {
   },
   methods: {
     getFileList(highLimit) {
-      getFileList(this.baseUrl, this.materialType, this.path_id, this.num, this.page, highLimit)
+      getFileList(this.materialType, this.path_id, this.num, this.page, highLimit)
         .then((res) => {
           res.data.data.rows.forEach((sucai) => {
             sucai.choosed = false;
@@ -306,7 +249,7 @@ export default {
     },
     // 文件上传
     uploadOnImgError(errorMessage) {
-      Message.error({
+      this.$Message.error({
         content: errorMessage,
         duration: 7,
       });
@@ -314,7 +257,7 @@ export default {
     uploadOnSuccess(file, extra) {
       if (extra) {
         if (!extra.url) {
-          Message.error('上传失败！');
+          this.$Message.error('上传失败！');
           return;
         }
 
@@ -337,14 +280,7 @@ export default {
         }
         return false;
       }
-      saveFileToStore(
-        this.baseUrl,
-        this.materialType,
-        info.url,
-        this.from,
-        this.highLimit,
-        info.filename
-      )
+      saveFileToStore(this.materialType, info.url, this.from, this.highLimit, info.filename)
         .then((res) => {
           if (res.status === 200) {
             info.id = res.data.data.id;
@@ -356,7 +292,7 @@ export default {
             }
             this.$emit('afterSaveToStore');
           } else {
-            Message.error(res.data.msg);
+            this.$Message.error(res.data.msg);
           }
         })
         .catch((err) => {
@@ -420,7 +356,7 @@ export default {
       this.ws.send(JSON.stringify(item));
     },
     checkIsTranscode(id) {
-      checkIsTranscode(this.baseUrl)
+      checkIsTranscode()
         .then((res) => {
           let mSwitch = res.data.data.switch;
           if (mSwitch) {
@@ -439,7 +375,7 @@ export default {
       this.cutTUrls = [];
     },
     uploadImgError(file, errorMessage) {
-      // Message.error({
+      // this.$Message.error({
       //   content: errorMessage,
       //   duration: 7
       // });
@@ -458,7 +394,7 @@ export default {
         this.initWebSocket('url', this.uploadVideoUrl);
         Bus.$emit('doMaterials', this.choosedMaterials);
       } else {
-        Message.error('出于系统安全性考虑，请填写本网站下https协议视频');
+        this.$Message.error('出于系统安全性考虑，请填写本网站下https协议视频');
       }
     },
     //素材库选中 获取抽帧
