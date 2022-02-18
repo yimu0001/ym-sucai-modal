@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-08-18 14:33:28
- * @LastEditTime: 2022-02-18 16:11:59
+ * @LastEditTime: 2022-02-18 16:51:44
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \ym-sucai-modal\src\components\coverList.vue
@@ -9,7 +9,7 @@
 <template>
   <div>
     <div class="coverDom">
-      <div span="6" v-for="(item, index) of coverList" :key="index" class="coverItem">
+      <div span="6" v-for="(item, index) of infoList" :key="index" class="coverItem">
         <div
           class="materialItemBox"
           @click="chooseItemCheck(item, index)"
@@ -21,13 +21,13 @@
         </div>
         <div class="materialItemInfo">
           <div class="materialItemTitle">{{ item.name }}</div>
-          <div class="materialItemMore">
-            <span>{{ item.width }}*{{ item.height }}</span>
-            <span>{{ getSize(item.size) }}</span>
-          </div>
         </div>
       </div>
     </div>
+    <div class="cutPageDom">
+      <Page :total="total" show-elevator @on-change="handlePageChange" :page-size="pageSize" />
+    </div>
+
     <Modal v-model="preview_value" width="60" class="preview-modal" title="抽帧封面预览">
       <img :src="preview_cover" />
     </Modal>
@@ -36,19 +36,42 @@
 
 <script>
 import { renderSize } from '@/libs/util.js';
-import Bus from '../libs/bus';
+import Bus from '@/libs/bus';
+import { BIG_PAGE_SIZE } from '@/libs/constant';
 
 export default {
   name: 'CoverList',
   props: {
-    list: {
+    articleImages: {
       type: Array,
       default: [],
     },
   },
+  data() {
+    return {
+      choosedCover: [],
+      preview_value: false,
+      preview_cover: '',
+      page: 1,
+      pageSize: BIG_PAGE_SIZE,
+      total: 0,
+      allImageList: [],
+      pageInfoObj: {},
+      infoList: [],
+    };
+  },
   watch: {
-    list() {
-      this.coverList = this.list;
+    articleImages: {
+      immediate: true,
+      handler(arr) {
+        this.allImageList = arr;
+        this.setPicturesOfArticle();
+      },
+    },
+  },
+  computed: {
+    chooseNum() {
+      return this.choosedCover.length;
     },
   },
   mounted() {
@@ -56,24 +79,38 @@ export default {
       this.choosedCover = [];
     });
   },
-  data() {
-    return {
-      coverList: this.list,
-      choosedCover: [],
-      preview_value: false,
-      preview_cover: '',
-    };
-  },
-  computed: {
-    chooseNum() {
-      return this.choosedCover.length;
-    },
-  },
   methods: {
     getSize: (item) => renderSize(item),
     getThumb(item) {
       return 'backgroundImage:url(' + item.url + ')';
     },
+
+    // 获取文章内图片总数
+    setPicturesOfArticle() {
+      this.page = 1;
+      this.total = this.allImageList.length;
+      this.pageInfoObj = this.cutPages();
+      this.handlePageChange(this.page);
+    },
+    // 文章内图片页码改变
+    handlePageChange(page = 1) {
+      this.infoList = this.pageInfoObj[page] || [];
+    },
+    // 图片分页
+    cutPages() {
+      let info = {};
+      this.allImageList.forEach((url, index) => {
+        let page = parseInt(index / this.pageSize) + 1;
+        if (!info[page]) {
+          info[page] = [];
+        }
+
+        info[page].push({ name: `文章内图片${index + 1}`, choosed: false, url });
+      });
+
+      return info;
+    },
+
     chooseItemCheck(item, index) {
       let chooseStatus = !item.choosed;
       if (chooseStatus && this.choosedCover.length >= 1) {
@@ -81,7 +118,7 @@ export default {
         return;
       }
 
-      this.$set(this.coverList[index], 'choosed', chooseStatus);
+      this.$set(this.infoList[index], 'choosed', chooseStatus);
       if (chooseStatus) {
         this.choosedCover.push(item);
       } else {
@@ -91,6 +128,7 @@ export default {
       Bus.$emit('doMaterials', this.choosedCover);
     },
     previewImg(item) {
+      console.log(item);
       this.preview_cover = item.url;
       this.preview_value = true;
     },
@@ -104,12 +142,14 @@ export default {
 
 <style lang="less" scoped>
 .coverDom {
-  height: 400px;
+  // height: 400px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   .coverItem {
-    width: 19%;
+    width: 20%;
+    padding: 0 1%;
+    box-sizing: border-box;
     .materialItemBox {
       background-color: #f1f3f5;
       height: 130px;
@@ -134,8 +174,7 @@ export default {
     }
     .materialItemInfo {
       width: 100%;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      margin: 10px 0;
       .materialItemTitle {
         width: 100%;
         height: 24px;
@@ -154,6 +193,10 @@ export default {
       }
     }
   }
+}
+.cutPageDom {
+  text-align: center;
+  margin-top: 15px;
 }
 .preview-modal {
   text-align: center;

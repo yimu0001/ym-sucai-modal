@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-17 10:00:33
+ * @LastEditTime: 2022-02-18 16:47:42
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -76,7 +76,7 @@
 import { getFileList, saveFileToStore, checkIsTranscode } from '@/api/data';
 import SucaiList from './sucaiList';
 import CoverList from './coverList';
-import JsUploader from '_c/jsuploader';
+import JsUploader from './jsuploader';
 import Cookies from 'js-cookie';
 
 import Bus from '../libs/bus';

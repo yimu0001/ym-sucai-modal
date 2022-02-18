@@ -1,20 +1,24 @@
 <!--
- * @Author: your name
- * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-17 10:00:27
+ * @文件描述: 
+ * @公司: 广电信通
+ * @作者: 赵婷婷
+ * @Date: 2022-02-16 17:32:26
  * @LastEditors: 赵婷婷
- * @Description: In User Settings Edit
- * @FilePath: \sucai-modal\src\views\Home.vue
+ * @LastEditTime: 2022-02-18 16:49:50
 -->
 <template>
-  <div class="home">
-    <button @click="openModal('image')">打开图片modal</button>
-    <button @click="openModal('video')">打开视频modal</button>
-    <button @click="openModal('voice')">打开音频modal</button>
-    <button @click="openModal('transcodeVideo')">打开转码modal</button>
+  <div class="home-page">
+    <Button @click="openModal('image')">打开图片modal</Button>&ensp;
+    <Button @click="openModal('video')">打开视频modal</Button>&ensp;
+    <Button @click="openModal('voice')">打开音频modal</Button>&ensp;
+    <Button @click="openModal('coverImg')">打开封面modal</Button>&ensp;
+    <Button @click="openModal('transcodeVideo')">打开转码modal</Button>&ensp;
+
+    <br /><br />
     <div>
       <Checkbox v-model="videoHighLimit">素材可在电视播出</Checkbox>
     </div>
+    <br />
     <h2>已选选项</h2>
     <div class="formItem">
       <div v-for="(item, index) of choosedMaterials" :key="index">{{ item.url }}</div>
@@ -23,41 +27,49 @@
       视频预览
       <video :poster="coverUrl" :src="videoUrl" controls="controls"></video>
     </div>
-    <!-- onlyChooseVideo -->
+
     <sucai-modal
       :modalKey="modalKey"
-      @handleMaterialModalOk="handleModalOk"
-      :fileLimitNum="fileLimitNum"
-      @handleMaterialModalCancle="handleModalCancle"
+      :tabOptions="tabOptions"
       :type="type"
-      @chooseVideoOk="chooseVideoOk"
+      :env="env"
+      :fileLimit="fileLimit"
       :from="materialFrom"
-      @chooseCoverOk="chooseCoverOk"
       :high_code_rate_limit="highLimit"
-      websocketUrl="wss://shandianyun-sck.iqilu.com/"
-      :showPictureOfArticle="showPictureOfArticle"
+      :articleImages="articleImages"
+      :withCover="withCover"
+      @chooseVideoOk="chooseVideoOk"
+      @chooseCoverOk="chooseCoverOk"
+      @handleMaterialModalOk="handleModalOk"
+      @handleMaterialModalCancle="handleModalCancle"
     ></sucai-modal>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import SucaiModal from '@/components/sucai-modal.vue';
 import { Checkbox } from 'iview';
+import SucaiModal from '@/components/SucaiModal.vue';
+
 export default {
   name: 'Home',
   components: {
-    SucaiModal,
     Checkbox,
+    SucaiModal,
   },
   data() {
     return {
       modalKey: false,
+      tabOptions: ['library'], // , 'local'
       type: '',
+      env: 'test',
       choosedMaterials: [],
-      fileLimitNum: 1,
+      fileLimit: 1,
       videoHighLimit: false,
-      showPictureOfArticle: false,
+      articleImages: [
+        'https://img12.shandian8.com/1/sucaiku/202202/16/c33806fae0de4c1b88fc6269c8490c6d.jpg',
+      ],
+      withCover: true,
       videoUrl: '',
       coverUrl: '',
       materialFrom: 'article',
@@ -72,8 +84,8 @@ export default {
   methods: {
     openModal(type) {
       if (type == 'image') {
-        this.fileLimitNum = 10;
-        this.showPictureOfArticle = true;
+        this.fileLimit = 10;
+        this.showPictureInArticle = true;
       } else if (type == 'transcodeVideo') {
         this.materialFrom = 'notSave';
       }
@@ -102,6 +114,9 @@ export default {
 </script>
 
 <style scoped>
+.home-page {
+  padding: 50px 0;
+}
 .video-test {
   width: 700px;
   height: 700px;

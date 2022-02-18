@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-18 16:27:20
+ * @LastEditTime: 2022-02-18 16:50:55
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -22,7 +22,6 @@
         <js-uploader
           v-if="materialKey === 'local' && modalKey"
           ref="jsUploader"
-          :env="env"
           :accept="materialType"
           :fileNumLimit="fileLimit"
           :highLimit="highLimit"
@@ -129,7 +128,6 @@ export default {
     type: {
       immediate: true,
       handler() {
-        console.log('watch type', this.type);
         this.materialType = this.type;
         this.materialKey = 'library';
         if (this.type == 'coverImg') {
@@ -157,7 +155,6 @@ export default {
   methods: {
     // 打开窗口方法
     onOpenModal(type) {
-      console.log('打开窗口', type);
       if (this.type == 'transcodeVideo') {
         this.materialType = 'video';
         this.materialKey = 'local';

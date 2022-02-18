@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2022-02-18 14:14:26
+ * @LastEditTime: 2022-02-18 16:51:28
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -127,7 +127,6 @@ export default {
   mounted() {
     // 各个不同tab下 选中的素材列表
     Bus.$on('doMaterials', (list) => {
-      console.log('modal select material===>', list);
       this.choosedMaterials = list;
     });
   },

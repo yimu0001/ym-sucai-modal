@@ -2,7 +2,7 @@
  * 本地上传
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-18 16:03:37
+ * @LastEditTime: 2022-02-18 16:48:19
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -104,10 +104,6 @@ export default {
     highLimit: {
       type: String | Number,
       default: '0',
-    },
-    env: {
-      type: String,
-      default: 'prod',
     },
   },
   data() {
