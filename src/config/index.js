@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-11 10:57:35
- * @LastEditTime: 2022-02-17 17:20:39
+ * @LastEditTime: 2022-02-18 17:58:00
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \files\src\config\index.js
@@ -26,13 +26,13 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    // dev: 'https://sucai.shandian8.com',
-    dev: 'https://shandianyun-sck.iqilu.com',
+    dev: 'https://sucai.shandian8.com',
+    // dev: 'https://shandianyun-sck.iqilu.com',
     pro: 'https://shandianyun-sck.iqilu.com',
   },
   websocketUrl: {
-    // dev: 'wss://sucai.shandian.design',
-    dev: 'wss://shandianyun-sck.iqilu.com',
+    dev: 'wss://sucai.shandian.design',
+    // dev: 'wss://shandianyun-sck.iqilu.com',
     pro: 'wss://shandianyun-sck.iqilu.com',
   },
   /**

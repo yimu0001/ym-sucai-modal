@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-18 16:50:55
+ * @LastEditTime: 2022-02-18 18:01:57
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -87,10 +87,6 @@ export default {
     modalKey: {
       type: Boolean,
       default: false,
-    },
-    tabOptions: {
-      type: Array,
-      default: ['library', 'local'],
     },
     from: {
       type: String,

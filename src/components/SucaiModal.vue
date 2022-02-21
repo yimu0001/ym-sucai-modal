@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 10:38:24
- * @LastEditTime: 2022-02-18 16:51:28
+ * @LastEditTime: 2022-02-21 09:13:20
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\sucai-modal.vue
@@ -18,7 +18,6 @@
     <all-tabs
       ref="allTabs"
       :modalKey="modal"
-      :tabOptions="tabOptions"
       :type="materialType"
       :fileLimit="fileLimit"
       :from="from"
@@ -49,10 +48,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    tabOptions: {
-      type: Array,
-      default: ['library', 'local'],
-    },
     type: {
       type: String,
       default: 'image',
@@ -75,7 +70,8 @@ export default {
     },
     articleImages: {
       type: Array,
-      default: [],
+      default: () => [],
+      required: false,
     },
     // type===video时生效
     withCover: {

@@ -4,7 +4,7 @@
  * @作者: 赵婷婷
  * @Date: 2022-02-16 17:32:26
  * @LastEditors: 赵婷婷
- * @LastEditTime: 2022-02-18 16:49:50
+ * @LastEditTime: 2022-02-18 18:00:32
 -->
 <template>
   <div class="home-page">
@@ -28,15 +28,13 @@
       <video :poster="coverUrl" :src="videoUrl" controls="controls"></video>
     </div>
 
+    <!-- :from="materialFrom" :articleImages="articleImages" -->
     <sucai-modal
       :modalKey="modalKey"
-      :tabOptions="tabOptions"
       :type="type"
       :env="env"
       :fileLimit="fileLimit"
-      :from="materialFrom"
       :high_code_rate_limit="highLimit"
-      :articleImages="articleImages"
       :withCover="withCover"
       @chooseVideoOk="chooseVideoOk"
       @chooseCoverOk="chooseCoverOk"
