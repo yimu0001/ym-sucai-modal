@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 11:54:45
- * @LastEditTime: 2022-02-16 11:49:59
+ * @LastEditTime: 2022-02-22 09:53:08
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\components\modal-tabs\image-tabs.vue
@@ -247,6 +247,8 @@ export default {
         this.ws.close();
       }
     });
+
+    console.log('this.$refs.sucaiList', this.$refs.sucaiList);
   },
   methods: {
     getFileList(highLimit) {

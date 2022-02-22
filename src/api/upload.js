@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-15 16:21:50
- * @LastEditTime: 2022-02-16 11:56:05
+ * @LastEditTime: 2022-02-22 17:15:11
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucaiku_front_pc\src\api\webupload.js
@@ -54,12 +54,12 @@ export const uploadProcess = (env, args) => {
  * @param {uuid ： 创建分片上传过程返回 upload_id}
  * @return {type}
  */
-export const uploadStop = (env, args) => {
+export const uploadStop = (env, uuid) => {
   let base_url = env === 'test' ? TEST_BASE_URL : PROD_BASE_URL;
   return axios.request({
     url: base_url + 'upload/chunk-resume/abort',
     method: 'post',
-    data: args,
+    data: { uuid },
   });
 };
 

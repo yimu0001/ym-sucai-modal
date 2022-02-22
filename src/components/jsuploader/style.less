@@ -1,0 +1,121 @@
+.issues {
+  float: right;
+}
+.js-modal-inner {
+  min-height: 200px;
+}
+.upload-btn {
+  position: relative;
+  .select-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 82px;
+    height: 32px;
+    opacity: 0;
+  }
+}
+.file-list {
+  margin-top: 20px;
+  .file-item {
+    padding: 0 10px;
+    position: relative;
+
+    .deep-pro-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+
+      ::v-deep .ivu-progress-inner {
+        background-color: #fff;
+        border-radius: 0;
+      }
+      ::v-deep .ivu-progress-bg {
+        border-radius: 0;
+      }
+    }
+
+    .file-info-line {
+      height: 40px;
+      line-height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      background-color: none;
+      color: #515a6e;
+      z-index: 1;
+      .top-level {
+        z-index: 1;
+      }
+      .title-col {
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+      .name-text {
+        margin: 10px;
+        width: 320px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .size-text {
+        width: 110px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .status-text {
+        width: 120px;
+      }
+      .close-icon {
+        cursor: pointer;
+      }
+    }
+  }
+  .file-item:first-child {
+    border-top: 1px solid #ececec;
+    border-bottom: 1px solid #ececec;
+  }
+  .file-item + .file-item {
+    border-bottom: 1px solid #ececec;
+  }
+
+  .no-content-tips {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+  }
+}
+
+.green-tips {
+  color: #19be6b;
+}
+.red-tips {
+  color: #ed4014;
+}
+.grey-tips {
+  color: #515a6e;
+}
+.file-type {
+  width: 24px;
+  height: 24px;
+}
+.file-type[icon='text'] {
+  background: url(../../assets/icons/text-icon.png) no-repeat center;
+}
+.file-type[icon='video'] {
+  background: url(../../assets/icons/video-icon.png) no-repeat center;
+}
+.file-type[icon='image'] {
+  background: url(../../assets/icons/image-icon.png) no-repeat center;
+}
+.file-type[icon='voice'] {
+  background: url(../../assets/icons/audio-icon.png) no-repeat center;
+}

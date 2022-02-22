@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-23 09:48:43
- * @LastEditTime: 2022-02-16 15:28:21
+ * @LastEditTime: 2022-02-21 15:24:17
  * @LastEditors: 赵婷婷
  * @Description: In User Settings Edit
  * @FilePath: \sucai-modal\src\views\Home.vue
@@ -73,7 +73,8 @@ export default {
   },
   mounted() {
     if (process.env.NODE_ENV === 'development') {
-      this.material_baseUrl = 'https://sucai.shandian8.com/';
+      // this.material_baseUrl = 'https://sucai.shandian8.com/';
+      this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/';
     } else {
       this.material_baseUrl = 'https://shandianyun-sck.iqilu.com/';
     }
